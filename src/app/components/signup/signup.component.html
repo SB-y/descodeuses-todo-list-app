@@ -1,0 +1,56 @@
+<div id="full-cover-background" class="flex h-screen bg-gray-100">
+
+    <div id="centered-block" class="bg-white max-w-sm p-6 rounded-x1 shadow-md w-200 m-auto text-center">
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <h2 class="text-center mb-12">Inscription</h2>
+
+            <div id="name-cont">
+                <mat-form-field>
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="name" type="text" placeholder="nom" />
+                </mat-form-field>
+            </div>
+
+            <div id="surname-cont">
+                <mat-form-field>
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="surname" type="text" placeholder="prénom" />
+                </mat-form-field>
+            </div>
+
+            <div id="username-cont">
+                <mat-form-field>
+                    <mat-label>Nom utilisateur</mat-label>
+                    <input matInput formControlName="username2" type="text" placeholder="nom utilisateur" />
+                </mat-form-field>
+            </div>
+
+            <div id="usergenre-cont">
+                <mat-form-field>
+                    <mat-label>Genre</mat-label>
+                    <mat-select>
+                        @for (genre of listGenre; track genre.value) {
+                        <!-- avec track, met à jour automatiquement le tableau d'objets et en particulièrement la valeur en question dans le cadre de la boucle-->
+                        <mat-option [value]="genre.value">{{genre.text}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div id="password-cont">
+                <mat-form-field>
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName="password2" type="password" placeholder="mot de passe" />
+                </mat-form-field>
+
+            </div>
+
+
+
+            <button mat-stroked-button type="submit" class="w-50">
+                S'inscrire
+            </button>
+        </form>
+    </div>
+</div>

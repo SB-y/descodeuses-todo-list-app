@@ -1,0 +1,20 @@
+<div id="full-cover-background" class="flex h-screen bg-gray-100">
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center mt-60 m-auto">
+
+    @for(kpi of kpis; track kpi.id) {
+    <mat-card [ngClass]="kpi.bg" class="p-4 w-80 h-50 mx-auto">
+        <div class="flex flex-row items-center gap-x-4">
+            <mat-icon class="text-white">{{kpi.icon}}</mat-icon>
+
+            <div id="texte" class="flex flex-col gap-y-2">
+                <div id="title" class="text-xs  text-white uppercase">{{kpi.title}}</div>
+                <div id="number" class="text-xl text-white font-bold">{{kpi.number}}</div>
+
+            </div>
+        </div>
+    </mat-card>
+    }
+</div>
+
+</div>

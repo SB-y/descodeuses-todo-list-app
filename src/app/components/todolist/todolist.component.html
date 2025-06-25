@@ -1,0 +1,27 @@
+<mat-card class="h-full w-2xl flex flex-col items-center">
+    <form [formGroup]="formGroup" (ngSubmit)="onAddTodo()">
+        <div id="todo-bar-saisie" class="flex gap-2 m-4">
+            <mat-form-field appearance="outline" class="flex-1">
+                <input matInput formControlName="title" placeholder="Nouvelle tâche">
+            </mat-form-field>
+            <button mat-fab type="submit">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </form>
+    <div id="todo-liste">
+        <mat-list>
+            @for(todo of todos; track todo.id) {
+                <mat-list-item>
+                    <div class="flex items-center">
+                    <mat-checkbox [checked]="todo.completed" (change)="onCheckChange($event, todo)"></mat-checkbox>
+                    <span [routerLink]="['/tododetails', todo.id]" class="flex-1 cursor-pointer">{{ todo.title }}</span>
+                    <button mat-icon-button (click)="onDeleteTodo(todo.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                </mat-list-item>
+            }
+        </mat-list>
+    </div>
+</mat-card>

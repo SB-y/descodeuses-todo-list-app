@@ -1,0 +1,78 @@
+@if(todoForm!=null) { <!-- utiliser dans le template pour afficher le formulaire seulement quand il est prêt-->
+
+
+<mat-card class="h-full w-2xl flex flex-col items-center mt-30 m-auto">
+
+    <mat-card-header class="w-full justify-center">
+
+        <h2 class="text-center text-xl font-semibold">Edit Todo</h2>
+
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <!-- [formGroup] est une directive (attribut spécifique) -->
+        <form class="mt-5" [formGroup]="todoForm" (ngSubmit)="onSubmitTodo()">
+
+            <div id="title-cont" class="text-center">
+                <mat-form-field class="w-60">
+                    <mat-label>Titre</mat-label>
+                    <input matInput formControlName="title" type="text" placeholder="nom" />
+                </mat-form-field>
+            </div>
+
+            <div id="textarea-cont" class="text-center">
+                <mat-form-field class="w-60">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="textarea"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div id="priorite-cont" class="text-center">
+                <mat-form-field class="w-60">
+                    <mat-label>Priorité</mat-label>
+                    <mat-select formControlName="priorite">
+                        @for (priorite of listPriorite; track priorite.value) {
+                        <mat-option [value]="priorite.value">{{priorite.number}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div id="duedate-cont" class="text-center">
+                <mat-form-field class="w-60">
+                    <mat-label>Echéance</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div id="completed-cont" class="text-center">
+                <mat-label>Complété</mat-label>
+                <mat-checkbox formControlName="completed"></mat-checkbox>
+            </div>
+
+
+
+            <div>
+                <div class="flex flex-col items-center gap-2 mt-8">
+
+                    <button mat-raised-button type="submit" class="w-28">
+                        Enregistrer
+                    </button>
+
+                    <button mat-stroked-button (click)="onCancel()" class="w-28">
+                        Annuler
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+
+    </mat-card-content>
+
+</mat-card>
+
+}

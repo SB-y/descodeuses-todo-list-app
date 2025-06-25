@@ -1,0 +1,43 @@
+<mat-card class="h-full w-2xl flex flex-col">
+
+    <mat-table [dataSource]="todos" class="mat-elevation-z8 table">
+   
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> Numéro id </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef> Titre </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+          </ng-container>
+
+        <ng-container matColumnDef="priorite">
+            <mat-header-cell *matHeaderCellDef> Priorité </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.priorite}} </mat-cell>
+          </ng-container>
+      
+   
+        <ng-container matColumnDef="dueDate">
+          <mat-header-cell *matHeaderCellDef> Echéance </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.dueDate| date:'dd/MM/yyyy'}}  </mat-cell>
+        </ng-container>
+      
+   
+        <ng-container matColumnDef="completed">
+          <mat-header-cell *matHeaderCellDef> Complétion </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.completed}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="textarea">
+            <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.textarea}} </mat-cell>
+          </ng-container>
+      
+        <!-- Header and Row Declarations -->
+        <mat-header-row *matHeaderRowDef="['id', 'title', 'priorite','dueDate', 'completed', 'textarea']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['id', 'title','priorite', 'dueDate', 'completed', 'textarea']"></mat-row>
+      </mat-table>
+      
+
+</mat-card>
