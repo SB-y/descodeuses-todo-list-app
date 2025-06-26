@@ -1,8 +1,7 @@
-mat-header-cell, mat-cell{
-    justify-content: center;
-    text-align: center;
-}
-
-mat-header-cell {
-    background-color: aquamarine;
-}
+.mat-mdc-row:nth-child(odd) {
+    background-color: var(--color-teal-500)
+  }
+  
+  .mat-mdc-header-cell {
+    background-color: var(--color-teal-600)  !important;
+  }

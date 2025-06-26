@@ -1,34 +1,38 @@
-<div class="w-64 bg-gray-300 mx-auto text-center rounded-lg shadow-lg flex flex-col">
+<div id="full-cover-background" class="flex bg-gray-100 min-h-screen">
 
-    <div class="h-8 bg-gray-800 text-center p-5 rounded-lg shadow-lg mb-8">
-        <div class="text-3xl text-white">{{this.N1}} {{this.O}} {{this.N2}} </div>
-    </div>
+    <div class="w-64 bg-gray-300 my-auto mx-auto text-center rounded-lg shadow-lg flex flex-col mt-20">
 
-
-    <div id="interface" class="flex flex-row justify-center">
-
-        <div class="grid grid-cols-3 gap-1.5">
-
-            <button *ngFor="let nombre of listeNbres" type="button" (click)="recupNomb(nombre.value)"
-                class="bg-gray-800 text-white text-center w-12 rounded-full p-4 border-0">
-                {{ nombre.value }}
-            </button>
+        <div class="h-8 bg-gray-800 text-center p-5 rounded-lg shadow-lg mb-8 space-y-20">
+            <div class="text-3xl text-white">{{this.N1}} {{this.O}} {{this.N2}} </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-1.5 ml-2">
 
-            <button *ngFor="let operateur of listeOpes" type="button" (click)="recupOpe(operateur.value)"
-                class="bg-gray-700 text-white text-center w-12 rounded-full p-4 border-0">
-                {{ operateur.value }}
-            </button>
+        <div id="interface" class="flex flex-row justify-center">
+
+            <div class="grid grid-cols-3 gap-1.5">
+
+                <button *ngFor="let nombre of listeNbres" type="button" (click)="recupNomb(nombre.value)"
+                    class="bg-gray-800 text-white text-center w-12 rounded-full p-4 border-0">
+                    {{ nombre.value }}
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 gap-1.5 ml-2">
+
+                <button *ngFor="let operateur of listeOpes" type="button" (click)="recupOpe(operateur.value)"
+                    class="bg-gray-700 text-white text-center w-12 rounded-full p-4 border-0">
+                    {{ operateur.value }}
+                </button>
+            </div>
+
         </div>
 
-    </div>
 
+        <div class="messages" class="h-5 bg-gray-700 text-center p-5 rounded-lg shadow-lg mt-8">
+            <div class="text-xl text-white"><strong> {{ result }}</strong></div>
+            <div id="messagediv" class="text-white text-xs"><strong>{{ messagediv }}</strong></div>
+        </div>
 
-    <div class="messages" class="h-5 bg-gray-700 text-center p-5 rounded-lg shadow-lg mt-8">
-        <div class="text-xl text-white"><strong> {{ result }}</strong></div>
-        <div id="messagediv" class="text-white text-xs"><strong>{{ messagediv }}</strong></div>
     </div>
 
 </div>

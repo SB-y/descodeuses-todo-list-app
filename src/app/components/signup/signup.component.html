@@ -6,28 +6,28 @@
             <h2 class="text-center mb-12">Inscription</h2>
 
             <div id="name-cont">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="w-70">
                     <mat-label>Nom</mat-label>
                     <input matInput formControlName="name" type="text" placeholder="nom" />
                 </mat-form-field>
             </div>
 
             <div id="surname-cont">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="w-70">
                     <mat-label>Prénom</mat-label>
                     <input matInput formControlName="surname" type="text" placeholder="prénom" />
                 </mat-form-field>
             </div>
 
             <div id="username-cont">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="w-70">
                     <mat-label>Nom utilisateur</mat-label>
                     <input matInput formControlName="username2" type="text" placeholder="nom utilisateur" />
                 </mat-form-field>
             </div>
 
             <div id="usergenre-cont">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="w-70">
                     <mat-label>Genre</mat-label>
                     <mat-select>
                         @for (genre of listGenre; track genre.value) {
@@ -39,7 +39,7 @@
             </div>
 
             <div id="password-cont">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="w-70">
                     <mat-label>Mot de passe</mat-label>
                     <input matInput formControlName="password2" type="password" placeholder="mot de passe" />
                 </mat-form-field>
@@ -48,7 +48,7 @@
 
 
 
-            <button mat-stroked-button type="submit" class="w-50">
+            <button mat-stroked-button type="submit" class="w-40 mt-10">
                 S'inscrire
             </button>
         </form>
