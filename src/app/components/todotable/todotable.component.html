@@ -2,9 +2,9 @@
 
   <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-200 m-auto">
 
-    <mat-table [dataSource]="todos" class="mat-elevation-z8 table">
+    <mat-table [dataSource]="todos" class="mat-elevation-z8 table text-center">
 
-        <ng-container matColumnDef="title" >
+        <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef class="text-white"> Titre </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
           </ng-container>
@@ -23,12 +23,12 @@
    
         <ng-container matColumnDef="completed">
           <mat-header-cell *matHeaderCellDef class="text-white"> Complétion </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.completed}} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.completed ? 'Oui' : 'Non' }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="textarea">
-            <mat-header-cell *matHeaderCellDef class="text-white"> Description </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.textarea}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef class="text-white text-center"> Description </mat-header-cell>
+            <mat-cell *matCellDef="let row" class="text-center"> {{row.textarea}} </mat-cell>
           </ng-container>
       
         <!-- Header and Row Declarations -->

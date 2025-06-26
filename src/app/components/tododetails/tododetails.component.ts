@@ -63,14 +63,14 @@ export class TododetailsComponent implements OnInit {
       this.todoService.updateTodo(this.todoForm.value).subscribe((data) => {
         console.log("Mise à jour réussie !");
         this.snackBar.open('Todo mis à jour', '', { duration: 1000 }); // pour afficher le popup
-        this.router.navigate(["/"]); // pour retourner à la page générale todolist
+        this.router.navigate(["/todotable"]); // pour retourner à la page générale todolist
       });
     }
   }
 
 
   onCancel() {
-    this.router.navigate(["/"]); // pour retourner à la page générale todolist
+    this.router.navigate(["/todotable"]); // pour retourner à la page générale todolist
   }
 
 

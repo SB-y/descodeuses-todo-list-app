@@ -1,7 +1,10 @@
-.mat-mdc-row:nth-child(odd) {
-    background-color: var(--color-teal-500)
-  }
-  
   .mat-mdc-header-cell {
     background-color: var(--color-teal-600)  !important;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mat-mdc-cell {
+    display: flex;
+    justify-content: center;
   }
