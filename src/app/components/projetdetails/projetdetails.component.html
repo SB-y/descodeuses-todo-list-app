@@ -1,0 +1,57 @@
+<div id="full-cover-background" class="flex h-full bg-gray-100">
+
+    <!-- @if(todoForm!=null) { utiliser dans le template pour afficher le formulaire seulement quand il est prêt-->
+
+
+    <div *ngIf="projetForm" id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 mx-auto my-auto mt-30 mb-30">
+
+        <mat-card-header class="w-full justify-center">
+
+            <h2 class="text-center text-xl font-semibold mb-20">Edit Projet</h2>
+
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <!-- [formGroup] est une directive (attribut spécifique) -->
+            <form class="mt-5" [formGroup]="projetForm" (ngSubmit)="onSubmitProjet()">
+
+                <!-- Champ caché id -->
+                <input type="hidden" formControlName="id" />
+
+                <div id="title-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Titre</mat-label>
+                        <input matInput formControlName="title" type="text" placeholder="nom" />
+                    </mat-form-field>
+                </div>
+
+                <div id="textarea-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <div class="flex flex-row justify-center gap-5 mt-12">
+
+                        <button mat-raised-button type="submit" class="w-28">
+                            Enregistrer
+                        </button>
+
+                        <button mat-stroked-button (click)="onCancel()" class="w-28">
+                            Annuler
+                        </button>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </mat-card-content>
+
+    </div>
+
+
+</div>

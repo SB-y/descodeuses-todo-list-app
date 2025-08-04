@@ -1,6 +1,6 @@
-<div id="full-cover-background" class="flex h-screen bg-gray-100">
+<div id="full-cover-background" class="flex flex-col bg-gray-100">
 
-    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto">
+    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto mt-30 mb-30">
         <form [formGroup]="formGroup" (ngSubmit)="onAddTodo()">
             <div id="todo-bar-saisie" class="flex gap-2 m-4">
                 <mat-form-field appearance="outline" class="flex-1">
@@ -20,6 +20,35 @@
                         <span [routerLink]="['/tododetails', todo.id]" class="flex-1 cursor-pointer">{{ todo.title
                             }}</span>
                         <button mat-icon-button (click)="onDeleteTodo(todo.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-list-item>
+                }
+            </mat-list>
+        </div>
+    </div>
+
+
+    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto mb-30">
+        <form [formGroup]="projformGroup" (ngSubmit)="onAddProjet()">
+            <div id="todo-bar-saisie" class="flex gap-2 m-4">
+                <mat-form-field appearance="outline" class="flex-1">
+                    <input matInput formControlName="title" placeholder="Nouveau projet">
+                </mat-form-field>
+                <button mat-mini-fab type="submit" class="mt-2">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </form>
+        <div id="projet-liste">
+            <mat-list>
+                @for(projet of allProjets; track projet.id) {
+                <mat-list-item>
+                    <div class="flex items-center">
+                        <span [routerLink]="['/projetdetails', projet.id]" class="flex-1 cursor-pointer">{{ projet.title
+                            }}</span>
+                        <button mat-icon-button (click)="onDeleteProjet(projet.id)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>

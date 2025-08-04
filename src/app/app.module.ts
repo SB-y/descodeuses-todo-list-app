@@ -4,35 +4,35 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './components/signup/signup.component';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { TodoListComponent } from './components/todolist/todolist.component';
-import {MatCardModule} from '@angular/material/card';
-import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
+import { MatCardModule } from '@angular/material/card';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
-import { HttpClientModule } from '@angular/common/http';
-import { UserlistComponent } from './components/userlist/userlist.component';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TododetailsComponent } from './components/tododetails/tododetails.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { TodotableComponent } from './components/todotable/todotable.component';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalculetteComponent } from './calculette/calculette.component';
 import { CommonModule } from '@angular/common';
-
-
-
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ProjetdetailsComponent } from './components/projetdetails/projetdetails.component';
+import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
 
 
 @NgModule({
@@ -41,11 +41,11 @@ import { CommonModule } from '@angular/common';
     LoginComponent,
     SignupComponent,
     TodoListComponent,
-    UserlistComponent,
     TododetailsComponent,
     TodotableComponent,
     DashboardComponent,
     CalculetteComponent,
+    ProjetdetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,19 +61,28 @@ import { CommonModule } from '@angular/common';
     MatSelectModule,
     MatCardModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService,
-      { delay: 200 }
-    ),
+    // HttpClientInMemoryWebApiModule.forRoot(
+    //  InMemoryDataService,
+    //  { delay: 200 }
+    // enlever les commentaires si pas de lien avec backend),
     MatCheckboxModule,
     MatSnackBarModule,
     MatDatepickerModule,
     MatTableModule,
-    CommonModule
+    CommonModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    FormsModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'fr'},
+    { provide: LOCALE_ID, useValue: 'fr' },
     provideNativeDateAdapter(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
+    //  Version prof : provideHttpClient(withInterceptors([authInterceptor]))
   ],
   bootstrap: [AppComponent],
 })

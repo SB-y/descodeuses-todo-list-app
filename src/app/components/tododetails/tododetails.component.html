@@ -1,82 +1,148 @@
 <div id="full-cover-background" class="flex h-full bg-gray-100">
 
-@if(todoForm!=null) { <!-- utiliser dans le template pour afficher le formulaire seulement quand il est prêt-->
+    <!-- @if(todoForm!=null) { utiliser dans le template pour afficher le formulaire seulement quand il est prêt-->
 
 
-    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 mx-auto my-auto mt-30 mb-30">
+    <div *ngIf="todoForm" id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 mx-auto my-auto mt-30 mb-30">
 
-    <mat-card-header class="w-full justify-center">
+        <mat-card-header class="w-full justify-center">
 
-        <h2 class="text-center text-xl font-semibold mb-20">Edit Todo</h2>
+            <h2 class="text-center text-xl font-semibold mb-20">Edit Todo</h2>
 
-    </mat-card-header>
+        </mat-card-header>
 
-    <mat-card-content>
+        <mat-card-content>
 
-        <!-- [formGroup] est une directive (attribut spécifique) -->
-        <form class="mt-5" [formGroup]="todoForm" (ngSubmit)="onSubmitTodo()">
+            <!-- [formGroup] est une directive (attribut spécifique) -->
+            <form class="mt-5" [formGroup]="todoForm" (ngSubmit)="onSubmitTodo()">
 
-            <div id="title-cont" class="text-center">
-                <mat-form-field class="w-80" appearance="outline">
-                    <mat-label>Titre</mat-label>
-                    <input matInput formControlName="title" type="text" placeholder="nom" />
-                </mat-form-field>
-            </div>
+                <!-- Champ caché id -->
+                <input type="hidden" formControlName="id" />
 
-            <div id="textarea-cont" class="text-center">
-                <mat-form-field class="w-80" appearance="outline">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput formControlName="textarea"></textarea>
-                </mat-form-field>
-            </div>
-
-            <div id="priorite-cont" class="text-center">
-                <mat-form-field class="w-80" appearance="outline">
-                    <mat-label>Priorité</mat-label>
-                    <mat-select formControlName="priorite">
-                        @for (priorite of listPriorite; track priorite.value) {
-                        <mat-option [value]="priorite.value">{{priorite.number}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div id="duedate-cont" class="text-center">
-                <mat-form-field class="w-80" appearance="outline">
-                    <mat-label>Echéance</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="dueDate" />
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            </div>
-
-            <div id="completed-cont" class="text-center">
-                <mat-label>Complété</mat-label>
-                <mat-checkbox formControlName="completed"></mat-checkbox>
-            </div>
-
-
-
-            <div>
-                <div class="flex flex-row justify-center gap-5 mt-12">
-
-                    <button mat-raised-button type="submit" class="w-28">
-                        Enregistrer
-                    </button>
-
-                    <button mat-stroked-button (click)="onCancel()" class="w-28">
-                        Annuler
-                    </button>
-
+                <div id="member-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Membre</mat-label>
+                        <mat-chip-grid #chipGrid aria-label="Membre sélection">
+                            @for (contact of selectedContacts; track contact.id) {
+                                <mat-chip-row (removed)="remove(contact)">
+                                  {{ contact.nom }} {{ contact.prenom }}
+                                  <button matChipRemove [attr.aria-label]="'remove ' + contact.nom">
+                                    <mat-icon>cancel</mat-icon>
+                                  </button>
+                                </mat-chip-row>
+                              }
+                        </mat-chip-grid>
+                        <input
+                        name="currentContact"
+                        placeholder="New contact..."
+                        #contactInput
+                        [formControl]="currentContact"
+                        [matChipInputFor]="chipGrid"
+                        [matAutocomplete]="auto"
+                        (input)="onCurrentContactChange(contactInput.value || '')"
+                        />
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            @for (contact of filteredContacts; track contact.id) {
+                              <mat-option [value]="contact">
+                                {{ contact.nom }} {{ contact.prenom }}
+                              </mat-option>
+                            }
+                          </mat-autocomplete>
+                    </mat-form-field>
                 </div>
-            </div>
 
-        </form>
 
-    </mat-card-content>
+                <div id="projet-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Projet</mat-label>
+                        <mat-select formControlName="projet">
+                          <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
+                            {{ projet.title }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
 
-</div>
+<!-- 
+                <div id="projet-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Utilisateur</mat-label>
+                        <mat-select formControlName="utilisateur">
+                          <mat-option *ngFor="let utilisateur of allUtilisateurs" [value]="utilisateur.id">
+                            {{ utilisateur.username }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+-->
 
-}
+                <div id="utilisa-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Utilisateur</mat-label>
+                        <input matInput [value]="todo.surname + ' ' + todo.name" readonly />
+                      </mat-form-field>
+                </div>
+
+                <div id="title-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Titre</mat-label>
+                        <input matInput formControlName="title" type="text" placeholder="nom" />
+                    </mat-form-field>
+                </div>
+
+                <div id="textarea-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="textarea"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div id="priorite-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Priorité</mat-label>
+                        <mat-select formControlName="priorite">
+                            @for (priorite of listPriorite; track priorite.number) {
+                            <mat-option [value]="priorite.number">{{priorite.number}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div id="duedate-cont" class="text-center">
+                    <mat-form-field class="w-80" appearance="outline">
+                        <mat-label>Echéance</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div id="completed-cont" class="text-center">
+                    <mat-label>Complété</mat-label>
+                    <mat-checkbox formControlName="completed"></mat-checkbox>
+                </div>
+
+
+
+                <div>
+                    <div class="flex flex-row justify-center gap-5 mt-12">
+
+                        <button mat-raised-button type="submit" class="w-28">
+                            Enregistrer
+                        </button>
+
+                        <button mat-stroked-button (click)="onCancel()" class="w-28">
+                            Annuler
+                        </button>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </mat-card-content>
+
+    </div>
+
 
 </div>

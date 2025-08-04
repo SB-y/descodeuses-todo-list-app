@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { TodoListComponent } from './components/todolist/todolist.component';
-import { UserlistComponent } from './components/userlist/userlist.component';
 import { TododetailsComponent } from './components/tododetails/tododetails.component';
 import { TodotableComponent } from './components/todotable/todotable.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalculetteComponent } from './calculette/calculette.component';
 import { authGuard } from './auth/auth.guard';
+import { ProjetdetailsComponent } from './components/projetdetails/projetdetails.component';
 
 
 const routes: Routes = [
@@ -17,13 +17,10 @@ const routes: Routes = [
   },
   { path: "", redirectTo: "login", pathMatch: "full" },
   {
-    path:"signup", component:SignupComponent, canActivate : [authGuard] // path correspond à la fin de l'URL
+    path:"signup", component:SignupComponent // path correspond à la fin de l'URL
   },
   {
     path:"todolist", component:TodoListComponent, canActivate : [authGuard] // pour que la page todolist soit considérée comme index
-  },
-  {
-    path:"userlist", component:UserlistComponent, canActivate : [authGuard]// pour que la page todolist soit considérée comme index
   },
   {
     path:"tododetails/:id", component:TododetailsComponent, canActivate : [authGuard] // pour que la page todolist soit considérée comme index
@@ -36,7 +33,10 @@ const routes: Routes = [
   },
   {
     path:"calculette", component:CalculetteComponent, canActivate : [authGuard]
-  }
+  },
+  {
+    path:"projetdetails/:id", component:ProjetdetailsComponent, canActivate : [authGuard]
+  },
 ];
 
 @NgModule({
