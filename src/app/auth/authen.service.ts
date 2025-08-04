@@ -3,6 +3,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root' // Permet d'injecter ce service dans toute l'application (singleton)
@@ -10,7 +11,8 @@ import { Observable } from 'rxjs';
 export class AuthenService {
 
   // URL de l'API pour la connexion
-  private apiUrl = 'http://localhost:8080/auth/login';
+  //private apiUrl = 'http://localhost:8080/auth/login';
+    private apiURL = environment.apiUrl+ '/auth/login';
 
   // Injection du HttpClient pour faire des requêtes HTTP
   constructor(private http: HttpClient) {}
@@ -18,7 +20,7 @@ export class AuthenService {
   // Méthode pour se connecter : envoie les identifiants au backend et reçoit un token
   login(credentials: { username: string, password: string }): Observable<{ token: string }> {
     // POST vers l'API avec les credentials, attend un objet avec un champ 'token' en réponse
-    return this.http.post<{ token: string }>(this.apiUrl, credentials);
+    return this.http.post<{ token: string }>(this.apiURL, credentials);
   }
 
   // Méthode pour se déconnecter : supprime le token et l'état de connexion stockés localement
