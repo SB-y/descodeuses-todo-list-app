@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Utilisateur } from '../models/user.model';
+import { environment } from '../../environments/environments';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,8 @@ import { Utilisateur } from '../models/user.model';
 
 export class UserService {
 
-  private apiURL = "http://localhost:8080/api/utilisateur";
+  //private apiURL = "http://localhost:8080/api/utilisateur";
+  private apiURL = environment.apiUrl+ '/api/utilisateur';
 
   constructor(private http: HttpClient) { }
 
@@ -27,7 +30,7 @@ export class UserService {
   // Dans user.service.ts
   addUtilisateur(utilisateur: Utilisateur) {
     //return this.http.post("http://localhost:8080/auth/register", utilisateur);
-    return this.http.post("private apiURL = environment.apiUrl+ '/auth/register", utilisateur)
+    return this.http.post(`${environment.apiUrl}/auth/register`, utilisateur);
   }
 
   // Read
