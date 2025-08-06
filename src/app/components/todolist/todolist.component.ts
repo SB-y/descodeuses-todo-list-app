@@ -14,11 +14,10 @@ import { ProjetService } from '../../services/projet.service';
   templateUrl: './todolist.component.html',
   styleUrl: './todolist.component.css'
 })
+
+
 export class TodoListComponent implements OnInit {
 
-  onUpdateTodo(_t22: Todo) {
-    throw new Error('Method not implemented.');
-  }
   formGroup: FormGroup;
   todos: Todo[] = [];
 
@@ -33,17 +32,20 @@ export class TodoListComponent implements OnInit {
 
     this.projformGroup = this.fbp.group({
       title: ['', [Validators.required]]
-    }
+    } );
+ }
 
-    );
 
-  }
   ngOnInit(): void {
     this.fetchTodo();
     this.fetchProjet();
   }
 
 
+
+  // Partie action
+
+  
   fetchTodo() {
     //Communication asynchrone donc il faut s'inscrire pour avoir le retour
     this.todoService.getTodos().subscribe((data) => {
@@ -51,7 +53,6 @@ export class TodoListComponent implements OnInit {
     });
   }
 
- 
 
   onAddTodo() {
     if (this.formGroup.valid) {
@@ -68,7 +69,7 @@ export class TodoListComponent implements OnInit {
         /*membres: [],
         memberIds: [],
         projetId: null,
-        utilisateurId:null*/         
+        utilisateurId:null*/
       };
 
       this.todoService.addTodo(todo).subscribe(data => {// actualiser la liste après l'ajout
@@ -93,12 +94,8 @@ export class TodoListComponent implements OnInit {
     console.log(event.checked);
     todo.completed = event.checked;
 
-
-
     // updateTodo() envoie une requête HTTP PUT (asynchrone) au serveur ou mock API, donc il retourne un Observable.
     // Avec .subscribe(), tu dis : "quand le serveur aura fini, exécute ce code."
-
-
 
     this.todoService.updateTodo(todo).subscribe(() => // suscribe pour écouter le retour
     {// actualiser la liste après la suppression
@@ -110,11 +107,10 @@ export class TodoListComponent implements OnInit {
 
       else { this.snackBar.open('Décoché', '', { duration: 1000 }); }
     })
-
   }
 
 
-
+  // Partie projet
 
   fetchProjet() {
     this.projetService.getProjets().subscribe((data) => {
@@ -132,7 +128,7 @@ export class TodoListComponent implements OnInit {
       const projet: Projet = {
         id: formValue.id,
         title: formValue.title, // seulement le title est rempli depuis le formulaire
-        description: formValue.description     
+        description: formValue.description
       };
 
       this.projetService.addProjet(projet).subscribe(data => {// actualiser la liste après l'ajout
@@ -144,7 +140,6 @@ export class TodoListComponent implements OnInit {
 
 
   onDeleteProjet(id: number | null) {
-
     if (id == null)
       return;
 

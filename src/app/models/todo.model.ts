@@ -15,7 +15,7 @@ export interface Todo {
     projetId?: number | null;
 
 
-    // 👇 Champs utilisateur
+    // Champs utilisateur
     utilisateurId?: number;
     name?: string;
     surname?: string;

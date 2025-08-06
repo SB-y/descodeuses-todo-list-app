@@ -9,6 +9,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalculetteComponent } from './calculette/calculette.component';
 import { authGuard } from './auth/auth.guard';
 import { ProjetdetailsComponent } from './components/projetdetails/projetdetails.component';
+import { ProfilComponent } from './components/profil/profil.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 const routes: Routes = [
@@ -37,6 +39,12 @@ const routes: Routes = [
   {
     path:"projetdetails/:id", component:ProjetdetailsComponent, canActivate : [authGuard]
   },
+  {
+    path:"profil/:id", component:ProfilComponent, canActivate : [authGuard]
+  },
+  {
+    path:"logout", component:LogoutComponent, canActivate : [authGuard]
+  }
 ];
 
 @NgModule({

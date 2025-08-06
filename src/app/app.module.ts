@@ -33,6 +33,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProjetdetailsComponent } from './components/projetdetails/projetdetails.component';
 import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
+import { ProfilComponent } from './components/profil/profil.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 @NgModule({
@@ -46,6 +48,8 @@ import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
     DashboardComponent,
     CalculetteComponent,
     ProjetdetailsComponent,
+    ProfilComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,

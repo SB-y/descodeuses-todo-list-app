@@ -16,43 +16,43 @@ import { ProjetService } from '../../services/projet.service';
 
 export class ProjetdetailsComponent {
 
-    currentProjet = "";
-    selectedProjet: Projet | null = null;
-    allProjets: Projet[] = [];
-    filteredProjets: Projet[] = [];
+  currentProjet = "";
+  selectedProjet: Projet | null = null;
+  allProjets: Projet[] = [];
+  filteredProjets: Projet[] = [];
 
-    projet!: Projet; // la todo à afficher
-    projetForm!: FormGroup;
-
-
-    constructor(
-      private route: ActivatedRoute,    // Pour récupérer params URL
-      private projetBuilder: FormBuilder,
-      private snackBar: MatSnackBar,
-      private router: Router,
-      private projetService: ProjetService,
-    ) { }
-  
-  
-
-    ngOnInit(): void {
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-
-      this.projetService.getProjet(id).subscribe(data => {           // appel au service pour récupérer la todo
-        this.projet = data;
-
-        this.projetForm = this.projetBuilder.group({
-          id: [this.projet.id],
-          title: [this.projet.title, Validators.required],
-          description: [this.projet.description],
-        });
+  projet!: Projet; // le projet à afficher
+  projetForm!: FormGroup;
 
 
-            // Chargement des projets disponibles
-    this.projetService.getProjets().subscribe(projets => {
-      this.allProjets = projets;
-      this.filteredProjets = projets;
-    });
+  constructor(
+    private route: ActivatedRoute,    // Pour récupérer params URL
+    private projetBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private projetService: ProjetService,
+  ) { }
+
+
+
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.projetService.getProjet(id).subscribe(data => {           // appel au service pour récupérer la todo
+      this.projet = data;
+
+      this.projetForm = this.projetBuilder.group({
+        id: [this.projet.id],
+        title: [this.projet.title, Validators.required],
+        description: [this.projet.description],
+      });
+
+
+      // Chargement des projets disponibles
+      this.projetService.getProjets().subscribe(projets => {
+        this.allProjets = projets;
+        this.filteredProjets = projets;
+      });
     });
   }
 

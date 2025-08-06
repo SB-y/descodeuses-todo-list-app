@@ -1,4 +1,4 @@
-// 🔽 Importation des modules de base Angular
+// Importation des modules de base Angular
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';  // Pour accéder aux paramètres d'URL et rediriger
 import { TodoService } from '../../services/todo.service';  // Service pour gérer les todos
@@ -13,7 +13,7 @@ import { ContactService } from '../../services/contact.service';// Service pour 
 import { Utilisateur } from '../../models/user.model';
 
 
-// 🔽 Déclaration du composant
+// Déclaration du composant
 @Component({
   selector: 'app-tododetails',                 // Nom du composant HTML
   standalone: false,
@@ -23,25 +23,25 @@ import { Utilisateur } from '../../models/user.model';
 
 export class TododetailsComponent implements OnInit {
 
-  // 🔽 Gestion du champ autocomplete pour les contacts
+  // Gestion du champ autocomplete pour les contacts
   currentContact = new FormControl('');
   selectedContacts: Contact[] = []; // Contacts sélectionnés (liés à la tâche)
   allContacts: Contact[] = [];      // Tous les contacts dispo (depuis le backend)
   filteredContacts: Contact[] = []; // Contacts filtrés (pour l'autocomplete)
 
-  // 🔽 Gestion des projets liés à la tâche
+  // Gestion des projets liés à la tâche
   currentProjet = "";
   selectedProjet: Projet | null = null;
   allProjets: Projet[] = [];
   filteredProjets: Projet[] = [];
 
-  // 🔽 Gestion des projets liés à l'utilisateur'
+  // Gestion des projets liés à l'utilisateur'
   currentUtilisateur = "";
   selectedUtilisateur: Utilisateur | null = null;
   allUtilisateurs: Utilisateur[] = [];
   filteredUtilisateurs: Utilisateur[] = [];
 
-  // 🔽 Liste des priorités possibles
+  // Liste des priorités possibles
   listPriorite = [
     { number: 0 },
     { number: 1 },
@@ -53,7 +53,7 @@ export class TododetailsComponent implements OnInit {
   todo!: Todo;           // Tâche actuelle à afficher/modifier
   todoForm!: FormGroup;  // Formulaire de modification
 
-  // 🔽 Constructeur avec injection des services
+  // Constructeur avec injection des services
   constructor(
     private route: ActivatedRoute,      // Pour récupérer l'ID de la todo via l'URL
     private todoService: TodoService,   // Service de todo (CRUD)
@@ -64,11 +64,11 @@ export class TododetailsComponent implements OnInit {
     private projetService: ProjetService    // Pour récupérer les projets
   ) { }
 
-  // 🔽 Fonction exécutée à l'initialisation du composant
+  // Fonction exécutée à l'initialisation du composant
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    // 🔽 Appelle le backend pour récupérer la todo par ID
+    // Appelle le backend pour récupérer la todo par ID
     this.todoService.getTodo(id).subscribe(data => {
       console.log('Données reçues du backend:', data);
       this.todo = data;
@@ -78,7 +78,7 @@ export class TododetailsComponent implements OnInit {
       console.log(this.todo.surname, this.todo.name);
 
 
-      // 🔽 Initialisation du formulaire avec les données existantes
+      // Initialisation du formulaire avec les données existantes
       this.todoForm = this.todoBuilder.group({
         id: [this.todo.id],
         title: [this.todo.title, Validators.required],
@@ -91,51 +91,51 @@ export class TododetailsComponent implements OnInit {
         //utilisateur: [this.todo.utilisateurId || null], // <-- Utilisateur ID ici si formcontrolename utilisateur
       });
 
-      // 🔽 Stockage local des valeurs sélectionnées
+      // Stockage local des valeurs sélectionnées
       this.selectedProjet = this.todo.projet || null;
       this.selectedContacts = this.todo.membres || [];
       //this.selectedUtilisateur = this.todo.utilisateur || null;
     });
 
-    // 🔽 Récupère tous les contacts pour alimenter l’autocomplete
+    // Récupère tous les contacts pour alimenter l’autocomplete
     this.contactService.getContacts().subscribe(contacts => {
       this.allContacts = contacts;
       this.filteredContacts = contacts;
     });
 
-    // 🔽 Récupère tous les projets
+    // Récupère tous les projets
     this.projetService.getProjets().subscribe(projets => {
       this.allProjets = projets;
       this.filteredProjets = projets;
     });
 
-    /* 🔽 Récupère tous les utilisateurs
+    /* Récupère tous les utilisateurs
     this.utilisateurService.getUtilisateurs().subscribe(utilisateurs => {
       this.allUtilisateurs = utilisateurs;
       this.filteredUtilisateurs = utilisateurs;
     });*/
   }
 
-  // 🔽 Appelée à la soumission du formulaire
+  // Appelée à la soumission du formulaire
   onSubmitTodo() {
 
-    // 🔽 Si une date est présente, on la convertit au format ISO local
+    // si une date est présente, on la convertit au format ISO local
     if (this.todoForm.value.dueDate) {
       this.todoForm.value.dueDate = this.toLocalIsoString(this.todoForm.value.dueDate);
     }
 
-    // 🔽 Vérifie que le formulaire est valide
+    // Vérifie que le formulaire est valide
     if (this.todoForm.valid) {
       const formValue = { ...this.todoForm.value }; // Copie des données du formulaire
 
-      // 🔽 Force la priorité en type number (au cas où c’est string)
+      // force la priorité en type number (au cas où c’est string)
       formValue.priorite = Number(formValue.priorite);
 
-      // 🔽 Prépare l’ID du projet à envoyer
+      // Prépare l’ID du projet à envoyer
       formValue.projetId = formValue.projet;
       delete formValue.projet;
 
-      // 🔽 Prépare la liste des IDs de membres sélectionnés
+      // Prépare la liste des IDs de membres sélectionnés
       formValue.memberIds = this.selectedContacts.map(contact => contact.id);
 
       // Renommer utilisateur en utilisateurId
@@ -143,13 +143,13 @@ export class TododetailsComponent implements OnInit {
       // (qui sera envoyé au backend lors de la mise à jour).
        formValue.utilisateurId = formValue.utilisateur; 
 
-        // 🔽 Prépare la liste des IDs de membres sélectionnés
+        // Prépare la liste des IDs de membres sélectionnés
        // formValue.utilisateurId = this.todoForm.value.utilisateur;
 
-      // 🔽 Affiche les données envoyées pour debug
+      // Affiche les données envoyées pour debug
       console.log("Formulaire envoyé :", JSON.stringify(formValue));
 
-      // 🔽 Appelle le service pour mettre à jour la todo
+      // appelle le service pour mettre à jour la todo
       this.todoService.updateTodo(formValue).subscribe({
         next: (data) => {
           console.log('Tâche reçue depuis le backend :', data);
@@ -163,18 +163,18 @@ export class TododetailsComponent implements OnInit {
     }
   }
 
-  // 🔽 Retour à la page des todos sans rien enregistrer
+  // Retour à la page des todos sans rien enregistrer
   onCancel() {
     this.router.navigate(["/todotable"]);
   }
 
-  // 🔽 Corrige le décalage horaire et retourne une date ISO "locale"
+  // Corrige le décalage horaire et retourne une date ISO "locale"
   toLocalIsoString(dateString: string): string {
     const dateObject = new Date(dateString);
     return new Date(dateObject.getTime() - dateObject.getTimezoneOffset() * 60000).toISOString();
   }
 
-  // 🔽 Appelée quand un contact est sélectionné depuis l’autocomplete
+  // Appelée quand un contact est sélectionné depuis l’autocomplete
   selected(event: MatAutocompleteSelectedEvent) {
     const contact = event.option.value as Contact;
     // Évite les doublons
@@ -185,13 +185,13 @@ export class TododetailsComponent implements OnInit {
     this.currentContact.setValue('');
   }
 
-  // 🔽 Supprime un contact sélectionné
+  // Supprime un contact sélectionné
   remove(contact: Contact) {
     this.selectedContacts = this.selectedContacts.filter(c => c.id !== contact.id);
     this.todoForm.get('membres')?.setValue(this.selectedContacts);
   }
 
-  // 🔽 Filtre les contacts pendant que l’utilisateur tape dans le champ
+  // Filtre les contacts pendant que l’utilisateur tape dans le champ
   onCurrentContactChange(value: string) {
     this.filteredContacts = this.allContacts.filter(user =>
       `${user.nom} ${user.prenom}`.toLowerCase().includes(value.toLowerCase())
