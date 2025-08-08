@@ -35,6 +35,7 @@ import { ProjetdetailsComponent } from './components/projetdetails/projetdetails
 import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
 import { ProfilComponent } from './components/profil/profil.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { LogoutComponent } from './components/logout/logout.component';
     ProjetdetailsComponent,
     ProfilComponent,
     LogoutComponent,
+    UtilisateursComponent,
   ],
   imports: [
     BrowserModule,

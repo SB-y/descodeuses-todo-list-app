@@ -11,39 +11,44 @@ import { authGuard } from './auth/auth.guard';
 import { ProjetdetailsComponent } from './components/projetdetails/projetdetails.component';
 import { ProfilComponent } from './components/profil/profil.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
 
 
 const routes: Routes = [
   {
-    path:"login", component:LoginComponent
+    path: "login", component: LoginComponent
   },
   { path: "", redirectTo: "login", pathMatch: "full" },
   {
-    path:"signup", component:SignupComponent // path correspond à la fin de l'URL
+    path: "signup", component: SignupComponent // path correspond à la fin de l'URL
   },
   {
-    path:"todolist", component:TodoListComponent, canActivate : [authGuard] // pour que la page todolist soit considérée comme index
+    path: "profil", component: ProfilComponent, canActivate: [authGuard]
   },
   {
-    path:"tododetails/:id", component:TododetailsComponent, canActivate : [authGuard] // pour que la page todolist soit considérée comme index
+    path: "todolist", component: TodoListComponent, canActivate: [authGuard] // pour que la page todolist soit considérée comme index
   },
   {
-    path:"todotable", component:TodotableComponent, canActivate : [authGuard]
+    path: "tododetails/:id", component: TododetailsComponent, canActivate: [authGuard] // pour que la page todolist soit considérée comme index
   },
   {
-    path:"dashboard", component:DashboardComponent, canActivate : [authGuard]
+    path: "todotable", component: TodotableComponent, canActivate: [authGuard]
   },
   {
-    path:"calculette", component:CalculetteComponent, canActivate : [authGuard]
+    path: "dashboard", component: DashboardComponent, canActivate: [authGuard]
   },
   {
-    path:"projetdetails/:id", component:ProjetdetailsComponent, canActivate : [authGuard]
+    path: "calculette", component: CalculetteComponent, canActivate: [authGuard]
   },
   {
-    path:"profil/:id", component:ProfilComponent, canActivate : [authGuard]
+    path: "projetdetails/:id", component: ProjetdetailsComponent, canActivate: [authGuard]
+  },
+
+  {
+    path: "logout", component: LogoutComponent, canActivate: [authGuard]
   },
   {
-    path:"logout", component:LogoutComponent, canActivate : [authGuard]
+    path: "utilisateurs", component: UtilisateursComponent, canActivate: [authGuard]
   }
 ];
 

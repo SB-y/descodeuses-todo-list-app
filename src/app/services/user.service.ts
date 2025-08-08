@@ -13,18 +13,18 @@ import { environment } from '../../environments/environment';
 export class UserService {
 
   //private apiURL = "http://localhost:8080/api/utilisateur";
-  private apiURL = environment.apiUrl+ '/api/utilisateur';
+  private apiURL = environment.apiUrl + '/api/utilisateur';
 
   constructor(private http: HttpClient) { }
 
-    // Fonction utilitaire pour ajouter les headers HTTP avec le token JWT
-    private getAuthHeaders() {
-      const token = localStorage.getItem('token'); // Récupère le token JWT stocké localement
-      console.log("Token utilisé dans le header:", token); // Log pour debug
-      return new HttpHeaders({
-        'Authorization': `Bearer ${token}` // Ajoute le token dans le header Authorization
-      });
-    }
+  // Fonction utilitaire pour ajouter les headers HTTP avec le token JWT
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token'); // Récupère le token JWT stocké localement
+    console.log("Token utilisé dans le header:", token); // Log pour debug
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}` // Ajoute le token dans le header Authorization
+    });
+  }
 
 
   // Dans user.service.ts
@@ -54,6 +54,12 @@ export class UserService {
   updateUtilisateur(item: Utilisateur) {
     return this.http.put<Utilisateur>(this.apiURL + '/' + item.id, item, {
       headers: this.getAuthHeaders() // Ajout du header Authorization avec token
+    });
+  }
+
+  getUtilisateurConnecte() {
+    return this.http.get<Utilisateur>(this.apiURL + '/monprofil', {
+      headers: this.getAuthHeaders()
     });
   }
 

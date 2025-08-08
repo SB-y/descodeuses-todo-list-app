@@ -1,0 +1,23 @@
+
+<div id="full-cover-background" class="flex flex-col bg-gray-100">
+
+    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto mt-30 mb-30">
+
+        <div id="utilisateurslist">
+            <mat-list>
+                @for(utilisateur of allUtilisateurs; track utilisateur.id) {
+                <mat-list-item>
+                    <div class="flex items-center">
+                        <span>{{utilisateur.surname}} {{utilisateur.name}}</span>
+                        <button mat-icon-button (click)="onDeleteUtilisateur(utilisateur.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-list-item>
+                }
+            </mat-list>
+        </div>
+    </div>
+
+
+    </div>

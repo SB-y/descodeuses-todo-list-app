@@ -39,7 +39,7 @@
                         [formControl]="currentContact"
                         [matChipInputFor]="chipGrid"
                         [matAutocomplete]="auto"
-                        (input)="onCurrentContactChange(contactInput.value || '')"
+                     
                         />
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                             @for (contact of filteredContacts; track contact.id) {
