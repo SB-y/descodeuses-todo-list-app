@@ -12,21 +12,25 @@ import { CanActivate, Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGuard implements CanActivate{
+export class AdminGuard implements CanActivate {
 
 
-constructor(private userService: UserService, private router:Router) {}
+  constructor(private userService: UserService, private router: Router) { }
 
-canActivate(): boolean {
+  canActivate(): boolean {
 
-  const role= localStorage.getItem('role');
-  if (role === "ROLE_ADMIN") {
-    return true;
+    const role = localStorage.getItem('role');
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+    if (isLoggedIn && role === "ROLE_ADMIN") {
+      return true
+    }
+
+    else {
+      this.router.createUrlTree(["/login"]);
+      return false;
+    }
   }
 
-    // Rediriger si l'utilisateur n'est pas admin
-    this.router.navigate(['/unauthorized']); // Ou vers une page d'erreur ou login
-    return false;
-} 
-
 }
+

@@ -62,7 +62,7 @@ export const MENU_ROUTES = [
   { path: '/dashboard', title: 'Dashboard' },
   { path: '/todolist', title: 'To-do list' },
   { path: '/todotable', title: 'Récapitulatif' },
-  { path: '/calculette', title: 'Calculatrice' },
+  //{ path: '/calculette', title: 'Calculatrice' },
   { path: '/utilisateurs', title: 'Utilisateurs' },
   { path: '/logout', title: 'Logout' }
 ];

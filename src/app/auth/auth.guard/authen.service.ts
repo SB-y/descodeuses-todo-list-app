@@ -28,6 +28,7 @@ export class AuthenService {
   logout() {
     localStorage.removeItem('token');      // Supprime le token JWT du localStorage
     sessionStorage.removeItem('isLoggedIn'); // Supprime un éventuel indicateur de session
+    localStorage.removeItem('role');
   }
 
   isAdmin(): boolean {
@@ -52,25 +53,3 @@ export class AuthenService {
     return localStorage.getItem('token');
   }
 }
-
-
-/*
-
-Version prof :
-
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import {  Observable } from 'rxjs';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-  private apiUrl = 'http://localhost:8081/auth/login';
-
-  constructor(private http: HttpClient) {}
-
-  login(payload : any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, payload);
-  }
-}*/

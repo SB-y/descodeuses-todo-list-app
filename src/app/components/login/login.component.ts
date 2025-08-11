@@ -57,38 +57,5 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
-  /*
-
-  Version prof :
-  onSubmit() {
-    if (this.loginForm.valid) {
-      const credentials = this.loginForm.value;
-      this.authService.login(credentials).subscribe({
-        next: (res) => {
-          sessionStorage.setItem('authToken', res.token);
-          this.router.navigateByUrl('');
-        },
-        error: (err) => console.error('Erreur de connexion', err),
-      });
-    }
-  }
-  */
-
-  /*
-  onSubmit() {
-    if(this.loginForm.valid) {
-      console.log(this.loginForm.value);
-  
-      if(this.loginForm.value.username == "admin@test.com" && this.loginForm.value.password == "admin") {
-  
-        sessionStorage.setItem("isLoggedIn", "true");
-        this.router.navigateByUrl("/dashboard");
-      }
-    }
-  }
-
-*/
-
 }
 

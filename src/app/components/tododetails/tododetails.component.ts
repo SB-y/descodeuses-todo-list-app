@@ -109,11 +109,6 @@ export class TododetailsComponent implements OnInit {
       this.filteredProjets = projets;
     });
 
-    /* Récupère tous les utilisateurs
-    this.utilisateurService.getUtilisateurs().subscribe(utilisateurs => {
-      this.allUtilisateurs = utilisateurs;
-      this.filteredUtilisateurs = utilisateurs;
-    });*/
   }
 
   // Appelée à la soumission du formulaire
