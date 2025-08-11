@@ -14,6 +14,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class UtilisateursComponent {
 
   allUtilisateurs: Utilisateur[] = [];
+  listeUtilisateursFiltre: Utilisateur[] = [];
+  rechercheNom: string = '';
+  nombreUtilisateurs: number = 0;
 
 
   constructor(
@@ -29,8 +32,16 @@ export class UtilisateursComponent {
   fetchUtilisateur() {
     this.utilisateurService.getUtilisateurs().subscribe((data) => {
       this.allUtilisateurs = data;
+      this.listeUtilisateursFiltre = [...this.allUtilisateurs]; // initialiser avec tous les utilisateurs
+      this.nombreUtilisateurs = this.listeUtilisateursFiltre.length; // nombre affiché aussi
     }
     );
+  }
+
+  filtrerUtilisateurs() {
+    const f = this.rechercheNom.toLowerCase();
+    this.listeUtilisateursFiltre = this.allUtilisateurs.filter(c => c.name.toLowerCase().startsWith(f) || c.surname.toLowerCase().startsWith(f))
+    this.nombreUtilisateurs = this.listeUtilisateursFiltre.length;
   }
 
   onDeleteUtilisateur(id: number | null) {

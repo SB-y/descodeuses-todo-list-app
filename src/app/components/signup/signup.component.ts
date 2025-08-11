@@ -66,7 +66,8 @@ export class SignupComponent implements OnInit {
           surname: [this.utilisateur.surname],
           username: [this.utilisateur.username],
           password: [this.utilisateur.password],
-          genre: [this.utilisateur.genre]
+          genre: [this.utilisateur.genre],
+          role: [this.utilisateur.role]
         });
       });
     } else {

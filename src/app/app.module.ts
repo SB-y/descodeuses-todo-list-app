@@ -38,6 +38,7 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +79,7 @@ import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.co
     CommonModule,
     MatChipsModule,
     MatAutocompleteModule,
-    FormsModule
+    FormsModule, ReactiveFormsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' },

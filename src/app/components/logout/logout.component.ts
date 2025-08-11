@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenService } from '../../auth/authen.service';
+import { AuthenService } from '../../auth/auth.guard/authen.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

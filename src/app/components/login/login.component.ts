@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenService } from '../../auth/authen.service';
+import { AuthenService } from '../../auth/auth.guard/authen.service';
 
 
 
@@ -41,6 +41,8 @@ export class LoginComponent implements OnInit {
           console.log("Réponse login backend:", response);
           // Stockage du token JWT dans localStorage
           localStorage.setItem('token', response.token);
+          localStorage.setItem('role', response.role);
+          console.log("Role détecté :", localStorage.getItem('role')); 
           // Marque l'utilisateur comme connecté dans sessionStorage
           sessionStorage.setItem('isLoggedIn', 'true');
           // Redirige vers la page dashboard

@@ -3,7 +3,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root' // Permet d'injecter ce service dans toute l'application (singleton)
@@ -18,15 +19,27 @@ export class AuthenService {
   constructor(private http: HttpClient) {}
 
   // Méthode pour se connecter : envoie les identifiants au backend et reçoit un token
-  login(credentials: { username: string, password: string }): Observable<{ token: string }> {
+  login(credentials: { username: string, password: string }): Observable<{ token: string, role: string }> {
     // POST vers l'API avec les credentials, attend un objet avec un champ 'token' en réponse
-    return this.http.post<{ token: string }>(this.apiURL, credentials);
+    return this.http.post<{ token: string, role: string }>(this.apiURL, credentials);
   }
 
   // Méthode pour se déconnecter : supprime le token et l'état de connexion stockés localement
   logout() {
     localStorage.removeItem('token');      // Supprime le token JWT du localStorage
     sessionStorage.removeItem('isLoggedIn'); // Supprime un éventuel indicateur de session
+  }
+
+  isAdmin(): boolean {
+    const role = localStorage.getItem('role');
+    console.log('Role détecté :', role);
+    return role === 'ROLE_ADMIN';
+  }
+
+  isUser(): boolean {
+    const role = localStorage.getItem('role');
+    console.log('Role détecté :', role);
+    return localStorage.getItem('role') === 'ROLE_USER';
   }
 
   // Vérifie si l'utilisateur est connecté en testant la présence du token dans le localStorage

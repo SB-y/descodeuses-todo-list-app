@@ -38,17 +38,37 @@ export class ProfilComponent {
   // Méthode exécutée automatiquement à l’initialisation du composant
   ngOnInit(): void {
 
-    this.userService.getUtilisateurConnecte().subscribe(data => {
-      this.utilisateur = data;
-
-      this.profilForm = this.pb.group({
-        id: [this.utilisateur.id],
-        name: [this.utilisateur.name || ''],
-        surname: [this.utilisateur.surname || ''],
-        username: [this.utilisateur.username || ''],
-        genre: [this.utilisateur.genre || ''],
-        password: [''] // mot de passe vide pour la modif éventuelle
-      });
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+  
+      if (idParam) {
+        const id = Number(idParam);
+        this.userService.getUtilisateur(id).subscribe(user => {
+          this.utilisateur = user;
+          this.initForm();
+        }, err => {
+          // gérer erreur, utilisateur non trouvé etc.
+        });
+      } else {
+        this.userService.getUtilisateurConnecte().subscribe(user => {
+          this.utilisateur = user;
+          this.initForm();
+        }, err => {
+          // gérer erreur
+        });
+      }
+    });
+  }
+  
+  
+  private initForm() {
+    this.profilForm = this.pb.group({
+      id: [this.utilisateur.id],
+      name: [this.utilisateur.name || ''],
+      surname: [this.utilisateur.surname || ''],
+      username: [this.utilisateur.username || ''],
+      genre: [this.utilisateur.genre || ''],
+      password: ['']
     });
   }
 

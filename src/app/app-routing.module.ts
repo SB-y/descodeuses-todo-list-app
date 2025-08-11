@@ -7,11 +7,13 @@ import { TododetailsComponent } from './components/tododetails/tododetails.compo
 import { TodotableComponent } from './components/todotable/todotable.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalculetteComponent } from './calculette/calculette.component';
-import { authGuard } from './auth/auth.guard';
+import { authGuard } from './auth/auth.guard/auth.guard';
 import { ProjetdetailsComponent } from './components/projetdetails/projetdetails.component';
 import { ProfilComponent } from './components/profil/profil.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
+import { AdminGuard } from './auth/admin.guard/admin.guard.component';
+
 
 
 const routes: Routes = [
@@ -20,16 +22,17 @@ const routes: Routes = [
   },
   { path: "", redirectTo: "login", pathMatch: "full" },
   {
-    path: "signup", component: SignupComponent // path correspond à la fin de l'URL
+    path: "signup", component: SignupComponent 
+  },
+  { path: "profil", component: ProfilComponent, canActivate: [authGuard] }, 
+  {
+    path: "profil/:id", component: ProfilComponent, canActivate: [authGuard]
   },
   {
-    path: "profil", component: ProfilComponent, canActivate: [authGuard]
+    path: "todolist", component: TodoListComponent, canActivate: [authGuard] 
   },
   {
-    path: "todolist", component: TodoListComponent, canActivate: [authGuard] // pour que la page todolist soit considérée comme index
-  },
-  {
-    path: "tododetails/:id", component: TododetailsComponent, canActivate: [authGuard] // pour que la page todolist soit considérée comme index
+    path: "tododetails/:id", component: TododetailsComponent, canActivate: [authGuard]
   },
   {
     path: "todotable", component: TodotableComponent, canActivate: [authGuard]
@@ -48,8 +51,25 @@ const routes: Routes = [
     path: "logout", component: LogoutComponent, canActivate: [authGuard]
   },
   {
-    path: "utilisateurs", component: UtilisateursComponent, canActivate: [authGuard]
+    path: "utilisateurs", component: UtilisateursComponent, canActivate: [AdminGuard]
   }
+];
+
+export const MENU_ROUTES = [
+  //{ path: '/login', title: 'Login' },
+  //{ path: '/signup', title: 'Inscription' },
+  { path: '/profil', title: 'Mon profil' },
+  { path: '/dashboard', title: 'Dashboard' },
+  { path: '/todolist', title: 'To-do list' },
+  { path: '/todotable', title: 'Récapitulatif' },
+  { path: '/calculette', title: 'Calculatrice' },
+  { path: '/utilisateurs', title: 'Utilisateurs' },
+  { path: '/logout', title: 'Logout' }
+];
+
+export const MENU_ROUTES2 = [
+  { path: '/login', title: 'Login' },
+  { path: '/signup', title: 'Inscription' },
 ];
 
 @NgModule({
