@@ -1,0 +1,62 @@
+<div id="full-cover-background" class="flex h-full">
+
+
+    @if(contactForm!=null) {
+
+    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 mx-auto my-auto mt-30 mb-30">
+
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+
+            <div mat-card-avatar class="text-center">
+                <img [src]="contactForm.value.image" class="w-30 h-30 rounded-full">
+            </div>
+
+            <div class="text-center text-2xl font-semibold mb-20 mt-10">
+                <mat-card-title>Edit contact</mat-card-title>
+            </div>
+
+            <mat-card-content class="w-full text-center">
+                <div id="name-cont">
+                    <mat-form-field class="w-80 text-center" appearance="outline">
+                        <mat-label>Nom</mat-label>
+                        <input matInput formControlName="nom" type="text" placeholder="nom" />
+                    </mat-form-field>
+                </div>
+
+                <div id="surname-cont">
+                    <mat-form-field class="w-80 text-center" appearance="outline">
+                        <mat-label>Prénom</mat-label>
+                        <input matInput formControlName="prenom" type="text" placeholder="prénom" />
+                    </mat-form-field>
+                </div>
+
+                <div id="email-cont">
+                    <mat-form-field class="w-80 text-center" appearance="outline">
+                        <mat-label>Adresse mail</mat-label>
+                        <input matInput formControlName="email" type="email" placeholder="email" />
+                    </mat-form-field>
+                </div>
+
+                <div id="tel-cont">
+                    <mat-form-field class="w-80 text-center" appearance="outline">
+                        <mat-label>Téléphone</mat-label>
+                        <input matInput formControlName="tel" type="tel" placeholder="tel" />
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-row justify-center gap-5 mt-12">
+                    <button mat-raised-button type="submit">Save</button>
+                    <button mat-button (click)="onCancel()">Cancel</button>
+                </div>
+
+            </mat-card-content>
+
+
+        </form>
+
+    </div>
+
+    }
+
+</div>

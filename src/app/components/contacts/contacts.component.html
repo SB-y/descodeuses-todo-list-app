@@ -1,0 +1,59 @@
+<div id="full-cover-background" class="flex h-screen">
+
+    <div class="flex flex-col items-center mt-20 w-full">
+
+        <div id="contenu" class="flex-1 overflow-auto">
+
+            <div id="searchbar" class="flex flex-row gap-3 justify-center">
+                <mat-form-field class="w-100" appearance="outline">
+                    <input matInput type="text" [(ngModel)]="rechercheNom" placeholder="Rechercher un contact"
+                        (input)="filtrerContacts()">
+                </mat-form-field>
+
+                <div class="mt-4">
+                    <span [routerLink]="['/contactdetails', 0]" class="cursor-pointer">
+                        <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
+                    </span>
+                </div>
+            </div>
+
+
+            <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto mt-30 mb-30">
+                <mat-list>
+                    @for (item of listeContactFiltre; track item.id) {
+
+                    <mat-list-item>
+                        <div class="flex flex-row items-center w-50">
+                            <mat-icon matListItemIcon class="!text-cyan-600">person</mat-icon>
+
+                            <span matListItemTitle [routerLink]="['/contactdetails', item.id]"
+                                class="flex-1 cursor-pointer font-bold">{{item.nom}}
+                                {{item.prenom}}</span>
+
+                            <span [matMenuTriggerFor]="menu">
+                                <mat-icon class="!text-cyan-600 mt-4 cursor-pointer mr-0">pending</mat-icon>
+                            </span>
+                        </div>
+                    </mat-list-item>
+
+                    <mat-divider [inset]="true" class="ml-0 w-120" style="margin-top: 1rem;"></mat-divider>
+
+                    <mat-menu #menu="matMenu">
+                        <ng-template matMenuContent>
+                            <button mat-menu-item (click)="sendEmail(item.id)">Envoyer un email</button>
+                            <button mat-menu-item (click)="openDialog(item.id)">Supprimer</button>
+                        </ng-template>
+                    </mat-menu>
+
+                    }
+
+                </mat-list>
+            </div>
+
+        </div>
+
+        <div class="text-center text-white bg-cyan-600 p-3 w-full">
+
+            <p>Nombre de contacts : {{nombreContacts}}</p>
+
+        </div>

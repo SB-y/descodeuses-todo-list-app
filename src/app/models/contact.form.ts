@@ -4,11 +4,11 @@ import { FormControl} from "@angular/forms";
 
 export interface ContactForm {
     id: FormControl<number | null>;
-    prenom: FormControl<string | null>;
     nom: FormControl<string | null>;
-    image: FormControl<string | null>;
+    prenom: FormControl<string | null>;
     email: FormControl<string | null>;
     tel: FormControl<string | null>;
+    image: FormControl<string | null>;
   }
 
 

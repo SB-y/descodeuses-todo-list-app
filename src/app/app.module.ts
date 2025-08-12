@@ -36,6 +36,12 @@ import { JwtInterceptor } from './auth/interceptors/jwt.interceptor';
 import { ProfilComponent } from './components/profil/profil.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { ContactDetailsComponent } from './components/contact-details/contact-details.component';
+
 
 
 
@@ -53,6 +59,9 @@ import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.co
     ProfilComponent,
     LogoutComponent,
     UtilisateursComponent,
+    ContactsComponent,
+    ConfirmationDialogComponent,
+    ContactDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +88,9 @@ import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.co
     CommonModule,
     MatChipsModule,
     MatAutocompleteModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule, ReactiveFormsModule,
+    MatDialogModule,
+    MatMenuModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' },

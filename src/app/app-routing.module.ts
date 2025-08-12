@@ -13,6 +13,8 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
 import { AdminGuard } from './auth/admin.guard/admin.guard.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { ContactDetailsComponent } from './components/contact-details/contact-details.component';
 
 
 
@@ -52,18 +54,29 @@ const routes: Routes = [
   },
   {
     path: "utilisateurs", component: UtilisateursComponent, canActivate: [AdminGuard]
-  }
+  },
+  {
+    path:'contacts', 
+    component: ContactsComponent, canActivate: [authGuard]
+},
+
+{
+    path: 'contactdetails/:id',
+    component: ContactDetailsComponent, canActivate: [authGuard]
+    
+}
 ];
 
 export const MENU_ROUTES = [
   //{ path: '/login', title: 'Login' },
   //{ path: '/signup', title: 'Inscription' },
   { path: '/profil', title: 'Mon profil' },
-  { path: '/dashboard', title: 'Dashboard' },
-  { path: '/todolist', title: 'To-do list' },
-  { path: '/todotable', title: 'Récapitulatif' },
+  { path: '/dashboard', title: 'Mon dashboard' },
+  { path: '/todolist', title: 'Ma to-do list' },
+  { path: '/todotable', title: 'Mon récap' },
   //{ path: '/calculette', title: 'Calculatrice' },
-  { path: '/utilisateurs', title: 'Utilisateurs' },
+  { path: '/contacts', title: 'Mes contacts' },
+  { path: '/utilisateurs', title: 'Admin - Utilisateurs' },
   { path: '/logout', title: 'Logout' }
 ];
 
