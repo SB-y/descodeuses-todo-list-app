@@ -42,7 +42,6 @@ export class ContactDetailsComponent implements OnInit {
       prenom: [''],
       tel: [''],
       email: [''],
-      image: [''],
     });
 
 
@@ -64,18 +63,9 @@ export class ContactDetailsComponent implements OnInit {
           prenom: data.prenom,
           tel: data.tel,
           email: data.email,
-          image: data.image,
         });
       });
     }
-
-    else {
-      // l'image est la même pour l'instant
-      this.contactForm.patchValue({
-        image: 'assets/koala.jpg'
-      });
-    }
-
   }
 
   onSubmit() {

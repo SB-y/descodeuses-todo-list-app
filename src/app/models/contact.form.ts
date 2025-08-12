@@ -8,7 +8,6 @@ export interface ContactForm {
     prenom: FormControl<string | null>;
     email: FormControl<string | null>;
     tel: FormControl<string | null>;
-    image: FormControl<string | null>;
   }
 
 
