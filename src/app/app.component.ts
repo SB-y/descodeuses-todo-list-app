@@ -14,7 +14,7 @@ import { MENU_ROUTES, MENU_ROUTES2 } from './app-routing.module';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'To-do list';
+  title = 'Task & Talk';
   listMenu = MENU_ROUTES;
   listMenuPasLogged = MENU_ROUTES2;
 

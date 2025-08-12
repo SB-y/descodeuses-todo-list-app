@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
       id: 1,
       title: "A faire aujourd'hui",
       number: 0,
-      bg: "!bg-blue-400",
+      bg: "!bg-cyan-600",
       icon: "event"
     },
 
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
       id: 2,
       title: "Taches en retard",
       number: 0,
-      bg: "!bg-red-400",
+      bg: "!bg-yellow-600",
       icon: "warning"
     },
 
@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
       id: 3,
       title: "Urgentes",
       number: 0,
-      bg: "!bg-yellow-400",
+      bg: "!bg-pink-600",
       icon: "priority_high"
     },
   ];

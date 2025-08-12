@@ -3,6 +3,8 @@ import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { AuthenService } from '../../auth/auth.guard/authen.service';
+
 
 @Component({
   selector: 'app-contacts',
@@ -15,7 +17,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 
 export class ContactsComponent {
 
-  constructor(public dialog: MatDialog, private service: ContactService) { }
+  constructor(public dialog: MatDialog, private service: ContactService, public authService: AuthenService) { }
 
   contacts: Contact[] = [];
   listeContactFiltre: Contact[] = [];

@@ -37,7 +37,9 @@
         </div>
     
 
-    <div class="text-center text-white bg-cyan-600 p-3 w-full">
+    <div class="text-center text-white p-3 w-full" [ngClass]="{
+        'bg-admin': authService.isAdmin(),
+        'bg-user': authService.isUser()}">
 
         <p>Nombre d'utilisateurs : {{nombreUtilisateurs}}</p>
 

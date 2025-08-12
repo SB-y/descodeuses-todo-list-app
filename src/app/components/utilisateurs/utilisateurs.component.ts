@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Utilisateur } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthenService } from '../../auth/auth.guard/authen.service';
 
 @Component({
   selector: 'app-utilisateurs',
@@ -21,7 +22,8 @@ export class UtilisateursComponent {
 
   constructor(
     private utilisateurService: UserService,
-    private snackBar: MatSnackBar  // Pour récupérer les utilisateurs
+    private snackBar: MatSnackBar,  // Pour récupérer les utilisateurs,
+    public authService: AuthenService
   ) { }
 
   ngOnInit(): void {

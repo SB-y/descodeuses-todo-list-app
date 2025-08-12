@@ -6,29 +6,29 @@
 
         <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef class="text-white"> Titre </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+            <mat-cell *matCellDef="let row" class=" !text-cyan-900"> {{row.title}} </mat-cell>
           </ng-container>
 
         <ng-container matColumnDef="priorite">
             <mat-header-cell *matHeaderCellDef class="text-white"> Priorité </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.priorite}} </mat-cell>
+            <mat-cell *matCellDef="let row" class=" !text-cyan-900"> {{row.priorite}} </mat-cell>
           </ng-container>
       
    
         <ng-container matColumnDef="dueDate">
           <mat-header-cell *matHeaderCellDef class="text-white"> Echéance </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.dueDate| date:'dd/MM/yyyy'}}  </mat-cell>
+          <mat-cell *matCellDef="let row" class=" !text-cyan-900"> {{row.dueDate| date:'dd/MM/yyyy'}}  </mat-cell>
         </ng-container>
       
    
         <ng-container matColumnDef="completed">
           <mat-header-cell *matHeaderCellDef class="text-white"> Complétion </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.completed ? 'Oui' : 'Non' }} </mat-cell>
+          <mat-cell *matCellDef="let row" class=" !text-cyan-900"> {{row.completed ? 'Oui' : 'Non' }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="textarea">
             <mat-header-cell *matHeaderCellDef class="text-white text-center"> Description </mat-header-cell>
-            <mat-cell *matCellDef="let row" class="text-center"> {{row.textarea}} </mat-cell>
+            <mat-cell *matCellDef="let row" class="text-center !text-cyan-900"> {{row.textarea}} </mat-cell>
           </ng-container>
       
         <!-- Header and Row Declarations -->

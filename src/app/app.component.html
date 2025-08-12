@@ -1,18 +1,22 @@
 <mat-sidenav-container>
 
-    <mat-sidenav #sidenav mode="side" fixedInViewport>
+    <mat-sidenav #sidenav mode="side" fixedInViewport class="!rounded-none" [ngClass]="{
+        'bg-admin': authService.isAdmin(),
+        'bg-user': authService.isUser(),
+        'bg-default': !authService.isAdmin() && !authService.isUser()
+      }">
         <!-- #sidenav = variable template pour déclencher le menu à partir de l'évenement-->
         <mat-nav-list>
 
             @if (!authService.isLoggedIn()) {
             @for (item of listMenuPasLogged; track item.path) {
-            <a mat-list-item [routerLink]="item.path">{{ item.title }}</a>
+            <a mat-list-item class="!text-white" [routerLink]="item.path"><span class="!text-white">{{ item.title }}</span></a>
             }
             }
 
             @for (item of listMenu; track item.path) {
             @if (authService.isAdmin() || (authService.isUser() && item.path !== '/utilisateurs')) {
-            <a mat-list-item [routerLink]="item.path">{{ item.title }}</a>
+            <a mat-list-item class="!text-white" [routerLink]="item.path"><span class="!text-white">{{ item.title }}</span></a>
             }
             }
             <!--

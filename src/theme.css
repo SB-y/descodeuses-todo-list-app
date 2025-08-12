@@ -1,3 +1,3 @@
 :root {
-    --mat-sys-primary: light-dark(var(--color-teal-600), var(--color-teal-600));
+    --mat-sys-primary: light-dark(var(--color-cyan-600), var(--color-cyan-600));
 }
