@@ -4,6 +4,7 @@ import { Utilisateur } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthenService } from '../../auth/auth.guard/authen.service';
 
 @Component({
   selector: 'app-profil',
@@ -32,7 +33,8 @@ export class ProfilComponent {
     private userService: UserService, // Pour interagir avec l’API utilisateur
     private route: ActivatedRoute, // Pour lire les paramètres de l'URL
     private snackBar: MatSnackBar, // Pour afficher les messages (toast)
-    private router: Router // Pour rediriger après inscription
+    private router: Router, // Pour rediriger après inscription
+    private authService: AuthenService // Pour rediriger après maj selon role
   ) { }
 
   // Méthode exécutée automatiquement à l’initialisation du composant
@@ -86,15 +88,20 @@ export class ProfilComponent {
 
     // Appelle le service pour envoyer les données à l’API
     this.userService.updateUtilisateur(formValue).subscribe({
-      next: (data) => {
-        // Si succès : message de confirmation + redirection
-        this.snackBar.open("Inscription réussie !", "Fermer", { duration: 3000 });
-        this.router.navigate(['/dashboard']); // Redirige vers le tableau de bord
+      next: () => {
+        this.snackBar.open("Mise à jour réussie !", "Fermer", { duration: 3000 });
+    
+        if (this.authService.isAdmin()) {
+          this.router.navigate(['/utilisateurs']);
+        } else if (this.authService.isUser()) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/dashboard']); // fallback
+        }
       },
       error: (err) => {
-        // Si erreur : message d’erreur
-        console.error("Erreur inscription :", err);
-        this.snackBar.open("Erreur lors de l'inscription", "Fermer", { duration: 3000 });
+        console.error("Erreur profil :", err);
+        this.snackBar.open("Erreur lors de la mise à jour", "Fermer", { duration: 3000 });
       }
     });
   }

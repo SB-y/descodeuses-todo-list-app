@@ -4,6 +4,7 @@ import { Contact } from '../../models/contact.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { AuthenService } from '../../auth/auth.guard/authen.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { AuthenService } from '../../auth/auth.guard/authen.service';
 
 export class ContactsComponent {
 
-  constructor(public dialog: MatDialog, private service: ContactService, public authService: AuthenService) { }
+  constructor(public dialog: MatDialog, private service: ContactService, public authService: AuthenService,  private snackBar: MatSnackBar) { }
 
   contacts: Contact[] = [];
   listeContactFiltre: Contact[] = [];
@@ -62,19 +63,26 @@ export class ContactsComponent {
   }
 
   deleteContact(id: number) {
-    this.service.deleteContact(id).subscribe(() => {
-      // pour trouver l’index dans le tableau complet
-      const index = this.contacts.findIndex(contact => contact.id === id);
-      this.contacts.splice(index, 1); // méthode splice appliquée sur tableau
-
-      // pour supprimer aussi dans la liste filtrée (car elle est affichée)
-      const indexFiltre = this.listeContactFiltre.findIndex(contact => contact.id === id);
-      this.listeContactFiltre.splice(indexFiltre, 1); 
-
-
-      // pour mettre à jour le compteur
-      this.nombreContacts = this.contacts.length;
-
-    })
-  };
+    this.service.deleteContact(id).subscribe({
+      next: () => {
+        // Suppression côté front uniquement si succès
+        const index = this.contacts.findIndex(contact => contact.id === id);
+        this.contacts.splice(index, 1);
+  
+        const indexFiltre = this.listeContactFiltre.findIndex(contact => contact.id === id);
+        this.listeContactFiltre.splice(indexFiltre, 1);
+  
+        this.nombreContacts = this.contacts.length;
+      },
+      error: (err) => {
+        // Affiche un snackbar si le back renvoie une erreur
+        this.snackBar.open(
+          'Ce contact est lié à une tâche. Veuillez le retirer d\'abord de la todo !',
+          '',
+          { duration: 3000 }
+        );
+        console.error('Erreur suppression contact', err);
+      }
+    });
+  }
 }
