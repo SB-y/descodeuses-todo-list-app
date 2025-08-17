@@ -1,25 +1,128 @@
-<mat-sidenav-container>
+<mat-sidenav-container class="h-screen">
 
-    <mat-sidenav #sidenav mode="side" fixedInViewport class="custom-sidenav !rounded-none" [ngClass]="{
-        'bg-admin': authService.isAdmin(),
-        'bg-user': authService.isUser(),
-        'bg-default': !authService.isAdmin() && !authService.isUser()
-      }">
-        <!-- #sidenav = variable template pour déclencher le menu à partir de l'évenement-->
+    <!-- Menu latéral desktop -->
+    <mat-sidenav #sidenav mode="side" [opened]="!isMobile" class="custom-sidenav !rounded-none" [ngClass]="{
+                   'bg-admin': authService.isAdmin(),
+                   'bg-user': authService.isUser(),
+                   'bg-default': !authService.isAdmin() && !authService.isUser()
+                 }">
+
         <mat-nav-list>
-
             @if (!authService.isLoggedIn()) {
             @for (item of listMenuPasLogged; track item.path) {
-            <a mat-list-item class="!text-white" [routerLink]="item.path"><span class="!text-white">{{ item.title }}</span></a>
+            <a mat-list-item class="!text-white" [routerLink]="item.path">
+                <span class="!text-white">{{ item.title }}</span></a>
             }
             }
 
             @for (item of listMenu; track item.path) {
             @if (authService.isAdmin() || (authService.isUser() && item.path !== '/utilisateurs')) {
-            <a mat-list-item class="!text-white" [routerLink]="item.path"><span class="!text-white">{{ item.title }}</span></a>
+            <a mat-list-item class="!text-white" [routerLink]="item.path">
+                <span class="!text-white">{{ item.title }}</span></a>
+            } }
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Contenu principal -->
+    <mat-sidenav-content class="flex flex-col h-full">
+
+        <!-- Toolbar -->
+        <mat-toolbar color="primary" class="flex justify-between">
+            <span>{{ title }}</span>
+
+            <!-- Bouton menu mobile -->
+            <button *ngIf="isMobile" mat-icon-button (click)="topMenuOpen = !topMenuOpen">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <!-- Menu mobile top -->
+        <div *ngIf="isMobile && topMenuOpen" class="absolute w-full z-50 shadow-md" [ngClass]="{
+            'bg-admin': authService.isAdmin(),
+            'bg-user': authService.isUser(),
+            'bg-default': !authService.isAdmin() && !authService.isUser()
+          }">
+            <mat-nav-list>
+
+                @if (!authService.isLoggedIn()) {
+                    @for (item of listMenuPasLogged; track item.path) {
+                    <a mat-list-item class="!text-white" [routerLink]="item.path" (click)="topMenuOpen = false">
+                        <span class="!text-white">{{ item.title }}</span></a>
+                    }
+                    }
+        
+                    @for (item of listMenu; track item.path) {
+                    @if (authService.isAdmin() || (authService.isUser() && item.path !== '/utilisateurs')) {
+                    <a mat-list-item class="!text-white" [routerLink]="item.path" (click)="topMenuOpen = false">
+                        <span class="!text-white">{{ item.title }}</span></a>
+                    } }
+            </mat-nav-list>
+        </div>
+
+        <!-- Contenu router -->
+        <div class="flex-1 overflow-auto p-4">
+            <router-outlet></router-outlet>
+        </div>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- AUTRE VERSION MOBILE SIDENAV
+<mat-sidenav-container>
+
+    <mat-sidenav #sidenav 
+    mode="side" 
+    fixedInViewport 
+    class="custom-sidenav !rounded-none"
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile" 
+    [ngClass]="{
+        'bg-admin': authService.isAdmin(),
+        'bg-user': authService.isUser(),
+        'bg-default': !authService.isAdmin() && !authService.isUser()
+      }">
+     
+        <mat-nav-list>
+
+            @if (!authService.isLoggedIn()) {
+            @for (item of listMenuPasLogged; track item.path) {
+            <a mat-list-item class="!text-white" [routerLink]="item.path" (click)="isMobile ? sidenav.close() : null">
+            <span class="!text-white">{{ item.title }}</span></a>
             }
             }
-            <!--
+
+            @for (item of listMenu; track item.path) {
+            @if (authService.isAdmin() || (authService.isUser() && item.path !== '/utilisateurs')) {
+            <a mat-list-item class="!text-white" [routerLink]="item.path" (click)="isMobile ? sidenav.close() : null">
+            <span class="!text-white">{{ item.title }}</span></a>
+            }
+            }
+
+
+------
         <a mat-list-item routerLink="/login">Login</a>
         <a mat-list-item routerLink="/signup">Inscription</a>
         <a mat-list-item routerLink="/profil">Mon profil</a>
@@ -30,7 +133,7 @@
             visible que pour les admins
             <a mat-list-item *ngIf="authService.isAdmin()" routerLink="/utilisateurs">Utilisateurs</a>
         <a mat-list-item routerLink="/logout">Logout</a>
-        -->
+------
 
         </mat-nav-list>
     </mat-sidenav>
@@ -40,21 +143,23 @@
             <div id="div-toolbar">
                 <mat-toolbar>
 
-                    <button mat-icon-button (click)="sidenav.toggle()">
+                    <button *ngIf="isMobile" mat-icon-button (click)="sidenav.toggle()">
                         <mat-icon class="text-gray-500">menu</mat-icon>
                     </button>
 
                     <span class="text-gray-700">
                         {{title}}
                     </span>
-
+                
                 </mat-toolbar>
             </div>
 
-            <div id="div-router" class="flex-1 overflow-auto"> <!-- pour que la div-router occupe tout l'espace restant-->
+            <div id="div-router" class="flex-1 overflow-auto"> 
                 <router-outlet />
             </div>
         </div>
     </mat-sidenav-content>
 
 </mat-sidenav-container>
+
+-->

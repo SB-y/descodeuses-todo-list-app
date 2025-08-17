@@ -10,7 +10,7 @@
   background-color: grey
 }
 
-@media (max-width: 899px) {
+@media (max-width: 1024px) {
   .custom-sidenav {
     width: 200px !important;
     min-width: 200px !important;

@@ -18,7 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class ContactsComponent {
 
-  constructor(public dialog: MatDialog, private service: ContactService, public authService: AuthenService,  private snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private service: ContactService, public authService: AuthenService, private snackBar: MatSnackBar) { }
 
   contacts: Contact[] = [];
   listeContactFiltre: Contact[] = [];
@@ -52,7 +52,7 @@ export class ContactsComponent {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.deleteContact(id); 
+        this.deleteContact(id);
       } else if (result === false) {
         console.log('L\'utilisateur a annulé');
       } else {
@@ -68,10 +68,10 @@ export class ContactsComponent {
         // Suppression côté front uniquement si succès
         const index = this.contacts.findIndex(contact => contact.id === id);
         this.contacts.splice(index, 1);
-  
+
         const indexFiltre = this.listeContactFiltre.findIndex(contact => contact.id === id);
         this.listeContactFiltre.splice(indexFiltre, 1);
-  
+
         this.nombreContacts = this.contacts.length;
       },
       error: (err) => {
