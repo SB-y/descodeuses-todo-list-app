@@ -1,4 +1,8 @@
 // AuthenService gère la connexion, la déconnexion, et la gestion du token JWT pour l’authentification utilisateur.
+//Service singleton qui gère la connexion, la déconnexion, le stockage du token JWT, et fournit des méthodes pour vérifier le rôle de l’utilisateur 
+// (isAdmin, isUser) ou savoir s’il est connecté (isLoggedIn).
+
+
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';

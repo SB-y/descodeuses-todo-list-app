@@ -1,12 +1,12 @@
-<div id="full-cover-background" class="flex flex-col">
+<div id="full-cover-background" class="flex flex-col items-center p-4 min-h-screen">
 
-    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto mt-30 mb-30">
+    <div id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto my-4 mt-30">
         <form [formGroup]="formGroup" (ngSubmit)="onAddTodo()">
-            <div id="todo-bar-saisie" class="flex gap-2 m-4">
-                <mat-form-field appearance="outline" class="flex-1">
+            <div id="todo-bar-saisie" class="flex flex-wrap gap-2">
+                <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
                     <input matInput formControlName="title" placeholder="Nouvelle tâche">
                 </mat-form-field>
-                <button mat-icon-button color="primary" type="submit" class="mt-2">
+                <button mat-icon-button color="primary" type="submit" class="mt-2 sm:mt-2">
                     <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
                 </button>
             </div>
@@ -30,10 +30,10 @@
     </div>
 
 
-    <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto mb-30">
+    <div id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto my-4 mt-30">
         <form [formGroup]="projformGroup" (ngSubmit)="onAddProjet()">
-            <div id="todo-bar-saisie" class="flex gap-2 m-4">
-                <mat-form-field appearance="outline" class="flex-1">
+            <div id="todo-bar-saisie" class="flex flex-wrap gap-2">
+                <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
                     <input matInput formControlName="title" placeholder="Nouveau projet">
                 </mat-form-field>
                 <button mat-icon-button color="primary" type="submit" class="mt-2">

@@ -82,7 +82,7 @@ export const MENU_ROUTES = [
 
 export const MENU_ROUTES2 = [
   { path: '/login', title: 'Login' },
-  { path: '/signup', title: 'Inscription' },
+  { path: '/signup', title: 'Création de compte' },
 ];
 
 @NgModule({

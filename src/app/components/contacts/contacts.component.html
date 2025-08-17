@@ -1,56 +1,54 @@
-<div id="full-cover-background" class="flex h-screen">
+<div id="full-cover-background" class="flex flex-col min-h-screen">
 
-    <div class="flex flex-col items-center mt-20 w-full">
+    <div class="flex-grow flex flex-col items-center p-4">
+    <div id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto my-4 mt-30">
 
-        <div id="contenu" class="flex-1 overflow-auto">
+        <div id="searchbar" class="flex flex-wrap gap-2">
+            <mat-form-field class="flex-1 min-w-[200px]" appearance="outline">
+                <input matInput type="text" [(ngModel)]="rechercheNom" placeholder="Rechercher un contact"
+                    (input)="filtrerContacts()">
+            </mat-form-field>
 
-            <div id="searchbar" class="flex flex-row gap-3 justify-center">
-                <mat-form-field class="w-100" appearance="outline">
-                    <input matInput type="text" [(ngModel)]="rechercheNom" placeholder="Rechercher un contact"
-                        (input)="filtrerContacts()">
-                </mat-form-field>
-
-                <div class="mt-4">
-                    <span [routerLink]="['/contactdetails', 0]" class="cursor-pointer">
-                        <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
-                    </span>
-                </div>
-            </div>
-
-
-            <div id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 m-auto mt-30 mb-30">
-                <mat-list>
-                    @for (item of listeContactFiltre; track item.id) {
-
-                    <mat-list-item>
-                        <div class="flex flex-row items-center w-50">
-                            <mat-icon matListItemIcon class="!text-cyan-600">person</mat-icon>
-
-                            <span matListItemTitle [routerLink]="['/contactdetails', item.id]"
-                                class="flex-1 cursor-pointer font-bold">{{item.nom}}
-                                {{item.prenom}}</span>
-
-                            <span [matMenuTriggerFor]="menu">
-                                <mat-icon class="!text-cyan-600 mt-4 cursor-pointer mr-0">pending</mat-icon>
-                            </span>
-                        </div>
-                    </mat-list-item>
-
-                    <mat-divider [inset]="true" class="ml-0 w-120" style="margin-top: 1rem;"></mat-divider>
-
-                    <mat-menu #menu="matMenu">
-                        <ng-template matMenuContent>
-                            <button mat-menu-item (click)="sendEmail(item.id)">Envoyer un email</button>
-                            <button mat-menu-item (click)="openDialog(item.id)">Supprimer</button>
-                        </ng-template>
-                    </mat-menu>
-
-                    }
-
-                </mat-list>
-            </div>
-
+            <button mat-icon-button color="primary" [routerLink]="['/contactdetails', 0]" class="mt-2 sm:mt-0">
+                <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
+            </button>
         </div>
+
+
+        <div id="contact-liste" class="mt-4">
+            <mat-list>
+                @for (item of listeContactFiltre; track item.id) {
+
+                <mat-list-item>
+                    <div class="flex items-center w-full">
+                        <mat-icon matListItemIcon class="!text-cyan-600">person</mat-icon>
+
+                        <span matListItemTitle [routerLink]="['/contactdetails', item.id]"
+                            class="flex-1 cursor-pointer font-bold">{{item.nom}}
+                            {{item.prenom}}</span>
+
+                        <span [matMenuTriggerFor]="menu">
+                            <mat-icon class="!text-cyan-600 cursor-pointer mt-3">pending</mat-icon>
+                        </span>
+                    </div>
+                </mat-list-item>
+
+                <mat-divider class="w-full px-2" style="margin-top: 1rem;"></mat-divider>
+
+                <mat-menu #menu="matMenu">
+                    <ng-template matMenuContent>
+                        <button mat-menu-item (click)="sendEmail(item.id)">Envoyer un email</button>
+                        <button mat-menu-item (click)="openDialog(item.id)">Supprimer</button>
+                    </ng-template>
+                </mat-menu>
+
+                }
+
+            </mat-list>
+        </div>
+    </div>
+</div>
+
 
         <div class="text-center text-white p-3 w-full" [ngClass]="{
             'bg-admin': authService.isAdmin(),

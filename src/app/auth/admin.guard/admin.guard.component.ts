@@ -1,3 +1,7 @@
+//AdminGuard (CanActivate) → Guard classique basé sur une classe qui protège les routes uniquement pour les admins, 
+// en vérifiant isLoggedIn et le rôle "ROLE_ADMIN". Si ce n’est pas le cas, redirige vers /login.
+
+
 import { Component, Injectable } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { CanActivate, Router } from '@angular/router';

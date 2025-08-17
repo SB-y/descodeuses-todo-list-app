@@ -1,11 +1,19 @@
 .bg-user {
-    background-color: #0891B2;
-  }
-  
-  .bg-admin {
-    background-color: #CA8A04;
+  background-color: #0891B2;
+}
+
+.bg-admin {
+  background-color: #CA8A04;
+}
+
+.bg-default {
+  background-color: grey
+}
+
+@media (max-width: 899px) {
+  .custom-sidenav {
+    width: 200px !important;
+    min-width: 200px !important;
   }
 
-  .bg-default {
-    background-color: grey
-  }
+}
