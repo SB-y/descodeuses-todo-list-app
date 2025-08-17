@@ -1,11 +1,11 @@
-<div id="full-cover-background" class="flex h-full">
+<div id="full-cover-background" class="flex h-full items-center justify-center p-4">
 
     <!-- @if(todoForm!=null) { utiliser dans le template pour afficher le formulaire seulement quand il est prêt-->
 
 
-    <div *ngIf="todoForm" id="centered-block" class="bg-white p-6 rounded-x1 shadow-md w-150 mx-auto my-auto mt-30 mb-30">
+    <div *ngIf="todoForm" id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-md mt-30">
 
-        <mat-card-header class="w-full justify-center">
+        <mat-card-header class="w-full flex justify-center">
 
             <h2 class="text-center text-2xl font-semibold mb-20">Edit Todo</h2>
 
@@ -19,8 +19,8 @@
                 <!-- Champ caché id -->
                 <input type="hidden" formControlName="id" />
 
-                <div id="member-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
+                <div id="member-cont" class="mb-4">
+                    <mat-form-field class="w-full" appearance="outline">
                         <mat-label>Membre</mat-label>
                         <mat-chip-grid #chipGrid aria-label="Membre sélection">
                             @for (contact of selectedContacts; track contact.id) {
@@ -52,8 +52,8 @@
                 </div>
 
 
-                <div id="projet-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
+                <div id="projet-cont" class="mb-4">
+                    <mat-form-field class="w-full" appearance="outline">
                         <mat-label>Projet</mat-label>
                         <mat-select formControlName="projet">
                           <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
@@ -76,29 +76,29 @@
                 </div>
 -->
 
-                <div id="utilisa-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
+                <div id="utilisa-cont" class="mb-4">
+                    <mat-form-field class="w-full" appearance="outline">
                         <mat-label>Utilisateur</mat-label>
                         <input matInput [value]="todo.surname + ' ' + todo.name" readonly />
                       </mat-form-field>
                 </div>
 
-                <div id="title-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
+                <div id="title-cont" class="mb-4">
+                    <mat-form-field class="w-full" appearance="outline">
                         <mat-label>Titre</mat-label>
                         <input matInput formControlName="title" type="text" placeholder="nom" />
                     </mat-form-field>
                 </div>
 
-                <div id="textarea-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
+                <div id="textarea-cont" class="mb-4">
+                    <mat-form-field class="w-full" appearance="outline">
                         <mat-label>Description</mat-label>
                         <textarea matInput formControlName="textarea"></textarea>
                     </mat-form-field>
                 </div>
 
-                <div id="priorite-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
+                <div id="priorite-cont" class="mb-4">
+                    <mat-form-field class="w-full" appearance="outline">
                         <mat-label>Priorité</mat-label>
                         <mat-select formControlName="priorite">
                             @for (priorite of listPriorite; track priorite.number) {
@@ -108,8 +108,8 @@
                     </mat-form-field>
                 </div>
 
-                <div id="duedate-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
+                <div id="duedate-cont" class="mb-4">
+                    <mat-form-field class="w-full" appearance="outline">
                         <mat-label>Echéance</mat-label>
                         <input matInput [matDatepicker]="picker" formControlName="dueDate" />
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -117,7 +117,7 @@
                     </mat-form-field>
                 </div>
 
-                <div id="completed-cont" class="text-center">
+                <div id="completed-cont" class="text-center mb-4">
                     <mat-label>Complété</mat-label>
                     <mat-checkbox formControlName="completed"></mat-checkbox>
                 </div>
