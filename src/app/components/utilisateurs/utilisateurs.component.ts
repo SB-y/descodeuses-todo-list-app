@@ -36,6 +36,8 @@ export class UtilisateursComponent {
       this.allUtilisateurs = data;
       this.listeUtilisateursFiltre = [...this.allUtilisateurs]; // initialiser avec tous les utilisateurs
       this.nombreUtilisateurs = this.listeUtilisateursFiltre.length; // nombre affiché aussi
+
+      this.trierUtilisateurs('id'); // trier par id par défaut
     }
     );
   }
@@ -44,6 +46,23 @@ export class UtilisateursComponent {
     const f = this.rechercheNom.toLowerCase();
     this.listeUtilisateursFiltre = this.allUtilisateurs.filter(c => c.name.toLowerCase().startsWith(f) || c.surname.toLowerCase().startsWith(f))
     this.nombreUtilisateurs = this.listeUtilisateursFiltre.length;
+
+    this.trierUtilisateurs('alphabet'); // par exemple trier par nom après filtrage
+  }
+
+
+  typeTri: 'id' | 'alphabet' = 'id'; // on stocke le type de tri pour le récupérer dans le html
+
+  trierUtilisateurs(par: 'id' | 'alphabet') {
+    this.typeTri = par; // on mémorise le tri sélectionné
+
+    if (par === 'id') {
+      this.listeUtilisateursFiltre.sort((a, b) => a.id - b.id);
+    } else if (par === 'alphabet') {
+      this.listeUtilisateursFiltre.sort((a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+      );
+    }
   }
 
   onDeleteUtilisateur(id: number | null) {

@@ -3,11 +3,20 @@
   <div id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-3xl mx-auto my-6 mt-10 sm:mt-50">
 
     <div class="hidden sm:block overflow-x-auto w-full">
-    <mat-table [dataSource]="todos" class="mat-elevation-z8 w-full">
+    <mat-table [dataSource]="getOrdreTodos()" class="mat-elevation-z8 w-full">
+
+      <ng-container matColumnDef="etat">
+        <mat-header-cell *matHeaderCellDef class="text-white"> État </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span [ngClass]="getTodoEtatClass(row)">
+            {{ getTodoEtat(row) }}
+          </span>
+        </mat-cell>
+      </ng-container>
 
         <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef class="text-white"> Titre </mat-header-cell>
-            <mat-cell *matCellDef="let row" class=" !text-cyan-900"> {{row.title}} </mat-cell>
+            <mat-cell *matCellDef="let row" class=" !text-cyan-900 cursor-pointer" [routerLink]="['/tododetails', row.id]"> {{row.title}} </mat-cell>
           </ng-container>
 
         <ng-container matColumnDef="priorite">
@@ -33,8 +42,8 @@
           </ng-container>
       
         <!-- Header and Row Declarations -->
-        <mat-header-row *matHeaderRowDef="['title', 'priorite','dueDate', 'completed', 'textarea']"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: ['title','priorite', 'dueDate', 'completed', 'textarea']"></mat-row>
+        <mat-header-row *matHeaderRowDef="['etat','title', 'priorite','dueDate', 'completed', 'textarea']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['etat','title','priorite', 'dueDate', 'completed', 'textarea']"></mat-row>
       </mat-table>
       
     </div>
@@ -42,6 +51,7 @@
     <!-- Cartes pour mobile -->
 <div class="block sm:hidden w-full space-y-4">
   <div *ngFor="let todo of todos" class="bg-cyan-700 p-4 rounded-xl shadow-md">
+    <p class="text-sm text-white tracking-wide" [ngClass]="getTodoEtatClass(todo)">Etat: {{ getTodoEtat(todo) }}</p>
     <p class="text-sm text-white tracking-wide">Titre: {{todo.title}}</p>
     <p class="text-sm  text-white tracking-wide">Priorité: {{todo.priorite}}</p>
     <p class="text-sm  text-white tracking-wide">Echéance: {{todo.dueDate | date:'dd/MM/yyyy'}}</p>
