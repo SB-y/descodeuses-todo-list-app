@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Utilisateur } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
@@ -12,7 +12,7 @@ import { AuthenService } from '../../auth/auth.guard/authen.service';
   templateUrl: './profil.component.html',
   styleUrl: './profil.component.css'
 })
-export class ProfilComponent {
+export class ProfilComponent implements OnInit {
 
 
   // Liste des genres possibles pour l’inscription

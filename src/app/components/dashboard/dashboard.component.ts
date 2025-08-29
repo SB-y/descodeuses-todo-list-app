@@ -4,27 +4,22 @@ import { Todo } from '../../models/todo.model';
 
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-dashboard', // Nom du composant utilisé dans les templates
   standalone: false,
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  templateUrl: './dashboard.component.html', // Template HTML associé
+  styleUrl: './dashboard.component.css' // CSS associé
 })
-
-
-
-
 export class DashboardComponent implements OnInit {
 
-
+  // Définition des KPIs affichés dans le dashboard
   kpis = [
     {
       id: 1,
       title: "A faire aujourd'hui",
-      number: 0,
-      bg: "!bg-cyan-600",
-      icon: "event"
+      number: 0,           // Valeur dynamique qui sera mise à jour
+      bg: "!bg-cyan-600",  // Couleur de fond
+      icon: "event"         // Icône à afficher
     },
-
     {
       id: 2,
       title: "Taches en retard",
@@ -32,7 +27,6 @@ export class DashboardComponent implements OnInit {
       bg: "!bg-yellow-600",
       icon: "warning"
     },
-
     {
       id: 3,
       title: "Urgentes",
@@ -42,53 +36,62 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  todos: Todo[] = [];
+  todos: Todo[] = []; // Tableau qui contiendra toutes les tâches
 
-  constructor(private todoService: TodoService) { }
-
+  constructor(private todoService: TodoService) { } // Injection du service Todo
 
   ngOnInit(): void {
-    this.fetchTodo();
+    this.fetchTodo(); // Au chargement du composant, on récupère les todos
   }
 
   fetchTodo() {
+    // Appel au service pour récupérer les tâches (observable)
     this.todoService.getTodos().subscribe((data) => {
-      this.todos = data;
+      this.todos = data; // On stocke les todos reçues
+
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
-  
-      // Variables de comptage
+      today.setHours(0, 0, 0, 0); // On remet l'heure à 00:00 pour les comparaisons
+
+      // Variables de comptage pour chaque KPI
       let countUrgent = 0, countToday = 0, countLate = 0;
-  
+      let countNoDueDate = 0; // Pour les tâches sans date limite
+
       // On ne garde que les tâches non terminées
       const activeTodos = this.todos.filter(obj => !obj.completed);
-  
+
       for (let todo of activeTodos) {
+
+        if (!todo.dueDate) {
+          // Si pas de dueDate, on incrémente le compteur correspondant
+          countNoDueDate++; 
+          continue; // On passe à la tâche suivante
+        }
+
         const dueDate = new Date(todo.dueDate);
-        dueDate.setHours(0, 0, 0, 0);
-  
+        dueDate.setHours(0, 0, 0, 0); // Normalisation de l'heure pour la comparaison
+
         // En retard : dueDate < aujourd'hui, peu importe la priorité
         if (dueDate < today) {
           countLate++;
-          continue; // déjà classée comme en retard, pas besoin de tester le reste
+          continue; // On ne teste pas les autres conditions
         }
-  
+
         // A faire aujourd’hui : dueDate == aujourd’hui
         if (dueDate.getTime() === today.getTime()) {
           countToday++;
         }
-  
+
         // Urgent : priorité >= 2 ET dueDate >= aujourd’hui
         if (todo.priorite != null && todo.priorite >= 2 && dueDate >= today) {
           countUrgent++;
         }
       }
-  
-      // Mise à jour des KPIs
-      this.kpis[0].number = countToday;
-      this.kpis[1].number = countLate;
-      this.kpis[2].number = countUrgent;
+
+      // Mise à jour des KPIs avec les valeurs calculées
+      this.kpis[0].number = countToday;  // A faire aujourd'hui
+      this.kpis[1].number = countLate;   // Tâches en retard
+      this.kpis[2].number = countUrgent; // Tâches urgentes
+      // Remarque : countNoDueDate n'est pas utilisé ici, mais pourrait servir pour un KPI "Sans échéance"
     });
   }
 }
-

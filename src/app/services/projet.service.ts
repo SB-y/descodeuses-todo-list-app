@@ -33,7 +33,7 @@ export class ProjetService {
     });
   }
 
-  // Read
+  // Read all
   // fetch liste
   getProjets() {
     //HTTP GET sans 2eme parametre parce que il y a pas de body
@@ -42,7 +42,7 @@ export class ProjetService {
     });
   }
 
-  // Read
+  // Read by id
   // fetch un item de todo
   getProjet(id: number) {
     return this.http.get<Projet>(this.apiURL + "/" + id, {

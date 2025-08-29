@@ -1,12 +1,12 @@
 <div id="full-cover-background" class="flex flex-col items-center p-4 min-h-screen">
 
-    <div id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto my-4 mt-30">
+    <div id="todo-block" class="p-6  w-full max-w-lg mx-auto my-4 mt-30">
         <form [formGroup]="formGroup" (ngSubmit)="onAddTodo()">
-            <div id="todo-bar-saisie" class="flex flex-wrap gap-2">
+            <div id="todo-bar-saisie" class="flex flex-wrap gap-2 mb-30">
                 <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
-                    <input matInput formControlName="title" placeholder="Nouvelle tâche">
+                    <input matInput formControlName="title" placeholder="Nouvelle tâche" id="todo-input">
                 </mat-form-field>
-                <button mat-icon-button color="primary" type="submit" class="mt-2 sm:mt-2">
+                <button mat-icon-button color="primary" type="submit" class="mt-2 sm:mt-2" id="todo-add-btn">
                     <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
                 </button>
             </div>
@@ -14,9 +14,9 @@
         <div id="todo-liste">
             <mat-list>
                 @for(todo of todos; track todo.id) {
-                <mat-list-item>
+                <mat-list-item data-testid="todo-item">
                     <div class="flex items-center">
-                        <mat-checkbox [checked]="todo.completed" (change)="onCheckChange($event, todo)"></mat-checkbox>
+                        <mat-checkbox [checked]="todo.completed" (change)="onCheckChange($event, todo)" data-testid="todo-checkbox"></mat-checkbox>
                         <span [routerLink]="['/tododetails', todo.id]" class="flex-1 !text-cyan-900 cursor-pointer">{{ todo.title
                             }}</span>
                         <button mat-icon-button (click)="onDeleteTodo(todo.id)">
@@ -30,13 +30,13 @@
     </div>
 
 
-    <div id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto my-4 mt-30">
+    <div id="projet-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto my-4 mt-30">
         <form [formGroup]="projformGroup" (ngSubmit)="onAddProjet()">
-            <div id="todo-bar-saisie" class="flex flex-wrap gap-2">
+            <div id="projet-bar-saisie" class="flex flex-wrap gap-2">
                 <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
-                    <input matInput formControlName="title" placeholder="Nouveau projet">
+                    <input matInput formControlName="title" placeholder="Nouveau projet" id="projet-input">
                 </mat-form-field>
-                <button mat-icon-button color="primary" type="submit" class="mt-2">
+                <button mat-icon-button color="primary" type="submit" class="mt-2" id="projet-add-btn">
                     <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
                 </button>
             </div>
@@ -44,9 +44,9 @@
         <div id="projet-liste">
             <mat-list>
                 @for(projet of allProjets; track projet.id) {
-                <mat-list-item>
+                <mat-list-item data-testid="projet-item">
                     <div class="flex items-center">
-                        <span [routerLink]="['/projetdetails', projet.id]" class="flex-1  !text-cyan-900 cursor-pointer">{{ projet.title
+                        <span [routerLink]="['/projetdetails', projet.id]" class="flex-1  !text-cyan-900 cursor-pointer" data-testid="projet-title">{{ projet.title
                             }}</span>
                         <button mat-icon-button (click)="onDeleteProjet(projet.id)">
                             <mat-icon matListItemIcon class="!text-cyan-600">delete</mat-icon>
