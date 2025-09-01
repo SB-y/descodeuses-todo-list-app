@@ -1,29 +1,43 @@
-<div id="full-cover-background" class="flex justify-center mt-30">
+<div id="full-cover-background"
+  class="mx-auto rounded-[40px] border border-gray-200 bg-white 
+         p-6 md:p-8 text-sm flex flex-col mt-20 max-w-md">
 
-    <div id="centered-block" class="bg-white w-full max-w-sm p-6 rounded-xl shadow-md text-center">
+  <div id="centered-block" class="w-full">
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <h2 class="text-center mb-12 font-semibold">Connexion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        
-            <div id="email-container" class="mb-4">
-                <mat-form-field class="w-full" appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="username" type="email" placeholder="email (mettre : admin@test.com)"/>
-                </mat-form-field>
-            </div>
+      <!-- Titre -->
+      <mat-card-header class="w-full flex justify-center mb-15">
+        <h2 class="text-center text-xl font-semibold text-gray-500">
+          Connexion
+        </h2>
+      </mat-card-header>
 
-            <div id="password-container" class="mb-4">
-                <mat-form-field class="w-full" appearance="outline">
-                    <mat-label>Password</mat-label>
-                    <input matInput formControlName="password" type="password" placeholder="password (mettre : admin)"/>
-                </mat-form-field>
+      <!-- Champs -->
+      <div class="space-y-3">
+        <!-- Email -->
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="username" type="email"
+                 placeholder="email (ex: admin@test.com)" />
+        </mat-form-field>
 
-            </div>
+        <!-- Password -->
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput formControlName="password" type="password"
+                 placeholder="mot de passe (ex: admin)" />
+        </mat-form-field>
+      </div>
 
-            <button mat-icon-button type="submit" class="w-full">
-               <mat-icon> login </mat-icon>
-            </button>
-        </form>
-    </div>
+      <!-- Bouton -->
+      <div class="flex justify-center mt-12">
+        <button mat-raised-button type="submit"
+                class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300 flex items-center gap-2">
+          <mat-icon>login</mat-icon> Se connecter
+        </button>
+      </div>
+
+    </form>
+  </div>
 </div>

@@ -46,7 +46,7 @@ export class UtilisateursComponent implements OnInit {
       this.listeUtilisateursFiltre = [...this.allUtilisateurs]; // initialiser la liste filtrée avec tous les utilisateurs
       this.nombreUtilisateurs = this.listeUtilisateursFiltre.length; // mettre à jour le compteur affiché
 
-      this.trierUtilisateurs('id'); // trier par id par défaut
+      this.trierUtilisateurs(); 
     });
   }
 
@@ -58,24 +58,31 @@ export class UtilisateursComponent implements OnInit {
     );
     this.nombreUtilisateurs = this.listeUtilisateursFiltre.length; // mettre à jour le compteur
 
-    this.trierUtilisateurs('alphabet'); // trier par nom après filtrage
+    this.trierUtilisateurs();
   }
 
-  // Stocke le type de tri actuellement appliqué pour le template
-  typeTri: 'id' | 'alphabet' = 'id';
+  triSelection: string = 'AZ'; // valeur par défaut
 
-  // Fonction pour trier la liste filtrée selon l'id ou l'ordre alphabétique
-  trierUtilisateurs(par: 'id' | 'alphabet') {
-    this.typeTri = par; // mémoriser le tri sélectionné
-
-    if (par === 'id') {
-      // tri numérique par id
-      this.listeUtilisateursFiltre.sort((a, b) => a.id - b.id);
-    } else if (par === 'alphabet') {
-      // tri alphabétique par nom (insensible à la casse)
-      this.listeUtilisateursFiltre.sort((a, b) =>
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-      );
+  trierUtilisateurs() {
+    switch (this.triSelection) {
+      case 'AZ':
+        this.listeUtilisateursFiltre.sort((a, b) =>
+          (a.name).localeCompare(b.name));
+        break;
+  
+      case 'ZA':
+        this.listeUtilisateursFiltre.sort((a, b) =>
+          ( b.name).localeCompare(a.name));
+        break;
+  
+      case 'role':
+        this.listeUtilisateursFiltre.sort((a, b) =>
+          a.role.localeCompare(b.role));
+        break;
+  
+      case 'id':
+        this.listeUtilisateursFiltre.sort((a, b) => a.id - b.id);
+        break;
     }
   }
 

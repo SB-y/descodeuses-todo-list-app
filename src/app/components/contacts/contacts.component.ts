@@ -49,6 +49,18 @@ export class ContactsComponent implements OnInit {
     );
   }
 
+  trierContactsAZ() {
+    this.listeContactFiltre.sort((a, b) =>
+      a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' })
+    );
+  }
+  
+  trierContactsZA() {
+    this.listeContactFiltre.sort((a, b) =>
+      b.nom.localeCompare(a.nom, 'fr', { sensitivity: 'base' })
+    );
+  }
+
   sendEmail(id: number) {
     // cherche le contact dans la liste
     const index = this.contacts.findIndex(item => item.id == id);

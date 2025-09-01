@@ -34,7 +34,7 @@ export class ProfilComponent implements OnInit {
     private route: ActivatedRoute, // Pour lire les paramètres de l'URL
     private snackBar: MatSnackBar, // Pour afficher les messages (toast)
     private router: Router, // Pour rediriger après inscription
-    private authService: AuthenService // Pour rediriger après maj selon role
+    public authService: AuthenService, // Pour rediriger après maj selon role
   ) { }
 
   // Méthode exécutée automatiquement à l’initialisation du composant
@@ -42,7 +42,7 @@ export class ProfilComponent implements OnInit {
 
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
-  
+
       if (idParam) {
         const id = Number(idParam);
         this.userService.getUtilisateur(id).subscribe(user => {
@@ -61,8 +61,8 @@ export class ProfilComponent implements OnInit {
       }
     });
   }
-  
-  
+
+
   private initForm() {
     this.profilForm = this.pb.group({
       id: [this.utilisateur.id],
@@ -70,7 +70,8 @@ export class ProfilComponent implements OnInit {
       surname: [this.utilisateur.surname || ''],
       username: [this.utilisateur.username || ''],
       genre: [this.utilisateur.genre || ''],
-      password: ['']
+      password: [''],
+      role: [this.utilisateur.role]
     });
   }
 
@@ -90,7 +91,7 @@ export class ProfilComponent implements OnInit {
     this.userService.updateUtilisateur(formValue).subscribe({
       next: () => {
         this.snackBar.open("Mise à jour réussie !", "Fermer", { duration: 3000 });
-    
+
         if (this.authService.isAdmin()) {
           this.router.navigate(['/utilisateurs']);
         } else if (this.authService.isUser()) {
@@ -106,9 +107,24 @@ export class ProfilComponent implements OnInit {
     });
   }
 
+  // Supprimer un utilisateur par son id
+  onDelete(id: number | null) {
+    if (id == null) return; // si id null, on ne fait rien
 
+    this.userService.deleteUtilisateur(id).subscribe(() => {
+      this.snackBar.open('Supprimé !', '', { duration: 1000 }); // afficher un message temporaire
+      this.router.navigate(["/login"]);
+    });
+  }
 
-
-
+  // Retour à la page précédente
+  onCancel() {
+      if (this.authService.isAdmin()) {
+        this.router.navigate(['/utilisateurs']); // ou la page admin que tu veux
+      } else {
+        this.router.navigate(['/dashboard']); // la page user
+      }
+    
+  }
 
 }

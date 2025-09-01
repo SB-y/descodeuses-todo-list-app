@@ -1,45 +1,70 @@
-<div id="full-cover-background" class="flex flex-col justify-between min-h-screen mt-30">
+<div id="full-cover-background"
+  class="mx-auto rounded-[40px] border border-gray-200 bg-white 
+         p-6 md:p-8 text-sm flex flex-col mt-20 max-w-2xl">
 
-    <div>
+  <!-- Contenu principal -->
+  <div class="flex-grow flex flex-col items-center w-full max-w-4xl mx-auto">
 
-        <div id="searchbar" class="flex flex-wrap sm:flex-nowrap gap-3 w-full max-w-lg mx-auto items-center">
-            <mat-form-field class="flex-1 min-w-[200px]" appearance="outline">
-                <input matInput type="text" [(ngModel)]="rechercheNom" placeholder="Rechercher un utilisateur"
-                    (input)="filtrerUtilisateurs()">
-            </mat-form-field>
+    <!-- Barre recherche + tri -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 w-full">
 
-            <div id="iconadd" class="flex items-center justify-center w-auto mb-4">
-                <span [routerLink]="['/signup']" class="cursor-pointer">
-                    <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
-                </span>
-            </div>
-        </div>
+      <!-- Barre de recherche -->
+      <div id="searchbar" class="flex items-center gap-3 w-full md:w-2/5">
+        <mat-form-field appearance="outline" class="w-full !mb-0">
+          <input matInput type="text" [(ngModel)]="rechercheNom" placeholder="Rechercher un utilisateur"
+            (input)="filtrerUtilisateurs()">
+        </mat-form-field>
+      </div>
 
-        <div id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto mt-25">
+      <!-- Ajout -->
+      <div id="ajoututil" class="flex flex-row items-center gap-2 justify-center md:justify-center">
+        <div class="text-md mb-6">Ajouter</div>
+        <button mat-icon-button [routerLink]="['/signup']" class="rounded-full hover:bg-gray-100 mb-6 ">
+          <mat-icon class="!text-emerald-400">add_circle</mat-icon>
+        </button>
+      </div>
 
-            <div id="utilisateurslist" class="space-y-4">
-                <mat-list>
-                    @for(utilisateur of listeUtilisateursFiltre; track utilisateur.id) {
-                    <mat-list-item>
-                        <div class="flex items-center w-full">
-                            <span [routerLink]="['/profil', utilisateur.id]"
-                                class="flex-1 cursor-pointer !text-cyan-900">
-                                {{utilisateur.surname}} {{utilisateur.name}}</span>
-                            <button mat-icon-button (click)="onDeleteUtilisateur(utilisateur.id)">
-                                <mat-icon matListItemIcon class="!text-cyan-600">delete</mat-icon>
-                            </button>
-                        </div>
-                    </mat-list-item>
-                    }
-                </mat-list>
-            </div>
-        </div>
+      <!-- Sélecteur de tri -->
+      <mat-form-field appearance="outline" class="w-full md:w-1/3 !mb-0">
+        <mat-label>Trier par</mat-label>
+        <mat-select [(value)]="triSelection" (selectionChange)="trierUtilisateurs()">
+          <mat-option value="AZ">Nom A → Z</mat-option>
+          <mat-option value="ZA">Nom Z → A</mat-option>
+          <mat-option value="role">Rôle</mat-option>
+          <mat-option value="id">ID</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
-    <div class="text-center text-white p-3 w-full" [ngClass]="{
-        'bg-admin': authService.isAdmin(),
-        'bg-user': authService.isUser()}">
+    <!-- Liste des utilisateurs -->
+    <div id="utilisateurslist" class="w-full">
+      <mat-list>
+        @for (utilisateur of listeUtilisateursFiltre; track utilisateur.id) {
+        <mat-list-item>
+          <div class="flex items-center gap-3 w-full">
+            <mat-icon class="!text-emerald-400">person</mat-icon>
 
-        <p>Nombre d'utilisateurs : {{nombreUtilisateurs}}</p>
+            <span [routerLink]="['/profil', utilisateur.id]" class="flex-1 cursor-pointer font-medium text-gray-800">
+              {{ utilisateur.surname }} {{ utilisateur.name }}
+              <span class="text-xs text-gray-500 ml-2">({{ utilisateur.role }})</span>
+            </span>
 
+            <button mat-icon-button (click)="onDeleteUtilisateur(utilisateur.id)">
+              <mat-icon class="!text-red-300">delete</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+
+        <mat-divider *ngIf="!$last" class="!border-gray-200 w-3/4 mx-auto"></mat-divider>
+        }
+      </mat-list>
     </div>
+  </div>
+
+  <!-- Footer compteur -->
+  <div class="mt-8 text-center">
+    <p class="inline-block bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-full">
+      Nombre d’utilisateurs : <span class="font-semibold">{{ nombreUtilisateurs }}</span>
+    </p>
+  </div>
+</div>

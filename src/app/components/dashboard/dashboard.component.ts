@@ -1,97 +1,97 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../services/todo.service';
 import { Todo } from '../../models/todo.model';
 
-
 @Component({
-  selector: 'app-dashboard', // Nom du composant utilisé dans les templates
+  selector: 'app-dashboard',
   standalone: false,
-  templateUrl: './dashboard.component.html', // Template HTML associé
-  styleUrl: './dashboard.component.css' // CSS associé
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
 
-  // Définition des KPIs affichés dans le dashboard
   kpis = [
-    {
-      id: 1,
-      title: "A faire aujourd'hui",
-      number: 0,           // Valeur dynamique qui sera mise à jour
-      bg: "!bg-cyan-600",  // Couleur de fond
-      icon: "event"         // Icône à afficher
-    },
-    {
-      id: 2,
-      title: "Taches en retard",
-      number: 0,
-      bg: "!bg-yellow-600",
-      icon: "warning"
-    },
-    {
-      id: 3,
-      title: "Urgentes",
-      number: 0,
-      bg: "!bg-pink-600",
-      icon: "priority_high"
-    },
+    { id: 'Urgent', title: "Urgentes", number: 0, bg: "!bg-pink-400", icon: "priority_high", etat: "Urgent" },
+    { id: 'Auj', title: "À faire aujourd'hui", number: 0, bg: "!bg-cyan-400", icon: "event", etat: "À faire auj." },
+    { id: 'Late', title: "En retard", number: 0, bg: "!bg-orange-400", icon: "warning", etat: "En retard" },
+    { id: 'Future', title: "À venir", number: 0, bg: "!bg-blue-400", icon: "schedule", etat: "À venir" },
+   // { id: 'Done', title: "Effectuées", number: 0, bg: "!bg-lime-600", icon: "done", etat: "Effectuée" },
+    { id: 'Flexible', title: "Flexibles", number: 0, bg: "!bg-gray-400", icon: "more_time", etat: "Flexible" },
   ];
 
-  todos: Todo[] = []; // Tableau qui contiendra toutes les tâches
+  todos: Todo[] = [];
+  recentTodos: Todo[] = [];
+  completedTodos: Todo[] = [];
 
-  constructor(private todoService: TodoService) { } // Injection du service Todo
+  constructor(private todoService: TodoService) {}
 
   ngOnInit(): void {
-    this.fetchTodo(); // Au chargement du composant, on récupère les todos
+    this.fetchTodo();
   }
 
   fetchTodo() {
-    // Appel au service pour récupérer les tâches (observable)
     this.todoService.getTodos().subscribe((data) => {
-      this.todos = data; // On stocke les todos reçues
+      this.todos = data;
+      this.calculerKpis();
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // On remet l'heure à 00:00 pour les comparaisons
+      this.recentTodos = [...this.todos]
+        .sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
+        .slice(0, 5);
 
-      // Variables de comptage pour chaque KPI
-      let countUrgent = 0, countToday = 0, countLate = 0;
-      let countNoDueDate = 0; // Pour les tâches sans date limite
-
-      // On ne garde que les tâches non terminées
-      const activeTodos = this.todos.filter(obj => !obj.completed);
-
-      for (let todo of activeTodos) {
-
-        if (!todo.dueDate) {
-          // Si pas de dueDate, on incrémente le compteur correspondant
-          countNoDueDate++; 
-          continue; // On passe à la tâche suivante
-        }
-
-        const dueDate = new Date(todo.dueDate);
-        dueDate.setHours(0, 0, 0, 0); // Normalisation de l'heure pour la comparaison
-
-        // En retard : dueDate < aujourd'hui, peu importe la priorité
-        if (dueDate < today) {
-          countLate++;
-          continue; // On ne teste pas les autres conditions
-        }
-
-        // A faire aujourd’hui : dueDate == aujourd’hui
-        if (dueDate.getTime() === today.getTime()) {
-          countToday++;
-        }
-
-        // Urgent : priorité >= 2 ET dueDate >= aujourd’hui
-        if (todo.priorite != null && todo.priorite >= 2 && dueDate >= today) {
-          countUrgent++;
-        }
-      }
-
-      // Mise à jour des KPIs avec les valeurs calculées
-      this.kpis[0].number = countToday;  // A faire aujourd'hui
-      this.kpis[1].number = countLate;   // Tâches en retard
-      this.kpis[2].number = countUrgent; // Tâches urgentes
-      // Remarque : countNoDueDate n'est pas utilisé ici, mais pourrait servir pour un KPI "Sans échéance"
+      this.completedTodos = this.todos.filter(t => t.completed);
     });
   }
+
+  calculerKpis() {
+    this.kpis.forEach(kpi => kpi.number = 0);
+
+    for (let todo of this.todos) {
+      const etat = this.getTodoEtat(todo);
+
+      const kpi = this.kpis.find(k => k.etat === etat);
+      if (kpi) kpi.number++;
+    }
+  }
+
+  getTodoEtat(todo: Todo): string {
+    if (todo.completed) return 'Effectuée';
+    if (!todo.dueDate) return 'Flexible';
+
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const dueDate = new Date(todo.dueDate); dueDate.setHours(0, 0, 0, 0);
+
+    if (dueDate.getTime() === today.getTime()) return 'À faire auj.';
+    if (todo.priorite != null && todo.priorite >= 2) return 'Urgent';
+    if (dueDate < today) return 'En retard';
+    
+
+    return 'À venir';
+  }
+
+  getTodosByEtat(etat: string): Todo[] {
+    return this.todos.filter(t => this.getTodoEtat(t) === etat);
+  }
+
+
+    // pour la barre de progression
+    getProgressionGlobale(): number {
+      if (!this.todos.length) return 0;
+      const done = this.todos.filter(t => t.completed).length;
+      return Math.round((done / this.todos.length) * 100);
+    }
+
+    // pour le systme de badge selon % progression
+    getBadgeMotivation(): { label: string, color: string, icon: string } {
+      const p = this.getProgressionGlobale();
+    
+      if (p < 20) return { label: "Débutant", color: " text-gray-700", icon: "hourglass_empty" };
+      if (p < 40) return { label: "En route", color: " text-blue-800", icon: "directions_walk" };
+      if (p < 60) return { label: "Motivé", color: " text-yellow-800", icon: "trending_up" };
+      if (p < 80) return { label: "Productif", color: " text-green-800", icon: "task_alt" };
+      return { label: "Champion", color: " text-purple-900", icon: "emoji_events" };
+    }
+    
+    
+
+  
 }

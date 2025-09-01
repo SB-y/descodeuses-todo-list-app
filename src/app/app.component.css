@@ -1,13 +1,30 @@
 .bg-user {
-  background-color: #0891B2;
+  background-color: #F3F4F7;
 }
 
 .bg-admin {
-  background-color: #CA8A04;
+  background-color: #E7E9EF;
 }
 
 .bg-default {
-  background-color: grey
+  background-color:#E7E9EF;
+}
+
+/* liens de la sidebar : rectangle gris au hover/focus, pas d'arrondi */
+mat-sidenav a.mat-mdc-list-item {
+  border-radius: 0;
+}
+mat-sidenav a.mat-mdc-list-item:hover,
+mat-sidenav a.mat-mdc-list-item:focus {
+  background: #f3f4f6; /* gray-100 */
+}
+mat-sidenav a.mat-mdc-list-item.cdk-program-focused {
+  outline: 2px solid #000; /* focus clavier noir */
+  outline-offset: -2px;
+}
+
+#menumob a {
+font-size: 0.8rem;
 }
 
 @media (max-width: 1024px) {

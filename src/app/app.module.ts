@@ -41,6 +41,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContactDetailsComponent } from './components/contact-details/contact-details.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -90,7 +92,10 @@ import { ContactDetailsComponent } from './components/contact-details/contact-de
     MatAutocompleteModule,
     FormsModule, ReactiveFormsModule,
     MatDialogModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule, 
+    MatProgressSpinnerModule
+    
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' },

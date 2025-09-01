@@ -16,6 +16,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 // Service Angular Material pour afficher des messages temporaires (pop-up en bas de l’écran)
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+// Service d’authentification pour savoir si l’utilisateur est admin
+import { AuthenService } from '../../auth/auth.guard/authen.service';
+
 // Déclare un composant Angular
 @Component({
   selector: 'app-signup', // Nom du composant dans le HTML (balise <app-signup>)
@@ -45,7 +48,8 @@ export class SignupComponent implements OnInit {
     private userService: UserService, // Pour interagir avec l’API utilisateur
     private route: ActivatedRoute, // Pour lire les paramètres de l'URL
     private snackBar: MatSnackBar, // Pour afficher les messages (toast)
-    private router: Router // Pour rediriger après inscription
+    private router: Router, // Pour rediriger après inscription
+    public authService: AuthenService // ⚡ rendre accessible dans le template
   ) { }
 
   // Méthode exécutée automatiquement à l’initialisation du composant
@@ -78,7 +82,8 @@ export class SignupComponent implements OnInit {
         surname: [''],
         username: ['', Validators.required],
         password: ['', Validators.required],
-        genre: ['']
+        genre: [''],
+        role: ['ROLE_USER'] // ⚡ valeur par défaut
       });
     }
   }

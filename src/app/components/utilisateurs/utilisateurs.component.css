@@ -1,7 +1,23 @@
-.bg-user {
-    background-color: #0891B2;
-  }
-  
+
   .bg-admin {
-    background-color: #CA8A04;
+    background-color: #E7E9EF;
   }
+
+
+  /* Forcer la taille du label Material */
+mat-label {
+  font-size: 14px !important;
+}
+
+/* Forcer la taille du texte saisi */
+.mat-mdc-input-element {
+  font-size: 14px !important;
+}
+
+mat-option {
+  font-size: 14px !important;
+}
+
+mat-select {
+  font-size: 14px !important;
+}

@@ -1,20 +1,123 @@
-<div id="full-cover-background" class="flex h-screen">
+<div id="full-cover-background" class="mx-auto max-w-3xl mt-20 px-4 md:px-8">
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center mt-10 md:mt-60 m-auto">
+  <!-- Progression globale -->
+  <div class="w-full max-w-md mx-auto mb-8">
 
-    @for(kpi of kpis; track kpi.id) {
-    <mat-card [ngClass]="kpi.bg" class="p-4 w-80 h-50 mx-auto flex justify-center cursor-pointer" [routerLink]="['/todotable']">
-        <div class="flex flex-row items-center gap-x-4">
-            <mat-icon class="text-white">{{kpi.icon}}</mat-icon>
+    <!-- Titre + Badge alignés -->
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-md font-medium text-gray-700">Ma progression</h3>
 
-            <div id="texte" class="flex flex-col gap-y-2">
-                <div id="title" class="text-xs  text-white uppercase">{{kpi.title}}</div>
-                <div id="number" class="text-2xs text-white font-bold">{{kpi.number}}</div>
+      <!-- Badge -->
+      <div *ngIf="getBadgeMotivation() as badge"
+           [ngClass]="badge.color"
+           class="flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold">
+        <mat-icon class="!text-sm">{{ badge.icon }}</mat-icon>
+        {{ badge.label }}
+      </div>
+    </div>
 
-            </div>
-        </div>
-    </mat-card>
-    }
-</div>
+    <!-- Barre progression -->
+    <div class="w-full bg-gray-200 rounded-full h-6">
+      <div class="h-6 rounded-full bg-emerald-300 flex items-center text-black text-sm transition-all duration-500"
+           [style.width.%]="getProgressionGlobale()"
+           [ngClass]="{ 'pl-2 justify-start': getProgressionGlobale() < 15,
+                        'justify-center': getProgressionGlobale() >= 15 }">
+        {{ getProgressionGlobale() }}%
+      </div>
+    </div>
+  </div>
 
+  <!-- Accordéon des tâches par état -->
+  <div class="w-full max-w-xl mx-auto mt-25">
+    <mat-accordion multi class="shadow-none">
+      @for (kpi of kpis; track kpi.id) {
+        <mat-expansion-panel class="!shadow-none border border-gray-200 rounded-lg overflow-hidden mb-3">
+
+          <!-- Header -->
+          <mat-expansion-panel-header>
+            <mat-panel-title class="flex items-center gap-4 text-sm min-w-[40%]">
+              <mat-icon class="text-md">{{ kpi.icon }}</mat-icon>
+              {{ kpi.title }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold text-white"
+                    [ngClass]="kpi.bg">
+                {{ kpi.number }}
+              </span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- Liste des tâches -->
+          <ul class="space-y-2 mt-2 list-none">
+            @for (todo of getTodosByEtat(kpi.etat); track todo.id) {
+              <li class="bg-white rounded-lg px-3 py-2 border hover:bg-gray-50 transition">
+
+                <!-- Ligne principale -->
+                <div class="flex justify-between items-center">
+                  <span class="font-medium text-sm text-gray-800">{{ todo.title }}</span>
+                  <span class="text-xs text-gray-500">
+                    {{ todo.dueDate ? (todo.dueDate | date:'dd/MM') : 'flexible' }}
+                  </span>
+                </div>
+
+                <!-- Membres -->
+                <div *ngIf="todo.membres?.length" class="mt-1 flex flex-wrap gap-1.5">
+                  @for (m of todo.membres; track m.id) {
+                    <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-[10px]">
+                      {{ m.prenom }} {{ m.nom }}
+                    </span>
+                  }
+                </div>
+
+                <!-- Priorité -->
+                <div *ngIf="todo.priorite" class="mt-1">
+                  <span class="text-[10px] px-2 py-0.5 rounded-full"
+                        [ngClass]="{
+                          'bg-pink-200 text-pink-800': todo.priorite >= 2,
+                          'bg-gray-200 text-gray-600': todo.priorite < 2
+                        }">
+                    Priorité {{ todo.priorite }}
+                  </span>
+                </div>
+              </li>
+            }
+          </ul>
+
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  </div>
+
+  <!-- Récentes activités + Tâches complétées -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-20 w-full mx-auto">
+
+    <!-- Récentes activités -->
+    <div>
+      <h3 class="text-base text-gray-700 mb-3">Dernières tâches ajoutées</h3>
+      <ul class="space-y-2 pl-0">
+        @for (todo of recentTodos; track todo.id) {
+          <li class="flex justify-between items-center bg-white rounded-lg shadow-xs px-3 py-2">
+            <span class="text-sm">{{ todo.title }}</span>
+            <span class="text-xs text-gray-500">
+              {{ todo.dueDate ? ('pour le ' + (todo.dueDate | date:'dd/MM')) : 'flexible' }}
+            </span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Tâches complétées -->
+    <div>
+      <h3 class="text-base text-gray-700 mb-3">Tâches complétées</h3>
+      <ul class="space-y-2 pl-0">
+        @for (todo of completedTodos; track todo.id) {
+          <li class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 text-sm text-gray-600">
+            <mat-icon class="text-emerald-400 text-sm">check_circle</mat-icon>
+            <span class="line-through">{{ todo.title }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+  </div>
 </div>

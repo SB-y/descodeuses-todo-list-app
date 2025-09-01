@@ -1,3 +1,182 @@
-:root {
-    --mat-sys-primary: light-dark(var(--color-cyan-600), var(--color-cyan-600));
+/* =========================
+   Palette & base
+   ========================= */
+:root,
+body,
+.mat-app-background,
+.mat-mdc-theme {
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  /* bordure neutre */
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  /* liens discrets */
+  --gray-500: #6b7280;
+  /* lien hover */
+  --text: #111827;
+  /* texte principal */
+}
+
+html,
+body {
+  background: #fff;
+  color: var(--text);
+}
+
+/* Liens */
+a {
+  color: var(--gray-400);
+  text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+  color: var(--gray-500);
+}
+
+/* =========================
+     Angular Material - Form fields
+     ========================= */
+.mdc-text-field.mdc-text-field--outlined {
+  --mdc-outlined-text-field-outline-color: var(--gray-200);
+  --mdc-outlined-text-field-hover-outline-color: var(--gray-300);
+  --mdc-outlined-text-field-focus-outline-color: #000;
+  background: #fff;
+  color: var(--text);
+}
+
+.mdc-text-field.mdc-text-field--filled {
+  --mdc-filled-text-field-active-indicator-color: var(--gray-200);
+  --mdc-filled-text-field-hover-active-indicator-color: var(--gray-300);
+  --mdc-filled-text-field-focus-active-indicator-color: #000;
+  --mdc-filled-text-field-container-color: #fff;
+  color: var(--text);
+}
+
+/* Padding correct dans les champs Angular Material */
+.mat-mdc-form-field-infix {
+  padding: 12px !important;
+  /* espace interne horizontal + vertical */
+  min-height: 44px;
+  /* hauteur minimale confortable */
+  display: flex;
+  align-items: center;
+}
+
+/* Corrige le cas des champs avec label flottant */
+.mat-mdc-form-field-infix input,
+.mat-mdc-form-field-infix textarea {
+  padding: 0 !important;
+  /* éviter le double padding */
+}
+
+/* Empêcher le rouge automatique */
+.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__trailing {
+  border-color: var(--gray-200) !important;
+}
+
+/* Inputs natifs */
+input,
+textarea,
+select {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--gray-200);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 1px #000;
+}
+
+/* =========================
+     Checkbox (gris)
+     ========================= */
+.mat-mdc-checkbox {
+  --mdc-checkbox-unselected-icon-color: var(--gray-200);
+  --mdc-checkbox-unselected-hover-icon-color: var(--gray-300);
+  --mdc-checkbox-unselected-pressed-icon-color: var(--gray-300);
+
+  --mdc-checkbox-selected-hover-state-layer-color: var(--gray-300);
+  --mdc-checkbox-unselected-hover-state-layer-color: var(--gray-300);
+  --mdc-checkbox-selected-focus-state-layer-color: var(--gray-300);
+  --mdc-checkbox-unselected-focus-state-layer-color: var(--gray-300);
+
+  --mdc-checkbox-selected-icon-color: var(--gray-400);
+  --mdc-checkbox-selected-checkmark-color: #fff;
+}
+
+/* =========================
+     Sidebar / Listes
+     ========================= */
+.mat-sidenav,
+.mat-drawer,
+.mat-drawer-inner-container {
+  border-radius: 0;
+}
+
+.mat-mdc-list-item,
+.mdc-list-item {
+  border-radius: 0 !important;
+}
+
+.mat-mdc-list-item:hover,
+.mdc-list-item:hover {
+  background: var(--gray-100);
+}
+
+.mat-mdc-list-item.is-active {
+  background: var(--gray-200);
+  font-weight: 500;
+}
+
+/* =========================
+     Boutons
+     ========================= */
+button.mat-mdc-raised-button,
+button.mat-mdc-stroked-button,
+button.mat-mdc-outlined-button,
+button.mat-mdc-unelevated-button {
+  border-radius: 40px !important;
+}
+
+button.mat-mdc-icon-button {
+  border-radius: 50% !important;
+}
+
+/* =========================
+     Menus / Autocomplete
+     ========================= */
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel,
+.mat-mdc-menu-panel {
+  background: #fff !important;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px !important;
+}
+
+/* =========================
+     Toolbar (collante)
+     ========================= */
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* =========================
+     Divers
+     ========================= */
+.mat-mdc-divider {
+  border-top-color: var(--gray-200) !important;
+}
+
+.mat-mdc-card.mat-mdc-card-outlined {
+  border-color: var(--gray-200) !important;
 }

@@ -18,7 +18,7 @@ export class TodoService {
 
   // URL de base de l'API backend pour gérer les todos
   //private apiURL = "http://localhost:8080/api/action"; // auparavant "api/todos"
-  private apiURL = environment.apiUrl+ '/api/action';
+  private apiURL = environment.apiUrl + '/api/action';
 
   // Injection de HttpClient pour communiquer avec l'API backend
   constructor(private http: HttpClient) { }
@@ -66,6 +66,11 @@ export class TodoService {
     return this.http.delete(this.apiURL + '/' + id, {
       headers: this.getAuthHeaders()
     });
+  }
+
+  // Recherche de todos côté front (filtrage après récupération)
+  searchTodos(term: string) {
+    return this.getTodos(); // On réutilise getTodos, puis on filtrera côté composant
   }
 
 }

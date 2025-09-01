@@ -90,5 +90,16 @@ export class ProjetdetailsComponent implements OnInit {
     this.router.navigate(["/todolist"]); // pour retourner à la page générale todolist
   }
 
+  onDelete(id: number | null) {
+    if (id == null)
+      return;
+
+    // Suppression côté serveur
+    this.projetService.deleteProjet(id).subscribe(() => {
+      // actualiser la liste après la suppression
+      this.snackBar.open('Supprimé !', '', { duration: 1000 }); // Notification
+    })
+  }
+
 
 }

@@ -1,148 +1,134 @@
-<div id="full-cover-background" class="flex h-full items-center justify-center p-4">
+<div id="full-cover-background"
+  class="mx-2 md:mx-8 lg:mx-16 rounded-[40px] border border-gray-200 bg-white p-4 md:p-6 text-sm mt-20 flex justify-center">
 
-    <!-- @if(todoForm!=null) { utiliser dans le template pour afficher le formulaire seulement quand il est prêt-->
+  <div *ngIf="todoForm" id="centered-block" class="w-full max-w-3xl"> <!-- ⬅️ max largeur -->
 
+    <!-- Header -->
+    <mat-card-header class="w-full flex justify-center mb-15">
+      <h2 class="text-center text-xl font-semibold text-gray-500">
+        {{ todo.title }}
+      </h2>
+    </mat-card-header>
 
-    <div *ngIf="todoForm" id="centered-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-md mt-30">
+    <!-- Form -->
+    <mat-card-content>
+      <form [formGroup]="todoForm" (ngSubmit)="onSubmitTodo()">
 
-        <mat-card-header class="w-full flex justify-center">
+        <!-- 2 colonnes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <h2 class="text-center text-2xl font-semibold mb-20">Edit Todo</h2>
+          <!-- COLONNE GAUCHE -->
+          <div class="space-y-3">
 
-        </mat-card-header>
+            <!-- Utilisateur -->
+            <mat-form-field class="w-full" appearance="outline">
+              <input matInput [value]="todo.surname + ' ' + todo.name" readonly />
+            </mat-form-field>
 
-        <mat-card-content>
+            <!-- Membre -->
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Membre associé</mat-label>
+              <mat-chip-grid #chipGrid aria-label="Membre sélection">
+                @for (contact of selectedContacts; track contact.id) {
+                <mat-chip-row (removed)="remove(contact)" class="!bg-emerald-200 !text-black">
+                  {{ contact.nom }} {{ contact.prenom }}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+                }
+              </mat-chip-grid>
+              <input [formControl]="currentContact" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                @for (contact of filteredContacts; track contact.id) {
+                <mat-option [value]="contact">
+                  {{ contact.nom }} {{ contact.prenom }}
+                </mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
 
-            <!-- [formGroup] est une directive (attribut spécifique) -->
-            <form class="mt-5" [formGroup]="todoForm" (ngSubmit)="onSubmitTodo()">
+            <!-- Projet -->
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Projet associé</mat-label>
+              <mat-select formControlName="projet">
+                <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
+                  {{ projet.title }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                <!-- Champ caché id -->
-                <input type="hidden" formControlName="id" />
+          </div>
 
-                <div id="member-cont" class="mb-4">
-                    <mat-form-field class="w-full" appearance="outline">
-                        <mat-label>Membre</mat-label>
-                        <mat-chip-grid #chipGrid aria-label="Membre sélection">
-                            @for (contact of selectedContacts; track contact.id) {
-                                <mat-chip-row (removed)="remove(contact)">
-                                  {{ contact.nom }} {{ contact.prenom }}
-                                  <button matChipRemove [attr.aria-label]="'remove ' + contact.nom">
-                                    <mat-icon>cancel</mat-icon>
-                                  </button>
-                                </mat-chip-row>
-                              }
-                        </mat-chip-grid>
-                        <input
-                        name="currentContact"
-                        placeholder="New contact..."
-                        #contactInput
-                        [formControl]="currentContact"
-                        [matChipInputFor]="chipGrid"
-                        [matAutocomplete]="auto"
-                     
-                        />
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                            @for (contact of filteredContacts; track contact.id) {
-                              <mat-option [value]="contact">
-                                {{ contact.nom }} {{ contact.prenom }}
-                              </mat-option>
-                            }
-                          </mat-autocomplete>
-                    </mat-form-field>
-                </div>
+          <!-- COLONNE DROITE -->
+          <div class="space-y-3">
 
+            <!-- Titre -->
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Tâche</mat-label>
+              <input matInput formControlName="title" type="text" placeholder="Nom de la tâche" />
+            </mat-form-field>
 
-                <div id="projet-cont" class="mb-4">
-                    <mat-form-field class="w-full" appearance="outline">
-                        <mat-label>Projet</mat-label>
-                        <mat-select formControlName="projet">
-                          <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
-                            {{ projet.title }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                </div>
+            <!-- Description -->
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="textarea" rows="1"></textarea>
+            </mat-form-field>
 
-<!-- 
-                <div id="projet-cont" class="text-center">
-                    <mat-form-field class="w-80" appearance="outline">
-                        <mat-label>Utilisateur</mat-label>
-                        <mat-select formControlName="utilisateur">
-                          <mat-option *ngFor="let utilisateur of allUtilisateurs" [value]="utilisateur.id">
-                            {{ utilisateur.username }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                </div>
--->
+            <!-- Priorité + Échéance -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Priorité</mat-label>
+                <mat-select formControlName="priorite">
+                  @for (priorite of listPriorite; track priorite.number) {
+                  <mat-option [value]="priorite.number">{{ priorite.number }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
 
-                <div id="utilisa-cont" class="mb-4">
-                    <mat-form-field class="w-full" appearance="outline">
-                        <mat-label>Utilisateur</mat-label>
-                        <input matInput [value]="todo.surname + ' ' + todo.name" readonly />
-                      </mat-form-field>
-                </div>
+              <mat-form-field appearance="outline" class="custom-datepicker">
+                <mat-label>Échéance</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
 
-                <div id="title-cont" class="mb-4">
-                    <mat-form-field class="w-full" appearance="outline">
-                        <mat-label>Titre</mat-label>
-                        <input matInput formControlName="title" type="text" placeholder="nom" />
-                    </mat-form-field>
-                </div>
+          </div>
 
-                <div id="textarea-cont" class="mb-4">
-                    <mat-form-field class="w-full" appearance="outline">
-                        <mat-label>Description</mat-label>
-                        <textarea matInput formControlName="textarea"></textarea>
-                    </mat-form-field>
-                </div>
+        </div>
 
-                <div id="priorite-cont" class="mb-4">
-                    <mat-form-field class="w-full" appearance="outline">
-                        <mat-label>Priorité</mat-label>
-                        <mat-select formControlName="priorite">
-                            @for (priorite of listPriorite; track priorite.number) {
-                            <mat-option [value]="priorite.number">{{priorite.number}}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+            <!-- Complété -->
+            <div class="flex items-center justify-center gap-3 mt-4">
+              <mat-checkbox formControlName="completed"></mat-checkbox>
+              <span class="text-gray-600">Marquer comme terminé</span>
+            </div>
 
-                <div id="duedate-cont" class="mb-4">
-                    <mat-form-field class="w-full" appearance="outline">
-                        <mat-label>Echéance</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="dueDate" />
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                </div>
+       
 
-                <div id="completed-cont" class="text-center mb-4">
-                    <mat-label>Complété</mat-label>
-                    <mat-checkbox formControlName="completed"></mat-checkbox>
-                </div>
+        <!-- Boutons -->
+        <div class="flex justify-center gap-6 mt-15">
+          <!-- Enregistrer : vert clair -->
+          <button mat-raised-button type="submit"
+            class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
+            Enregistrer
+          </button>
 
+          <!-- Annuler : gris clair -->
+          <button mat-stroked-button (click)="onCancel()"
+            class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
+            <mat-icon>arrow_back</mat-icon> Annuler
+          </button>
 
+          <!-- Supprimer : rouge clair -->
+          <button mat-stroked-button (click)="onDelete(todo.id)"
+            class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
+           Supprimer
+          </button>
+        </div>
 
-                <div>
-                    <div class="flex flex-row justify-center gap-5 mt-12">
+      </form>
+    </mat-card-content>
 
-                        <button mat-raised-button type="submit" class="w-28">
-                            Enregistrer
-                        </button>
-
-                        <button mat-stroked-button (click)="onCancel()" class="w-28">
-                            Annuler
-                        </button>
-
-                    </div>
-                </div>
-
-            </form>
-
-        </mat-card-content>
-
-    </div>
-
-
+  </div>
 </div>

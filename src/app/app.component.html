@@ -7,19 +7,53 @@
                    'bg-default': !authService.isAdmin() && !authService.isUser()
                  }">
 
+
+        <!-- Recherche tâche -->
+        <div class="flex items-center bg-white rounded-full w-4/5 ml-3 mt-6 mb-6 pr-4">
+            <!-- Icône recherche -->
+            <button mat-icon-button (click)="onSearchTodo()" class="flex items-center justify-center w-8 h-8">
+                <mat-icon>search</mat-icon>
+            </button>
+
+            <!-- Input avec autocomplete -->
+            <input matInput [(ngModel)]="rechercheTodo" (input)="filtrerTodos()" [matAutocomplete]="auto"
+                placeholder="Go vers une tâche" class="border-none outline-none bg-transparent text-sm flex-1" />
+
+            <!-- Dropdown suggestions -->
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="goToTodo($event.option.value)">
+                <mat-option *ngFor="let todo of suggestions" [value]="todo.title" class="!text-xs">
+                    {{ todo.title }}
+                </mat-option>
+            </mat-autocomplete>
+        </div>
+
+
         <mat-nav-list>
             @if (!authService.isLoggedIn()) {
             @for (item of listMenuPasLogged; track item.path) {
-            <a mat-list-item class="!text-white" [routerLink]="item.path">
-                <span class="!text-white">{{ item.title }}</span></a>
+            <a mat-list-item class="!text-black" [routerLink]="item.path">
+                <span class="!text-black text-sm">{{ item.title }}</span>
+            </a>
             }
             }
 
             @for (item of listMenu; track item.path) {
             @if (authService.isAdmin() || (authService.isUser() && item.path !== '/utilisateurs')) {
-            <a mat-list-item class="!text-white" [routerLink]="item.path">
-                <span class="!text-white">{{ item.title }}</span></a>
-            } }
+            <!-- Cas normal -->
+            @if (item.path !== '/logout') {
+            <a mat-list-item class="!text-black text-sm" [routerLink]="item.path">
+                <span class="!text-black">{{ item.title }}</span>
+            </a>
+            }
+            <!-- Cas spécial : logout -->
+            @if (item.path === '/logout') {
+            <a [routerLink]="item.path" class="inline-block text-center mt-4 px-4 py-1 ml-3 rounded-full bg-black text-white 
+                            hover:bg-gray-500 hover:text-white transition no-underline text-xs">
+                {{ item.title }}
+            </a>
+            }
+            }
+            }
         </mat-nav-list>
     </mat-sidenav>
 
@@ -27,7 +61,7 @@
     <mat-sidenav-content class="flex flex-col h-full">
 
         <!-- Toolbar -->
-        <mat-toolbar color="primary" class="flex justify-between">
+        <mat-toolbar color="primary" class="sticky top-0 z-50 flex justify-between">
             <span>{{ title }}</span>
 
             <!-- Bouton menu mobile -->
@@ -42,20 +76,31 @@
             'bg-user': authService.isUser(),
             'bg-default': !authService.isAdmin() && !authService.isUser()
           }">
-            <mat-nav-list>
+
+            <!-- Recherche tâche -->
+            <div class="flex items-center bg-white rounded-full w-4/5 ml-3 mt-6 mb-6 pr-4">
+                <button mat-icon-button (click)="onSearchTodo()" class="flex items-center justify-center w-8 h-8">
+                    <mat-icon>search</mat-icon>
+                </button>
+
+                <input matInput [(ngModel)]="rechercheTodo" (keyup.enter)="onSearchTodo()"
+                    placeholder="Go vers une tâche" class="border-none outline-none bg-transparent text-sm" />
+            </div>
+
+            <mat-nav-list id="menumob">
 
                 @if (!authService.isLoggedIn()) {
-                    @for (item of listMenuPasLogged; track item.path) {
-                    <a mat-list-item class="!text-white" [routerLink]="item.path" (click)="topMenuOpen = false">
-                        <span class="!text-white">{{ item.title }}</span></a>
-                    }
-                    }
-        
-                    @for (item of listMenu; track item.path) {
-                    @if (authService.isAdmin() || (authService.isUser() && item.path !== '/utilisateurs')) {
-                    <a mat-list-item class="!text-white" [routerLink]="item.path" (click)="topMenuOpen = false">
-                        <span class="!text-white">{{ item.title }}</span></a>
-                    } }
+                @for (item of listMenuPasLogged; track item.path) {
+                <a mat-list-item class="!text-black" [routerLink]="item.path" (click)="topMenuOpen = false">
+                    <span class="!text-black">{{ item.title }}</span></a>
+                }
+                }
+
+                @for (item of listMenu; track item.path) {
+                @if (authService.isAdmin() || (authService.isUser() && item.path !== '/utilisateurs')) {
+                <a mat-list-item class="!text-black" [routerLink]="item.path" (click)="topMenuOpen = false">
+                    <span class="!text-black">{{ item.title }}</span></a>
+                } }
             </mat-nav-list>
         </div>
 

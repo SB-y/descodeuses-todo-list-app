@@ -1,0 +1,8 @@
+::placeholder {
+    font-size: 14px;
+}
+
+  /* Forcer la taille du texte saisi */
+  .mat-mdc-input-element {
+    font-size: 14px !important;
+  }

@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Projet } from '../../models/projet.model';
 import { ProjetService } from '../../services/projet.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class TodoListComponent implements OnInit {
     private todoService: TodoService,    // Service qui gère les requêtes Todo (GET, POST, PUT, DELETE)
     private snackBar: MatSnackBar,       // Pour afficher des notifications (feedback visuel à l’utilisateur)
     private projetService: ProjetService,// Service qui gère les projets
-    private fbp: FormBuilder             // Pour construire le formGroup des projets
+    private fbp: FormBuilder,             // Pour construire le formGroup des projets
+    private router: Router
   ) {
     // Initialisation du formulaire pour Todo
     this.formGroup = this.fb.group({
@@ -60,7 +62,7 @@ export class TodoListComponent implements OnInit {
   fetchTodo() {
     //Communication asynchrone donc il faut s'inscrire pour avoir le retour
     this.todoService.getTodos().subscribe((data) => {
-      this.todos = data; // On met à jour la liste locale avec les données reçues
+      this.todos = data.sort((a, b) => (b.id ?? 0) - (a.id ?? 0)); // trier par id décroissant (tache ajoutée du plus récent au plus ancien)
     });
   }
 
@@ -83,12 +85,20 @@ export class TodoListComponent implements OnInit {
         utilisateurId:null*/
       };
 
-      // Envoi du nouveau Todo au serveur
-      this.todoService.addTodo(todo).subscribe(data => {
-        // actualiser la liste après l'ajout
-        this.fetchTodo(); // synchronisation du front avec le "serveur" (visualier le changement dans l'affichage)
+      // Envoi du nouveau Todo au serveur et redirection vers le tododetail du todo crée
+      this.todoService.addTodo(todo).subscribe((created: Todo) => {
+        // `created.id` vient du body JSON renvoyé par le back
+        const id = created?.id;
+      
+        this.fetchTodo();
+        this.formGroup.reset();
+      
+        if (id != null) {
+          this.router.navigate(['/tododetails', id]);
+        } else {
+          console.warn('ID manquant dans la réponse du POST /api/action');
+        }
       });
-
     }
   }
 
@@ -151,11 +161,19 @@ export class TodoListComponent implements OnInit {
       };
 
       // Envoi du nouveau Projet au serveur
-      this.projetService.addProjet(projet).subscribe(data => {
-        // actualiser la liste après l'ajout
-        this.fetchProjet(); // synchronisation du front avec le "serveur" (visualier le changement dans l'affichage)
-      });
-
+      this.projetService.addProjet(projet).subscribe((created: Projet) => {
+             // `created.id` vient du body JSON renvoyé par le back
+             const id = created?.id;
+      
+             this.fetchTodo();
+             this.formGroup.reset();
+           
+             if (id != null) {
+               this.router.navigate(['/projetdetails', id]);
+             } else {
+               console.warn('ID manquant dans la réponse du POST /api/action');
+             }
+           });
     }
   }
 

@@ -1,61 +1,71 @@
-<div id="full-cover-background" class="flex flex-col items-center p-4 min-h-screen">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-20 mx-3 md:mx-10 lg:mx-20">
 
-    <div id="todo-block" class="p-6  w-full max-w-lg mx-auto my-4 mt-30">
-        <form [formGroup]="formGroup" (ngSubmit)="onAddTodo()">
-            <div id="todo-bar-saisie" class="flex flex-wrap gap-2 mb-30">
-                <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
-                    <input matInput formControlName="title" placeholder="Nouvelle tâche" id="todo-input">
-                </mat-form-field>
-                <button mat-icon-button color="primary" type="submit" class="mt-2 sm:mt-2" id="todo-add-btn">
-                    <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
-                </button>
+  <!-- Formulaires -->
+  <div class="bg-gray-50 p-6 rounded-2xl shadow-sm flex flex-col gap-6 justify-center lg:col-span-5">
+    <h2 class="text-lg font-medium mb-2">Ajouter</h2>
+
+    <!-- Ajout Tâche -->
+    <form [formGroup]="formGroup" (ngSubmit)="onAddTodo()" class="flex items-center gap-2">
+      <mat-form-field appearance="outline" class="flex-1 !mb-0">
+        <input matInput formControlName="title" placeholder="Nouvelle tâche">
+      </mat-form-field>
+      <button mat-icon-button type="submit" class="rounded-full hover:bg-gray-100  mb-6">
+        <mat-icon class="!text-emerald-400">add_circle</mat-icon>
+      </button>
+    </form>
+
+    <!-- Ajout Projet -->
+    <form [formGroup]="projformGroup" (ngSubmit)="onAddProjet()" class="flex items-center gap-2">
+      <mat-form-field appearance="outline" class="flex-1 !mb-0">
+        <input matInput formControlName="title" placeholder="Nouveau projet">
+      </mat-form-field>
+      <button mat-icon-button type="submit" class="rounded-full hover:bg-gray-100  mb-6">
+        <mat-icon class="!text-emerald-400">add_circle</mat-icon>
+      </button>
+    </form>
+  </div>
+
+  <!-- Listes -->
+  <div class="flex flex-col gap-10 bg-white p-6 rounded-2xl shadow-sm lg:col-span-7">
+
+    <!-- Tâches -->
+    <section>
+      <h2 class="text-lg font-medium mb-4">Mes tâches</h2>
+      <mat-list>
+        @for (todo of todos; track todo.id; let i = $index) {
+          <mat-list-item>
+            <div class="flex items-center gap-3 w-full">
+              <mat-checkbox [checked]="todo.completed" (change)="onCheckChange($event, todo)"></mat-checkbox>
+              <span [routerLink]="['/tododetails', todo.id]"
+                class="flex-1 text-sm cursor-pointer whitespace-normal break-words">
+                {{ todo.title }}
+              </span>
+              <button mat-icon-button (click)="onDeleteTodo(todo.id)">
+                <mat-icon class="!text-red-300">delete</mat-icon>
+              </button>
             </div>
-        </form>
-        <div id="todo-liste">
-            <mat-list>
-                @for(todo of todos; track todo.id) {
-                <mat-list-item data-testid="todo-item">
-                    <div class="flex items-center">
-                        <mat-checkbox [checked]="todo.completed" (change)="onCheckChange($event, todo)" data-testid="todo-checkbox"></mat-checkbox>
-                        <span [routerLink]="['/tododetails', todo.id]" class="flex-1 !text-cyan-900 cursor-pointer">{{ todo.title
-                            }}</span>
-                        <button mat-icon-button (click)="onDeleteTodo(todo.id)">
-                            <mat-icon matListItemIcon class="!text-cyan-600">delete</mat-icon>
-                        </button>
-                    </div>
-                </mat-list-item>
-                }
-            </mat-list>
-        </div>
-    </div>
+          </mat-list-item>
+          <mat-divider *ngIf="i < todos.length - 1" class="!border-gray-200"></mat-divider>
+        }
+      </mat-list>
+    </section>
 
+    <!-- Projets -->
+    <section>
+      <h2 class="text-lg font-medium mb-8">Mes projets</h2>
+      <div class="flex flex-wrap gap-2">
+        @for (projet of allProjets; track projet.id) {
+          <div [routerLink]="['/projetdetails', projet.id]"
+            class="flex items-center justify-between bg-gray-200 text-gray-800 text-sm px-3 py-1.5 rounded-full cursor-pointer hover:bg-emerald-400 hover:text-white transition w-full sm:w-auto max-w-xs">
+            
+            <span class="truncate">{{ projet.title }}</span>
+            <button mat-icon-button (click)="onDeleteProjet(projet.id)" class="!h-5 !w-5 !min-h-0 !p-0 ml-2">
+              <mat-icon class="hover:!text-red-400 !text-sm !text-black">delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    </section>
 
-    <div id="projet-block" class="bg-white p-6 rounded-xl shadow-md w-full max-w-lg mx-auto my-4 mt-30">
-        <form [formGroup]="projformGroup" (ngSubmit)="onAddProjet()">
-            <div id="projet-bar-saisie" class="flex flex-wrap gap-2">
-                <mat-form-field appearance="outline" class="flex-1 min-w-[200px]">
-                    <input matInput formControlName="title" placeholder="Nouveau projet" id="projet-input">
-                </mat-form-field>
-                <button mat-icon-button color="primary" type="submit" class="mt-2" id="projet-add-btn">
-                    <mat-icon matListItemIcon class="!text-cyan-600">add_circle</mat-icon>
-                </button>
-            </div>
-        </form>
-        <div id="projet-liste">
-            <mat-list>
-                @for(projet of allProjets; track projet.id) {
-                <mat-list-item data-testid="projet-item">
-                    <div class="flex items-center">
-                        <span [routerLink]="['/projetdetails', projet.id]" class="flex-1  !text-cyan-900 cursor-pointer" data-testid="projet-title">{{ projet.title
-                            }}</span>
-                        <button mat-icon-button (click)="onDeleteProjet(projet.id)">
-                            <mat-icon matListItemIcon class="!text-cyan-600">delete</mat-icon>
-                        </button>
-                    </div>
-                </mat-list-item>
-                }
-            </mat-list>
-        </div>
-    </div>
-
+  </div>
 </div>

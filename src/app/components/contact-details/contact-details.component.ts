@@ -18,6 +18,7 @@ export class ContactDetailsComponent implements OnInit {
   contactForm!: FormGroup; // ! car cela est déclaré dans le ngOnInit, on aurait pu le faire dans le constructeur 
   // et ne pas mettre de point d'exclamation (en fait une propriété doit toujours être initialisée)
 
+  contacts: Contact[] = [];  
 
   // Injection des dépendances :
   constructor(
@@ -85,6 +86,27 @@ export class ContactDetailsComponent implements OnInit {
 
   onCancel() {
     this.router.navigate(["/contacts"]); // pour retourner à la page générale liste contacts
+  }
+
+
+  onDelete(id: number) {
+    // appel au service pour supprimer un contact par ID
+    this.service.deleteContact(id).subscribe({
+      next: () => {
+        // Suppression côté front uniquement si succès
+        const index = this.contacts.findIndex(contact => contact.id === id);
+        this.contacts.splice(index, 1); // supprime de la liste complète
+      },
+      error: (err) => {
+        // Affiche un snackbar si le back renvoie une erreur
+        this.snackBar.open(
+          'Ce contact est lié à une tâche. Veuillez le retirer d\'abord de la todo !',
+          '',
+          { duration: 3000 } // durée d’affichage en ms
+        );
+        console.error('Erreur suppression contact', err);
+      }
+    });
   }
 
 }

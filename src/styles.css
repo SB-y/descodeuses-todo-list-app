@@ -7,6 +7,94 @@ qui va etre injecte dans tous les pages
 @import "tailwindcss/utilities.css";
 
 
+/* Font globale par défaut */
+html, body {
+    font-family: 'Poppins', sans-serif !important;
+  }
+  
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+  
+  /* Liens, listes et sidenav Angular Material */
+  .mat-mdc-list-item,
+  .mat-mdc-list-item .mdc-list-item__primary-text,
+  .mat-mdc-nav-list,
+  .mat-mdc-sidenav,
+  .mat-mdc-toolbar,
+  .mat-mdc-menu-item,
+  .mat-mdc-option,
+  .mat-mdc-select,
+  .mat-mdc-label {
+    font-family: 'Poppins', sans-serif !important;
+  }
+
+
+/* Champ datepicker */
+.custom-datepicker .mat-mdc-text-field-wrapper {
+  height: 36px !important;                 /* Taille moyenne (au lieu de 40 ou 32) */
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease-in-out;
+  padding: 0 8px !important;
+}
+
+/* Survol */
+.custom-datepicker .mat-mdc-text-field-wrapper:hover {
+  border-color: #10b981 !important;
+}
+
+/* Focus */
+.custom-datepicker.mat-focused .mat-mdc-text-field-wrapper {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+}
+
+/* Texte */
+.custom-datepicker input {
+  font-size: 0.85rem !important;
+  padding: 4px 0 !important;
+}
+
+/* Bouton calendrier */
+.custom-datepicker .mat-mdc-icon-button {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 1.1rem !important;
+}
+
+/* Popup calendrier */
+.mat-datepicker-content {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  transform: scale(0.95);                  /* Léger rétrécissement */
+  transform-origin: top left;
+}
+
+/* En-tête */
+.mat-calendar-header {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.85rem !important;
+  padding: 4px 8px !important;
+}
+
+/* Cellules */
+.mat-calendar-body-cell {
+  height: 30px !important;                 /* Taille intermédiaire */
+  width: 30px !important;
+  font-size: 0.8rem !important;
+  border-radius: 6px !important;
+}
+
+/* Sélectionnée */
+.mat-calendar-body-selected {
+  background-color: #10b981 !important;
+  color: white !important;
+}
+
+/* Survol */
+.mat-calendar-body-cell:hover {
+  background-color: rgba(16,185,129,0.12) !important;
+}

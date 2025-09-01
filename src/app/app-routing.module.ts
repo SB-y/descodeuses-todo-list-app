@@ -72,7 +72,7 @@ export const MENU_ROUTES = [
   //{ path: '/signup', title: 'Inscription' },
   { path: '/profil', title: 'Mon profil' },
   { path: '/dashboard', title: 'Mon dashboard' },
-  { path: '/todotable', title: 'Mon récap' },
+  //{ path: '/todotable', title: 'Mon récap' },
   { path: '/todolist', title: 'Ma gestion de la to-do list ' },
   //{ path: '/calculette', title: 'Calculatrice' },
   { path: '/contacts', title: 'Mes contacts' },

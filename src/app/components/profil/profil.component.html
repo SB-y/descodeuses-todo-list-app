@@ -1,51 +1,87 @@
-<div id="full-cover-background" class="flex h-screen">
-    <div id="centered-block" class="bg-white max-w-sm p-6 rounded-x1 shadow-md w-200 m-auto text-center">
+<div id="full-cover-background"
+  class="mx-auto rounded-[40px] border border-gray-200 bg-white 
+         p-6 md:p-8 text-sm flex flex-col mt-20 max-w-2xl">
+    
+     <div id="centered-block" class="w-full max-w-3xl">
 
         <form *ngIf="profilForm" [formGroup]="profilForm" (ngSubmit)="onSubmit()">
-            <h2 class="text-center text-2xl mb-12">Edit Profil</h2>
 
-            <div id="name-cont">
-                <mat-form-field appearance="outline" class="w-70">
-                    <mat-label>Nom</mat-label>
-                    <input matInput formControlName="name" type="text" placeholder="nom" />
-                </mat-form-field>
+            <!-- Titre -->
+            <mat-card-header class="w-full flex justify-center mb-15">
+                <h2 class="text-center !text-xl font-semibold text-gray-500">
+                    Modifier le profil
+                </h2>
+            </mat-card-header>
+
+            <!-- Grille 2 colonnes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Colonne gauche : identité -->
+                <div class="space-y-3">
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Nom</mat-label>
+                        <input matInput formControlName="name" placeholder="Nom" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Prénom</mat-label>
+                        <input matInput formControlName="surname" placeholder="Prénom" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Genre</mat-label>
+                        <mat-select formControlName="genre">
+                            <mat-option *ngFor="let genre of listGenre" [value]="genre.value">
+                                {{ genre.text }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Colonne droite : accès -->
+                <div class="space-y-3">
+                    <!-- Champ rôle : visible seulement pour un admin -->
+                    <mat-form-field *ngIf="authService.isAdmin()" appearance="outline" class="w-full">
+                        <mat-label>Rôle</mat-label>
+                        <mat-select formControlName="role">
+                            <mat-option value="ROLE_USER">Utilisateur</mat-option>
+                            <mat-option value="ROLE_ADMIN">Administrateur</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="username" type="email" placeholder="Email" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Mot de passe</mat-label>
+                        <input matInput formControlName="password" type="password" placeholder="Mot de passe" />
+                    </mat-form-field>
+                </div>
             </div>
 
-            <div id="surname-cont">
-                <mat-form-field appearance="outline" class="w-70">
-                    <mat-label>Prénom</mat-label>
-                    <input matInput formControlName="surname" type="text" placeholder="prénom" />
-                </mat-form-field>
-            </div>
+            <!-- Boutons -->
+            <div class="flex justify-center gap-6 mt-15">
+                <button mat-raised-button type="submit"
+                    class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
+                    Enregistrer
+                </button>
 
-            <div id="username-cont">
-                <mat-form-field appearance="outline" class="w-70">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="username" type="text" placeholder="email" />
-                </mat-form-field>
-            </div>
+                <!-- Annuler : gris clair -->
+                <button mat-stroked-button (click)="onCancel()"
+                    class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
+                    <mat-icon>arrow_back</mat-icon> Annuler
+                </button>
 
-            <div id="usergenre-cont">
-                <mat-form-field appearance="outline" class="w-70">
-                    <mat-label>Genre</mat-label>
-                    <mat-select formControlName="genre">
-                        <mat-option *ngFor="let genre of listGenre" [value]="genre.value">
-                            {{ genre.text }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+                <!-- Supprimer : rouge clair -->
+                <button mat-stroked-button (click)="onDelete(utilisateur.id)"
+                    class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
+                    Supprimer
+                </button>
 
-            <div id="password-cont">
-                <mat-form-field appearance="outline" class="w-70">
-                    <mat-label>Mot de passe</mat-label>
-                    <input matInput formControlName="password" type="password" placeholder="mot de passe" />
-                </mat-form-field>
-            </div>
 
-            <button mat-stroked-button type="submit" class="w-40 mt-10">
-                Mettre à jour
-            </button>
+            </div>
         </form>
     </div>
 </div>

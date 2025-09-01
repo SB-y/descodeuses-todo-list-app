@@ -149,7 +149,7 @@ export class TododetailsComponent implements OnInit {
         next: (data) => {
           console.log('Tâche reçue depuis le backend :', data);
           this.snackBar.open('Todo mis à jour', '', { duration: 1000 }); // Message succès
-          this.router.navigate(["/todotable"]); // Redirection après maj
+          this.router.navigate(["/dashboard"]); // Redirection après maj
         },
         error: (error) => {
           console.error("Erreur lors de la mise à jour :", error); // Message erreur
@@ -160,7 +160,7 @@ export class TododetailsComponent implements OnInit {
 
   // Retour à la page des todos sans rien enregistrer
   onCancel() {
-    this.router.navigate(["/todotable"]);
+    this.router.navigate(["/todolist"]);
   }
 
   // Corrige le décalage horaire et retourne une date ISO "locale"
@@ -193,6 +193,25 @@ export class TododetailsComponent implements OnInit {
     );
   }
 
+
+
+  onDelete(id: number | null) {
+    if (id == null)
+      return;
+
+    // Suppression côté serveur
+    this.todoService.deleteTodo(id).subscribe({
+      next: (data) => {
+        console.log('Tâche reçue depuis le backend :', data);
+        this.snackBar.open('Todo supprimée', '', { duration: 1000 }); // Message succès
+        this.router.navigate(["/todolist"]); // Redirection après maj
+      },
+      error: (error) => {
+        console.error("Erreur lors de la mise à jour :", error); // Message erreur
+      }
+    });
+
+  }
 }
 
 
