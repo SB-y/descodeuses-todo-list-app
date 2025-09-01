@@ -15,7 +15,7 @@
       <form [formGroup]="todoForm" (ngSubmit)="onSubmitTodo()">
 
         <!-- 2 colonnes -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
 
           <!-- COLONNE GAUCHE -->
           <div class="space-y-3">
@@ -30,7 +30,7 @@
               <mat-label>Membre associé</mat-label>
               <mat-chip-grid #chipGrid aria-label="Membre sélection">
                 @for (contact of selectedContacts; track contact.id) {
-                <mat-chip-row (removed)="remove(contact)" class="!bg-emerald-200 !text-black">
+                <mat-chip-row (removed)="remove(contact)" class="!bg-emerald-200 !text-black !text-xs">
                   {{ contact.nom }} {{ contact.prenom }}
                   <button matChipRemove>
                     <mat-icon>cancel</mat-icon>
@@ -72,7 +72,7 @@
             <!-- Description -->
             <mat-form-field class="w-full" appearance="outline">
               <mat-label>Description</mat-label>
-              <textarea matInput formControlName="textarea" rows="1"></textarea>
+              <textarea matInput formControlName="textarea" rows=""></textarea>
             </mat-form-field>
 
             <!-- Priorité + Échéance -->
