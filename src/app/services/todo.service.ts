@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Todo } from '../models/todo.model';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 
 //commande pour creer le fichier:
@@ -73,4 +74,10 @@ export class TodoService {
     return this.getTodos(); // On réutilise getTodos, puis on filtrera côté composant
   }
 
+  // Récupère toutes les tâches auxquelles l’utilisateur connecté est assigné
+  getAssignedToMe(): Observable<Todo[]> {
+    return this.http.get<Todo[]>(this.apiURL + '/assigned-to-me', {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

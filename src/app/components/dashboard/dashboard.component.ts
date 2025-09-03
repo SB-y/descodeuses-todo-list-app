@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../services/todo.service';
 import { Todo } from '../../models/todo.model';
+import { ProjetService } from '../../services/projet.service';
+import { Projet } from '../../models/projet.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,18 +17,24 @@ export class DashboardComponent implements OnInit {
     { id: 'Auj', title: "À faire aujourd'hui", number: 0, bg: "!bg-cyan-400", icon: "event", etat: "À faire auj." },
     { id: 'Late', title: "En retard", number: 0, bg: "!bg-orange-400", icon: "warning", etat: "En retard" },
     { id: 'Future', title: "À venir", number: 0, bg: "!bg-blue-400", icon: "schedule", etat: "À venir" },
-   // { id: 'Done', title: "Effectuées", number: 0, bg: "!bg-lime-600", icon: "done", etat: "Effectuée" },
+    // { id: 'Done', title: "Effectuées", number: 0, bg: "!bg-lime-600", icon: "done", etat: "Effectuée" },
     { id: 'Flexible', title: "Flexibles", number: 0, bg: "!bg-gray-400", icon: "more_time", etat: "Flexible" },
   ];
 
   todos: Todo[] = [];
   recentTodos: Todo[] = [];
   completedTodos: Todo[] = [];
+  myAssignedTasks: Todo[] = [];
+  loadingAssigned = true;
+  errorAssigned: string | null = null;
+  projets: Projet[] = [];
 
-  constructor(private todoService: TodoService) {}
+
+  constructor(private todoService: TodoService, private projetService: ProjetService) { }
 
   ngOnInit(): void {
     this.fetchTodo();
+    this.fetchProjets()
   }
 
   fetchTodo() {
@@ -39,8 +47,16 @@ export class DashboardComponent implements OnInit {
         .slice(0, 5);
 
       this.completedTodos = this.todos.filter(t => t.completed);
+      this.loadAssignedTasks();
     });
   }
+
+  fetchProjets() {
+    this.projetService.getProjets().subscribe((data) => {
+      this.projets = data;
+    });
+  }
+
 
   calculerKpis() {
     this.kpis.forEach(kpi => kpi.number = 0);
@@ -63,7 +79,7 @@ export class DashboardComponent implements OnInit {
     if (dueDate.getTime() === today.getTime()) return 'À faire auj.';
     if (todo.priorite != null && todo.priorite >= 2) return 'Urgent';
     if (dueDate < today) return 'En retard';
-    
+
 
     return 'À venir';
   }
@@ -73,25 +89,47 @@ export class DashboardComponent implements OnInit {
   }
 
 
-    // pour la barre de progression
-    getProgressionGlobale(): number {
-      if (!this.todos.length) return 0;
-      const done = this.todos.filter(t => t.completed).length;
-      return Math.round((done / this.todos.length) * 100);
-    }
+  // pour la barre de progression
+  getProgressionGlobale(): number {
+    if (!this.todos.length) return 0;
+    const done = this.todos.filter(t => t.completed).length;
+    return Math.round((done / this.todos.length) * 100);
+  }
 
-    // pour le systme de badge selon % progression
-    getBadgeMotivation(): { label: string, color: string, icon: string } {
-      const p = this.getProgressionGlobale();
-    
-      if (p < 20) return { label: "Débutant", color: " text-gray-700", icon: "hourglass_empty" };
-      if (p < 40) return { label: "En route", color: " text-blue-800", icon: "directions_walk" };
-      if (p < 60) return { label: "Motivé", color: " text-yellow-800", icon: "trending_up" };
-      if (p < 80) return { label: "Productif", color: " text-green-800", icon: "task_alt" };
-      return { label: "Champion", color: " text-purple-900", icon: "emoji_events" };
-    }
-    
-    
+  // pour le systme de badge selon % progression
+  getBadgeMotivation(): { label: string, color: string, icon: string } {
+    const p = this.getProgressionGlobale();
 
-  
+    if (p < 20) return { label: "Débutant", color: " text-gray-700", icon: "hourglass_empty" };
+    if (p < 40) return { label: "En route", color: " text-blue-800", icon: "directions_walk" };
+    if (p < 60) return { label: "Motivé", color: " text-yellow-800", icon: "trending_up" };
+    if (p < 80) return { label: "Productif", color: " text-green-800", icon: "task_alt" };
+    return { label: "Champion", color: " text-purple-900", icon: "emoji_events" };
+  }
+
+  loadAssignedTasks(): void {
+    this.todoService.getAssignedToMe().subscribe({
+      next: (tasks) => {
+        this.myAssignedTasks = tasks;
+        this.loadingAssigned = false;
+      },
+      error: () => {
+        this.errorAssigned = 'Impossible de charger vos tâches assignées';
+        this.loadingAssigned = false;
+      }
+    });
+  }
+
+// Associer les todos aux projets existants uniquement
+getProjectsWithTodos(): { projet: Projet, todos: Todo[] }[] {
+  return this.projets.map(projet => ({
+    projet,
+    todos: this.todos.filter(t => t.projet?.id === projet.id)
+  }));
+}
+
+// Obtenir le nombre total de projets
+getProjetCount(): number {
+  return this.projets.length;
+}
 }

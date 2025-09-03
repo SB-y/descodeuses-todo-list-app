@@ -14,7 +14,7 @@
       </mat-card-header>
 
       <!-- Grille 2 colonnes -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
 
         <!-- Colonne gauche -->
         <div class="space-y-3">
@@ -62,12 +62,16 @@
       </div>
 
       <!-- Bouton -->
+       <div class="flex flex-col items-center gap-3">
       <div class="flex justify-center mt-15">
         <button mat-raised-button type="submit"
                 class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
           Créer un compte
         </button>
       </div>
+
+      <p class="text-xs">Déjà un compte ? <span [routerLink]="['/login']" class="text-emerald-500 hover:text-black cursor-pointer">Je me connecte</span></p>
+    </div>
     </form>
   </div>
 </div>

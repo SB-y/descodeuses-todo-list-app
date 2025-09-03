@@ -21,6 +21,10 @@ export interface Todo {
     surname?: string;
     genre?: string;
     username?: string;
+
+     // Champs : utilisateurs assignés aux taches
+     assignedUserIds?: number[];          // juste les IDs
+     utilisateursAssignes?: Utilisateur[]; // détails (nom, prénom, etc.)
 }
 
 

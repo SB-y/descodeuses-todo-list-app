@@ -6,7 +6,7 @@
     <!-- Header -->
     <mat-card-header class="w-full flex justify-center mb-15">
       <h2 class="text-center text-xl font-semibold text-gray-500">
-        {{ todo.title }}
+        Tâche "{{ todo.title }}" de {{todo.surname}}
       </h2>
     </mat-card-header>
 
@@ -18,49 +18,6 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
 
           <!-- COLONNE GAUCHE -->
-          <div class="space-y-3">
-
-            <!-- Utilisateur -->
-            <mat-form-field class="w-full" appearance="outline">
-              <input matInput [value]="todo.surname + ' ' + todo.name" readonly />
-            </mat-form-field>
-
-            <!-- Membre -->
-            <mat-form-field class="w-full" appearance="outline">
-              <mat-label>Membre associé</mat-label>
-              <mat-chip-grid #chipGrid aria-label="Membre sélection">
-                @for (contact of selectedContacts; track contact.id) {
-                <mat-chip-row (removed)="remove(contact)" class="!bg-emerald-200 !text-black !text-xs">
-                  {{ contact.nom }} {{ contact.prenom }}
-                  <button matChipRemove>
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </mat-chip-row>
-                }
-              </mat-chip-grid>
-              <input [formControl]="currentContact" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                @for (contact of filteredContacts; track contact.id) {
-                <mat-option [value]="contact">
-                  {{ contact.nom }} {{ contact.prenom }}
-                </mat-option>
-                }
-              </mat-autocomplete>
-            </mat-form-field>
-
-            <!-- Projet -->
-            <mat-form-field class="w-full" appearance="outline">
-              <mat-label>Projet associé</mat-label>
-              <mat-select formControlName="projet">
-                <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
-                  {{ projet.title }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-          </div>
-
-          <!-- COLONNE DROITE -->
           <div class="space-y-3">
 
             <!-- Titre -->
@@ -96,15 +53,63 @@
 
           </div>
 
-        </div>
+            <!-- COLONNE DROITE -->
+            <div class="space-y-3">
 
-            <!-- Complété -->
-            <div class="flex items-center justify-center gap-3 mt-4">
-              <mat-checkbox formControlName="completed"></mat-checkbox>
-              <span class="text-gray-600">Marquer comme terminé</span>
+              <!-- Membre -->
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>Contact associé</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Membre sélection">
+                  @for (contact of selectedContacts; track contact.id) {
+                  <mat-chip-row (removed)="remove(contact)" class="!bg-emerald-200 !text-black !text-xs">
+                    {{ contact.nom }} {{ contact.prenom }}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                  }
+                </mat-chip-grid>
+                <input [formControl]="currentContact" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                  @for (contact of filteredContacts; track contact.id) {
+                  <mat-option [value]="contact">
+                    {{ contact.nom }} {{ contact.prenom }}
+                  </mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+  
+              <!-- Utilisateurs assignés -->
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>Utilisateur associé</mat-label>
+                <mat-select formControlName="assignedUserIds" multiple>
+                  <mat-option *ngFor="let user of allUtilisateurs" [value]="user.id">
+                    {{ user.surname }} {{ user.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+  
+              <!-- Projet -->
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>Projet associé</mat-label>
+                <mat-select formControlName="projet">
+                  <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
+                    {{ projet.title }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+  
             </div>
 
-       
+        </div>
+
+        <!-- Complété -->
+        <div class="flex items-center justify-center gap-3 mt-4">
+          <mat-checkbox formControlName="completed"></mat-checkbox>
+          <span class="text-gray-600">Marquer comme terminé</span>
+        </div>
+
+
 
         <!-- Boutons -->
         <div class="flex justify-center gap-6 mt-15">
@@ -123,7 +128,7 @@
           <!-- Supprimer : rouge clair -->
           <button mat-stroked-button (click)="onDelete(todo.id)"
             class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
-           Supprimer
+            Supprimer
           </button>
         </div>
 

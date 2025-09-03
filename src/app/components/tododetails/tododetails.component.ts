@@ -11,6 +11,7 @@ import { Projet } from '../../models/projet.model';             // Modèle Proje
 import { Contact } from '../../models/contact.model';           // Modèle Contact
 import { ContactService } from '../../services/contact.service';// Service pour contacts
 import { Utilisateur } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 
 // Déclaration du composant
@@ -61,7 +62,8 @@ export class TododetailsComponent implements OnInit {
     private snackBar: MatSnackBar,      // Pour affichage des messages
     private router: Router,             // Pour rediriger l’utilisateur
     private contactService: ContactService, // Pour récupérer les contacts
-    private projetService: ProjetService    // Pour récupérer les projets
+    private projetService: ProjetService,    // Pour récupérer les projets
+    private userService: UserService // Pour récupérer les utilisateurs de l'app
   ) { }
 
   // Fonction exécutée à l'initialisation du composant
@@ -89,6 +91,7 @@ export class TododetailsComponent implements OnInit {
         membres: [this.todo.membres || []], // Liste des membres sélectionnés
         projet: [this.todo.projet?.id || null], // ID du projet associé
         //utilisateur: [this.todo.utilisateurId || null], // <-- Utilisateur ID ici si formcontrolename utilisateur
+        assignedUserIds: [this.todo.assignedUserIds || []]
       });
 
       // Stockage local des valeurs sélectionnées
@@ -109,7 +112,14 @@ export class TododetailsComponent implements OnInit {
       this.filteredProjets = projets;
     });
 
+    // Récupère tous les utilisateurs de l’appli
+    this.userService.getUtilisateurs().subscribe(users => {
+      this.allUtilisateurs = users;
+      this.filteredUtilisateurs = users;
+    });
   }
+
+
 
   // Appelée à la soumission du formulaire
   onSubmitTodo() {
@@ -136,10 +146,12 @@ export class TododetailsComponent implements OnInit {
       // Renommer utilisateur en utilisateurId
       //sert à copier l'identifiant de l'utilisateur déjà présent dans la tâche (this.todo) dans l'objet formValue 
       // (qui sera envoyé au backend lors de la mise à jour).
-       formValue.utilisateurId = formValue.utilisateur; 
+      formValue.utilisateurId = formValue.utilisateur;
 
-        // Prépare la liste des IDs de membres sélectionnés
-       // formValue.utilisateurId = this.todoForm.value.utilisateur;
+      // Prépare la liste des IDs de membres sélectionnés
+      // formValue.utilisateurId = this.todoForm.value.utilisateur;
+
+      formValue.assignedUserIds = this.todoForm.value.assignedUserIds;
 
       // Affiche les données envoyées pour debug
       console.log("Formulaire envoyé :", JSON.stringify(formValue));
