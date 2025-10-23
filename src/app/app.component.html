@@ -83,8 +83,14 @@
                     <mat-icon>search</mat-icon>
                 </button>
 
-                <input matInput [(ngModel)]="rechercheTodo" (keyup.enter)="onSearchTodo()"
+                <input matInput [(ngModel)]="rechercheTodo" (input)="filtrerTodos()" [matAutocomplete]="auto"
                     placeholder="Go vers une tâche" class="border-none outline-none bg-transparent text-sm" />
+
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="goToTodo($event.option.value)">
+                    <mat-option *ngFor="let todo of suggestions" [value]="todo.title" class="!text-xs">
+                        {{ todo.title }}
+                    </mat-option>
+                </mat-autocomplete>
             </div>
 
             <mat-nav-list id="menumob">
