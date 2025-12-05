@@ -29,6 +29,7 @@ export class TododetailsComponent implements OnInit {
   selectedContacts: Contact[] = []; // Contacts sélectionnés (liés à la tâche)
   allContacts: Contact[] = [];      // Tous les contacts dispo (depuis le backend)
   filteredContacts: Contact[] = []; // Contacts filtrés (pour l'autocomplete)
+  isOwner: boolean = true; // Pour initialiser le statut de l'utilisateur connecté
 
   // Gestion des projets liés à la tâche
   currentProjet = "";
@@ -98,77 +99,98 @@ export class TododetailsComponent implements OnInit {
       this.selectedProjet = this.todo.projet || null;
       this.selectedContacts = this.todo.membres || [];
       //this.selectedUtilisateur = this.todo.utilisateur || null;
-    });
-
-    // Récupère tous les contacts pour alimenter l’autocomplete
-    this.contactService.getContacts().subscribe(contacts => {
-      this.allContacts = contacts;
-      this.filteredContacts = contacts;
-    });
-
-    // Récupère tous les projets
-    this.projetService.getProjets().subscribe(projets => {
-      this.allProjets = projets;
-      this.filteredProjets = projets;
-    });
-
-    // Récupère tous les utilisateurs de l’appli
-    this.userService.getUtilisateurs().subscribe(users => {
-      this.allUtilisateurs = users;
-      this.filteredUtilisateurs = users;
-    });
-  }
 
 
+      // Une fois la tâche récupérée → récupère l'utilisateur connecté
+      this.userService.getUtilisateurConnecte().subscribe(currentUser => {
 
-  // Appelée à la soumission du formulaire
-  onSubmitTodo() {
+        // Vérifie si l'utilisateur connecté est l'auteur
+        const isOwner = this.todo.utilisateurId === currentUser.id;
 
-    // si une date est présente, on la convertit au format ISO local
-    if (this.todoForm.value.dueDate) {
-      this.todoForm.value.dueDate = this.toLocalIsoString(this.todoForm.value.dueDate);
-    }
-
-    // Vérifie que le formulaire est valide
-    if (this.todoForm.valid) {
-      const formValue = { ...this.todoForm.value }; // Copie des données du formulaire
-
-      // force la priorité en type number (au cas où c’est string)
-      formValue.priorite = Number(formValue.priorite);
-
-      // Prépare l’ID du projet à envoyer
-      formValue.projetId = formValue.projet;
-      delete formValue.projet;
-
-      // Prépare la liste des IDs de membres sélectionnés
-      formValue.memberIds = this.selectedContacts.map(contact => contact.id);
-
-      // Renommer utilisateur en utilisateurId
-      //sert à copier l'identifiant de l'utilisateur déjà présent dans la tâche (this.todo) dans l'objet formValue 
-      // (qui sera envoyé au backend lors de la mise à jour).
-      formValue.utilisateurId = formValue.utilisateur;
-
-      // Prépare la liste des IDs de membres sélectionnés
-      // formValue.utilisateurId = this.todoForm.value.utilisateur;
-
-      formValue.assignedUserIds = this.todoForm.value.assignedUserIds;
-
-      // Affiche les données envoyées pour debug
-      console.log("Formulaire envoyé :", JSON.stringify(formValue));
-
-      // appelle le service pour mettre à jour la todo
-      this.todoService.updateTodo(formValue).subscribe({
-        next: (data) => {
-          console.log('Tâche reçue depuis le backend :', data);
-          this.snackBar.open('Todo mis à jour', '', { duration: 1000 }); // Message succès
-          this.router.navigate(["/dashboard"]); // Redirection après maj
-        },
-        error: (error) => {
-          console.error("Erreur lors de la mise à jour :", error); // Message erreur
+        if (!isOwner) {
+          // Si ce n’est pas lui → désactiver les champs et bloquer les actions
+          Object.keys(this.todoForm.controls).forEach(controlName => {
+            this.todoForm.get(controlName)?.disable();
+          });
+          this.currentContact.disable();
         }
       });
-    }
+
+      // Récupère tous les contacts pour alimenter l’autocomplete
+      this.contactService.getContacts().subscribe(contacts => {
+        this.allContacts = contacts;
+        this.filteredContacts = contacts;
+      });
+
+      // Récupère tous les projets
+      this.projetService.getProjets().subscribe(projets => {
+        this.allProjets = projets;
+        this.filteredProjets = projets;
+      });
+
+      // Récupère tous les utilisateurs de l’appli
+      this.userService.getUtilisateurs().subscribe(users => {
+        this.allUtilisateurs = users;
+        this.filteredUtilisateurs = users;
+      });
+    });
   }
+
+
+
+  onSubmitTodo() {
+    // Vérifie si l'utilisateur connecté est autorisé
+    this.userService.getUtilisateurConnecte().subscribe(currentUser => {
+      if (this.todo.utilisateurId !== currentUser.id) {
+        this.snackBar.open('❌ Vous ne pouvez pas modifier cette tâche.', '', { duration: 2000, panelClass: ['snackbar-small-text'] });
+        return;
+      }
+
+      // Si autorisé → on continue ici
+
+      // si une date est présente, on la convertit au format ISO local
+      if (this.todoForm.value.dueDate) {
+        this.todoForm.value.dueDate = this.toLocalIsoString(this.todoForm.value.dueDate);
+      }
+
+      // Vérifie que le formulaire est valide
+      if (this.todoForm.valid) {
+        const formValue = { ...this.todoForm.value }; // Copie des données du formulaire
+
+        // force la priorité en type number (au cas où c’est string)
+        formValue.priorite = Number(formValue.priorite);
+
+        // Prépare l’ID du projet à envoyer
+        formValue.projetId = formValue.projet;
+        delete formValue.projet;
+
+        // Prépare la liste des IDs de membres sélectionnés
+        formValue.memberIds = this.selectedContacts.map(contact => contact.id);
+
+        // Copie l’identifiant de l’auteur
+        formValue.utilisateurId = this.todo.utilisateurId;
+
+        // Prépare la liste des IDs de membres assignés
+        formValue.assignedUserIds = this.todoForm.value.assignedUserIds;
+
+        // Affiche les données envoyées pour debug
+        console.log("Formulaire envoyé :", JSON.stringify(formValue));
+
+        // appelle le service pour mettre à jour la todo
+        this.todoService.updateTodo(formValue).subscribe({
+          next: (data) => {
+            console.log('Tâche reçue depuis le backend :', data);
+            this.snackBar.open('Tâche mise à jour', '', { duration: 1000, panelClass: ['snackbar-small-text'] });
+            this.router.navigate(["/dashboard"]);
+          },
+          error: (error) => {
+            console.error("Erreur lors de la mise à jour :", error);
+          }
+        });
+      }
+    });
+  }
+
 
   // Retour à la page des todos sans rien enregistrer
   onCancel() {
@@ -194,6 +216,7 @@ export class TododetailsComponent implements OnInit {
 
   // Supprime un contact sélectionné
   remove(contact: Contact) {
+    if (!this.isOwner) return; // bloque la suppression si utisateur assigné
     this.selectedContacts = this.selectedContacts.filter(c => c.id !== contact.id);
     this.todoForm.get('membres')?.setValue(this.selectedContacts);
   }
@@ -206,26 +229,31 @@ export class TododetailsComponent implements OnInit {
   }
 
 
-
   onDelete(id: number | null) {
-    if (id == null)
-      return;
+    if (!id) return;
 
-    // Suppression côté serveur
-    this.todoService.deleteTodo(id).subscribe({
-      next: (data) => {
-        console.log('Tâche reçue depuis le backend :', data);
-        this.snackBar.open('Todo supprimée', '', { duration: 1000 }); // Message succès
-        this.router.navigate(["/todolist"]); // Redirection après maj
-      },
-      error: (error) => {
-        console.error("Erreur lors de la mise à jour :", error); // Message erreur
+    this.userService.getUtilisateurConnecte().subscribe(currentUser => {
+      // Vérifie le propriétaire
+      if (this.todo.utilisateurId !== currentUser.id) {
+        this.snackBar.open('❌ Vous ne pouvez pas supprimer cette tâche.', '', { duration: 2000, panelClass: ['snackbar-small-text']});
+        return; // stop ici si pas autorisé
       }
+
+      // Si autorisé → suppression côté serveur
+      this.todoService.deleteTodo(id).subscribe({
+        next: (data) => {
+          console.log('Tâche supprimée :', data);
+          this.snackBar.open('Tâche supprimée', '', { duration: 1000, panelClass: ['snackbar-small-text'] });
+          this.router.navigate(["/todolist"]);
+        },
+        error: (error) => {
+          console.error("Erreur lors de la suppression :", error);
+        }
+      });
     });
-
   }
-}
 
+}
 
 
 

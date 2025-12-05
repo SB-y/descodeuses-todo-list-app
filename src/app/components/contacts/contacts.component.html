@@ -45,7 +45,7 @@
             <mat-icon class="!text-emerald-400">person</mat-icon>
 
             <span [routerLink]="['/contactdetails', item.id]" class="flex-1 cursor-pointer font-medium text-gray-800">
-              {{ item.nom }} {{ item.prenom }}
+              {{ item.prenom }} {{ item.nom }}
             </span>
 
             <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -59,10 +59,10 @@
 
         <mat-menu #menu="matMenu">
           <ng-template matMenuContent>
-            <button mat-menu-item (click)="sendEmail(item.id)">
+            <button mat-menu-item (click)="sendEmail(item.id)" class="!text-sm">
               📧 Envoyer un email
             </button>
-            <button mat-menu-item (click)="openDialog(item.id)">
+            <button mat-menu-item (click)="openDialog(item.id)" class="!text-sm">
               ❌ Supprimer
             </button>
           </ng-template>

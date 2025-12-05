@@ -5,6 +5,8 @@ import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthenService } from '../../auth/auth.guard/authen.service';
+import { ConfirmationDialogsuppuserComponent } from '../confirmation-dialogsuppuser/confirmation-dialogsuppuser.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profil',
@@ -17,8 +19,8 @@ export class ProfilComponent implements OnInit {
 
   // Liste des genres possibles pour l’inscription
   listGenre = [
-    { text: "femme", value: "f" },
-    { text: "homme", value: "h" }
+    { text: "Femme", value: "f" },
+    { text: "Homme", value: "h" }
   ];
 
   // Représente le formulaire (FormGroup Angular)
@@ -35,6 +37,7 @@ export class ProfilComponent implements OnInit {
     private snackBar: MatSnackBar, // Pour afficher les messages (toast)
     private router: Router, // Pour rediriger après inscription
     public authService: AuthenService, // Pour rediriger après maj selon role
+    public dialoguser: MatDialog,
   ) { }
 
   // Méthode exécutée automatiquement à l’initialisation du composant
@@ -90,7 +93,7 @@ export class ProfilComponent implements OnInit {
     // Appelle le service pour envoyer les données à l’API
     this.userService.updateUtilisateur(formValue).subscribe({
       next: () => {
-        this.snackBar.open("Mise à jour réussie !", "Fermer", { duration: 3000 });
+        this.snackBar.open("Mise à jour du profil réussie !", '', { duration: 2000, panelClass: ['snackbar-small-text'] });
 
         if (this.authService.isAdmin()) {
           this.router.navigate(['/utilisateurs']);
@@ -107,24 +110,47 @@ export class ProfilComponent implements OnInit {
     });
   }
 
-  // Supprimer un utilisateur par son id
-  onDelete(id: number | null) {
-    if (id == null) return; // si id null, on ne fait rien
+  
+  
+  openDialog(id: number) {
+    console.log("🪟 Ouverture du dialog pour suppression utilisateur:", id);
 
-    this.userService.deleteUtilisateur(id).subscribe(() => {
-      this.snackBar.open('Supprimé !', '', { duration: 1000 }); // afficher un message temporaire
-      this.router.navigate(["/login"]);
+    const dialogRef = this.dialoguser.open(ConfirmationDialogsuppuserComponent, {
+      width: '350px',
+      disableClose: true // empêche la fermeture si clic extérieur
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("Résultat du dialog :", result);
+
+      if (result === true) {
+        console.log("✅ L'utilisateur confirme la suppression");
+        this.onDelete(id);
+      } else if (result === false) {
+        console.log("❎ Suppression annulée");
+      } else {
+        console.log("ℹ️ Fermeture du dialog sans action explicite");
+      }
     });
   }
 
+
+  // Supprimer un utilisateur par son id 
+  onDelete(id: number | null) 
+  { if (id == null) return; // si id null, on ne fait rien 
+  this.userService.deleteUtilisateur(id).subscribe(() => 
+    { this.snackBar.open('Supprimé !', '', { duration: 1000, panelClass: ['snackbar-small-text'] }); // afficher un message temporaire 
+  this.router.navigate(["/login"]); }); }
+
+
   // Retour à la page précédente
   onCancel() {
-      if (this.authService.isAdmin()) {
-        this.router.navigate(['/utilisateurs']); // ou la page admin que tu veux
-      } else {
-        this.router.navigate(['/dashboard']); // la page user
-      }
-    
+    if (this.authService.isAdmin()) {
+      this.router.navigate(['/utilisateurs']); // ou la page admin que tu veux
+    } else {
+      this.router.navigate(['/dashboard']); // la page user
+    }
+
   }
 
 }

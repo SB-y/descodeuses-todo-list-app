@@ -51,7 +51,7 @@
 
             <!-- Ligne principale -->
             <div class="flex justify-between items-center">
-              <span class="font-medium text-sm text-gray-800">{{ todo.title }}</span>
+              <span [routerLink]="['/tododetails', todo.id]" class="font-medium text-sm text-gray-800 cursor-pointer">{{ todo.title }}</span>
               <span class="text-xs text-gray-500">
                 {{ todo.dueDate ? (todo.dueDate | date:'dd/MM') : 'flexible' }}
               </span>
@@ -60,11 +60,20 @@
             <!-- Contacts -->
             <div *ngIf="todo.membres?.length" class="mt-1 flex flex-wrap gap-1.5">
               @for (m of todo.membres; track m.id) {
-              <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-[10px]">
+              <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-[10px] cursor-pointer" [matMenuTriggerFor]="menu">
                 {{ m.prenom }} {{ m.nom }}
               </span>
+              <mat-menu #menu="matMenu">
+                <ng-template matMenuContent>
+                  <button mat-menu-item (click)="sendEmail(todo.title, m)" class="!text-sm">
+                    📧 Envoyer un email
+                  </button>
+                </ng-template>
+              </mat-menu>
               }
             </div>
+
+          
 
             <!-- Utilisateurs -->
             <div *ngIf="todo.utilisateursAssignes?.length" class="mt-1 flex flex-wrap gap-1.5">
@@ -106,9 +115,9 @@
         </mat-expansion-panel-header>
 
 
-        <div *ngFor="let group of getProjectsWithTodos()" class="mb-3">
+        <div *ngFor="let group of projectsWithTodos" class="mb-3">
           <h4 class="text-sm font-semibold text-gray-700 flex items-center justify-between">
-            <span>{{ group.projet.title }}</span>
+            <span [routerLink]="['/projetdetails', group.projet.id]"  class="cursor-pointer">{{ group.projet.title }}</span>
             <span class="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-700">
               {{ group.todos.length }} tâches
             </span>
@@ -119,7 +128,7 @@
               class="bg-white rounded-lg px-3 py-2 border hover:bg-gray-50 transition">
             <!-- Ligne principale -->
             <div class="flex justify-between items-center">
-              <span class="font-medium text-sm text-gray-800">{{ todo.title }}</span>
+              <span [routerLink]="['/tododetails', todo.id]" class="font-medium text-sm text-gray-800 cursor-pointer">{{ todo.title }}</span>
               <span class="text-xs text-gray-500">
                 {{ todo.dueDate ? (todo.dueDate | date:'dd/MM') : 'flexible' }}
               </span>
@@ -149,7 +158,7 @@
             class="bg-white rounded-lg px-3 py-2 border hover:bg-gray-50 transition">
             <div class="flex justify-between items-center">
               <div>
-                <span class="font-medium text-sm text-gray-800">{{ todo.title }}</span>
+                <span [routerLink]="['/tododetails', todo.id]" class="font-medium text-sm text-gray-800 cursor-pointer">{{ todo.title }}</span>
                 <div class="text-xs text-gray-500">
                   Créée par :
                   <strong>{{ (todo.surname + ' ' + todo.name) || 'Inconnu' }}</strong>
@@ -179,7 +188,7 @@
       <ul class="space-y-2 pl-0">
         @for (todo of recentTodos; track todo.id) {
         <li class="flex justify-between items-center bg-white rounded-lg shadow-xs px-3 py-2">
-          <span class="text-sm">{{ todo.title }}</span>
+          <span [routerLink]="['/tododetails', todo.id]" class="text-sm cursor-pointer">{{ todo.title }}</span>
           <span class="text-xs text-gray-500">
             {{ todo.dueDate ? ('pour le ' + (todo.dueDate | date:'dd/MM')) : 'flexible' }}
           </span>
@@ -195,7 +204,7 @@
         @for (todo of completedTodos; track todo.id) {
         <li class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 text-sm text-gray-600">
           <mat-icon class="text-emerald-400 text-sm">check_circle</mat-icon>
-          <span class="line-through">{{ todo.title }}</span>
+          <span [routerLink]="['/tododetails', todo.id]" class="line-through cursor-pointer">{{ todo.title }}</span>
         </li>
         }
       </ul>

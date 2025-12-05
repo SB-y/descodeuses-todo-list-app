@@ -3,6 +3,7 @@ import { TodoService } from '../../services/todo.service';
 import { Todo } from '../../models/todo.model';
 import { ProjetService } from '../../services/projet.service';
 import { Projet } from '../../models/projet.model';
+import { Contact } from '../../models/contact.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit {
   loadingAssigned = true;
   errorAssigned: string | null = null;
   projets: Projet[] = [];
+  projectsWithTodos: { projet: Projet, todos: Todo[] }[] = [];
 
 
   constructor(private todoService: TodoService, private projetService: ProjetService) { }
@@ -48,12 +50,15 @@ export class DashboardComponent implements OnInit {
 
       this.completedTodos = this.todos.filter(t => t.completed);
       this.loadAssignedTasks();
+
+      this.projectsWithTodos = this.getProjectsWithTodos();
     });
   }
 
   fetchProjets() {
     this.projetService.getProjets().subscribe((data) => {
       this.projets = data;
+      this.projectsWithTodos = this.getProjectsWithTodos();
     });
   }
 
@@ -120,16 +125,25 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-// Associer les todos aux projets existants uniquement
-getProjectsWithTodos(): { projet: Projet, todos: Todo[] }[] {
-  return this.projets.map(projet => ({
-    projet,
-    todos: this.todos.filter(t => t.projet?.id === projet.id)
-  }));
-}
+  // Associer les todos aux projets existants uniquement
+  getProjectsWithTodos(): { projet: Projet, todos: Todo[] }[] {
+    return this.projets.map(projet => ({
+      projet,
+      todos: this.todos.filter(t => t.projet?.id === projet.id)
+    }));
+  }
 
-// Obtenir le nombre total de projets
-getProjetCount(): number {
-  return this.projets.length;
-}
+  // Obtenir le nombre total de projets
+  getProjetCount(): number {
+    return this.projets.length;
+  }
+
+  // Envoyer mail aux contacts assignés à des tâches
+  sendEmail(todoTitle: string | null, m: Contact) {
+    const securiteTitle = todoTitle ?? '(tâche sans titre)';
+    const sujet = encodeURIComponent(`À propos de la tâche "${securiteTitle}"`);
+    const corps = encodeURIComponent(`Bonjour ${m.prenom},\n\nJe voulais te parler de la tâche "${securiteTitle}".\n\nMerci !`);
+    window.location.href = `mailto:${m.email}?subject=${sujet}&body=${corps}`;
+  }
+
 }

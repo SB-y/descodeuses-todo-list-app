@@ -63,10 +63,16 @@ export class UserService {
     });
   }
 
+  getCurrentUser(): Utilisateur | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+  
+
   // Delete
   deleteUtilisateur(id: number) {
     return this.http.delete(this.apiURL + '/' + id, {
-      headers: this.getAuthHeaders() // Ajout du header Authorization avec token
+      headers: this.getAuthHeaders(), // Ajout du header Authorization avec token
     });
   }
 

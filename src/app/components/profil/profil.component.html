@@ -2,86 +2,93 @@
   class="mx-auto rounded-[40px] border border-gray-200 bg-white 
          p-6 md:p-8 text-sm flex flex-col mt-20 max-w-2xl">
     
-     <div id="centered-block" class="w-full max-w-3xl">
+  <div id="centered-block" class="w-full max-w-3xl">
 
-        <form *ngIf="profilForm" [formGroup]="profilForm" (ngSubmit)="onSubmit()">
+    <!-- Ajout de ngSubmit pour éviter toute soumission native -->
+    <form *ngIf="profilForm" [formGroup]="profilForm">
 
-            <!-- Titre -->
-            <mat-card-header class="w-full flex justify-center mb-15">
-                <h2 class="text-center !text-xl font-semibold text-gray-500">
-                    Modifier le profil
-                </h2>
-            </mat-card-header>
+      <!-- Titre -->
+      <mat-card-header class="w-full flex justify-center mb-15">
+        <h2 class="text-center !text-xl font-semibold text-gray-500">
+          Modifier le profil
+        </h2>
+      </mat-card-header>
 
-            <!-- Grille 2 colonnes -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Grille 2 colonnes -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Colonne gauche -->
+        <div class="space-y-3">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="name" placeholder="Nom" />
+          </mat-form-field>
 
-                <!-- Colonne gauche : identité -->
-                <div class="space-y-3">
-                    <mat-form-field appearance="outline" class="w-full">
-                        <mat-label>Nom</mat-label>
-                        <input matInput formControlName="name" placeholder="Nom" />
-                    </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Prénom</mat-label>
+            <input matInput formControlName="surname" placeholder="Prénom" />
+          </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="w-full">
-                        <mat-label>Prénom</mat-label>
-                        <input matInput formControlName="surname" placeholder="Prénom" />
-                    </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Genre</mat-label>
+            <mat-select formControlName="genre">
+              <mat-option *ngFor="let genre of listGenre" [value]="genre.value">
+                {{ genre.text }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-                    <mat-form-field appearance="outline" class="w-full">
-                        <mat-label>Genre</mat-label>
-                        <mat-select formControlName="genre">
-                            <mat-option *ngFor="let genre of listGenre" [value]="genre.value">
-                                {{ genre.text }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+        <!-- Colonne droite -->
+        <div class="space-y-3">
+          <mat-form-field *ngIf="authService.isAdmin()" appearance="outline" class="w-full">
+            <mat-label>Rôle</mat-label>
+            <mat-select formControlName="role">
+              <mat-option value="ROLE_USER">Utilisateur</mat-option>
+              <mat-option value="ROLE_ADMIN">Administrateur</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-                <!-- Colonne droite : accès -->
-                <div class="space-y-3">
-                    <!-- Champ rôle : visible seulement pour un admin -->
-                    <mat-form-field *ngIf="authService.isAdmin()" appearance="outline" class="w-full">
-                        <mat-label>Rôle</mat-label>
-                        <mat-select formControlName="role">
-                            <mat-option value="ROLE_USER">Utilisateur</mat-option>
-                            <mat-option value="ROLE_ADMIN">Administrateur</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="username" type="email" placeholder="Email" />
+          </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="w-full">
-                        <mat-label>Email</mat-label>
-                        <input matInput formControlName="username" type="email" placeholder="Email" />
-                    </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Mot de passe</mat-label>
+            <input matInput formControlName="password" type="password" placeholder="Mot de passe" />
+          </mat-form-field>
+        </div>
+      </div>
 
-                    <mat-form-field appearance="outline" class="w-full">
-                        <mat-label>Mot de passe</mat-label>
-                        <input matInput formControlName="password" type="password" placeholder="Mot de passe" />
-                    </mat-form-field>
-                </div>
-            </div>
+      <!-- Boutons -->
+      <div class="flex justify-center gap-6 mt-15">
+        <!-- Enregistrer -->
+        <button 
+          mat-raised-button 
+          (click)="onSubmit()"
+          class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
+          Enregistrer
+        </button>
 
-            <!-- Boutons -->
-            <div class="flex justify-center gap-6 mt-15">
-                <button mat-raised-button type="submit"
-                    class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
-                    Enregistrer
-                </button>
+  
+      <!-- Annuler -->
+      <button 
+      mat-stroked-button 
+      type="button" 
+      (click)="onCancel()"
+      class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
+      <mat-icon>arrow_back</mat-icon> Annuler
+    </button>
 
-                <!-- Annuler : gris clair -->
-                <button mat-stroked-button (click)="onCancel()"
-                    class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
-                    <mat-icon>arrow_back</mat-icon> Annuler
-                </button>
-
-                <!-- Supprimer : rouge clair -->
-                <button mat-stroked-button (click)="onDelete(utilisateur.id)"
-                    class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
-                    Supprimer
-                </button>
-
-
-            </div>
-        </form>
-    </div>
+    <!-- Supprimer -->
+    <button 
+    mat-stroked-button 
+    type="button"
+    (click)="openDialog(utilisateur.id)"
+    class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
+    Supprimer
+  </button>
+  </div>
+    </form>
+  </div>
 </div>

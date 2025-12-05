@@ -3,6 +3,8 @@ import { Utilisateur } from '../../models/user.model'; // modèle de données Ut
 import { UserService } from '../../services/user.service'; // service pour récupérer/supprimer les utilisateurs
 import { MatSnackBar } from '@angular/material/snack-bar'; // pour afficher des notifications à l'utilisateur
 import { AuthenService } from '../../auth/auth.guard/authen.service'; // service d'authentification/permissions
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogsuppuserComponent } from '../confirmation-dialogsuppuser/confirmation-dialogsuppuser.component';
 
 @Component({
   selector: 'app-utilisateurs', // nom du composant dans le HTML
@@ -31,7 +33,8 @@ export class UtilisateursComponent implements OnInit {
   constructor(
     private utilisateurService: UserService, // injection du service pour récupérer/supprimer les utilisateurs
     private snackBar: MatSnackBar,           // injection pour afficher des messages rapides
-    public authService: AuthenService        // injection pour vérifier les permissions/authentification dans le template
+    public authService: AuthenService,        // injection pour vérifier les permissions/authentification dans le template
+    public dialoguser: MatDialog
   ) { }
 
   // Hook Angular appelé automatiquement après la création du composant
@@ -85,6 +88,32 @@ export class UtilisateursComponent implements OnInit {
         break;
     }
   }
+
+
+
+    openDialog(id: number) {
+      console.log("🪟 Ouverture du dialog pour suppression utilisateur:", id);
+  
+      const dialogRef = this.dialoguser.open(ConfirmationDialogsuppuserComponent, {
+        width: '350px',
+        disableClose: true // empêche la fermeture si clic extérieur
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log("Résultat du dialog :", result);
+  
+        if (result === true) {
+          console.log("✅ L'utilisateur confirme la suppression");
+          this.onDeleteUtilisateur(id);
+        } else if (result === false) {
+          console.log("❎ Suppression annulée");
+        } else {
+          console.log("ℹ️ Fermeture du dialog sans action explicite");
+        }
+      });
+    }
+
+
 
   // Supprimer un utilisateur par son id
   onDeleteUtilisateur(id: number | null) {

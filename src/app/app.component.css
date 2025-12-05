@@ -10,6 +10,10 @@
   background-color:#E7E9EF;
 }
 
+.custom-sidenav {
+  background-color: #E6EFED !important; /* ton gris émeraude */
+}
+
 /* liens de la sidebar : rectangle gris au hover/focus, pas d'arrondi */
 mat-sidenav a.mat-mdc-list-item {
   border-radius: 0;
@@ -29,7 +33,7 @@ font-size: 0.8rem;
 
 @media (max-width: 1024px) {
   .custom-sidenav {
-    width: 200px !important;
+    width: 270px !important;
     min-width: 200px !important;
   }
 

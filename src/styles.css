@@ -98,3 +98,9 @@ html, body {
 .mat-calendar-body-cell:hover {
   background-color: rgba(16,185,129,0.12) !important;
 }
+
+.mat-mdc-snack-bar-container.snackbar-small-text .mdc-snackbar__label {
+  font-size: 14px !important;
+  line-height: 16px !important;
+  background-color: #ffffff !important;
+}

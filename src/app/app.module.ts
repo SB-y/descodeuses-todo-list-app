@@ -43,6 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ContactDetailsComponent } from './components/contact-details/contact-details.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ConfirmationDialogsuppuserComponent } from './components/confirmation-dialogsuppuser/confirmation-dialogsuppuser.component';
 
 
 
@@ -63,7 +64,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     UtilisateursComponent,
     ContactsComponent,
     ConfirmationDialogComponent,
-    ContactDetailsComponent
+    ContactDetailsComponent,
+    ConfirmationDialogsuppuserComponent
   ],
   imports: [
     BrowserModule,
