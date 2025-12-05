@@ -1,4 +1,4 @@
-import { importProvidersFrom, LOCALE_ID, NgModule } from '@angular/core';
+import { importProvidersFrom, LOCALE_ID, NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,6 +45,14 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ConfirmationDialogsuppuserComponent } from './components/confirmation-dialogsuppuser/confirmation-dialogsuppuser.component';
 
+
+// 👉 👉 👉 IMPORT IMPORTANT
+import { AuthenService } from './auth/auth.guard/authen.service';
+
+// 👉 Fonction exécutée AVANT le bootstrap
+export function initAuth(authService: AuthenService) {
+  return () => authService.restoreSession();
+}
 
 
 
@@ -102,6 +110,12 @@ import { ConfirmationDialogsuppuserComponent } from './components/confirmation-d
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' },
     provideNativeDateAdapter(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initAuth,
+      deps: [AuthenService],
+      multi: true
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

@@ -5,6 +5,7 @@
 import { Component, Injectable } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { CanActivate, Router } from '@angular/router';
+import { AuthenService } from '../auth.guard/authen.service';
 
 @Component({
   selector: 'app-admin.guard',
@@ -19,21 +20,20 @@ import { CanActivate, Router } from '@angular/router';
 export class AdminGuard implements CanActivate {
 
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor( private authService: AuthenService, private router: Router) { }
 
   canActivate(): boolean {
 
-    const role = localStorage.getItem('role');
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
 
-    if (isLoggedIn && role === "ROLE_ADMIN") {
-      return true
+    // Vérifie si utilisateur connecté + admin
+    if (this.authService.isLoggedIn() && this.authService.isAdmin()) {
+      return true;
     }
 
-    else {
-      this.router.createUrlTree(["/login"]);
-      return false;
-    }
+    // sinon → redirection login
+    this.router.navigate(['/login']);
+    return false;
+  
   }
 
 }
