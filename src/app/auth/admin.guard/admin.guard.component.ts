@@ -4,7 +4,7 @@
 
 import { Component, Injectable } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { CanActivate, Router, UrlTree } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { AuthenService } from '../auth.guard/authen.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class AdminGuard implements CanActivate {
 
   constructor( private authService: AuthenService, private router: Router) { }
 
-  canActivate(): boolean | UrlTree {
+  canActivate(): boolean {
 
 
     // Vérifie si utilisateur connecté + admin
@@ -30,8 +30,9 @@ export class AdminGuard implements CanActivate {
       return true;
     }
 
-    // Redirection propre
-    return this.router.createUrlTree(['/login']);
+    // sinon → redirection login
+    this.router.navigate(['/login']);
+    return false;
   
   }
 
