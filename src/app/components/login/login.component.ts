@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenService } from '../../auth/auth.guard/authen.service';
+import { TodoService } from '../../services/todo.service';
 
 
 
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   errorMessage: string = '';   // message d'erreur à afficher en cas d'échec de login
 
   // Injection des dépendances : formBuilder (pour créer le formulaire), router (navigation), auth (service d'authentification)
-  constructor(private formBuilder: FormBuilder, private router: Router, private auth: AuthenService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private auth: AuthenService, private todoService: TodoService) { }
 
   // Initialisation du formulaire avec des champs username et password et leurs validations
   ngOnInit(): void {
@@ -42,11 +43,20 @@ export class LoginComponent implements OnInit {
           // Stockage du token JWT dans localStorage
           localStorage.setItem('token', response.token);
           localStorage.setItem('role', response.role);
-          console.log("Role détecté :", localStorage.getItem('role')); 
+          console.log("Role détecté :", localStorage.getItem('role'));
           // Marque l'utilisateur comme connecté dans sessionStorage
           sessionStorage.setItem('isLoggedIn', 'true');
-          // Redirige vers la page dashboard
-          this.router.navigateByUrl('/dashboard');
+          // CHARGEMENT DES TODOS JUSTE APRÈS LOGIN !
+          this.todoService.getTodos().subscribe({
+            next: () => {
+              // Lorsque tout est prêt → Go dashboard
+              this.router.navigateByUrl('/dashboard');
+            },
+            error: () => {
+              // En cas d'échec → on navigue quand même
+              this.router.navigateByUrl('/dashboard');
+            }
+          });
         },
         error: (err) => {
           // En cas d'erreur : affichage d'un message d'erreur customisé
