@@ -36,7 +36,13 @@ export class AppComponent {
 
 
   ngOnInit() {
-    // Charger toutes les tâches au démarrage
+
+     // N'appelle pas l'API si l'utilisateur n'est pas connecté !
+  if (!this.authService.isLoggedIn()) {
+    return;
+  }
+
+    // Lorsque l'utilisateur est connecté → on charge les todos
     this.todoService.getTodos().subscribe((todos: Todo[]) => {
       this.allTodos = todos;
     });
@@ -54,6 +60,9 @@ export class AppComponent {
 
   // Pour la barre de recherche
   onSearchTodo() {
+
+    if (!this.authService.isLoggedIn()) return;
+    
     if (!this.rechercheTodo.trim()) return;
 
     this.todoService.getTodos().subscribe((todos: Todo[]) => {
