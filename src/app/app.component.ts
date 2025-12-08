@@ -61,8 +61,6 @@ export class AppComponent {
   // Pour la barre de recherche
   onSearchTodo() {
 
-    if (!this.authService.isLoggedIn()) return;
-
     if (!this.rechercheTodo.trim()) return;
 
     this.todoService.getTodos().subscribe((todos: Todo[]) => {
@@ -80,13 +78,6 @@ export class AppComponent {
 
   filtrerTodos() {
 
-      // Empêche erreurs si pas connecté ou liste vide
-      if (!this.authService.isLoggedIn()) {
-        this.suggestions = [];
-        return;
-      }
-
-
     const query = this.rechercheTodo.toLowerCase();
 
     this.suggestions = this.allTodos.filter(t =>
@@ -95,10 +86,6 @@ export class AppComponent {
   }
 
   goToTodo(title: string) {
-
-      // Sécurité login
-      if (!this.authService.isLoggedIn()) return;
-
 
     const match = this.allTodos.find(t => t.title === title);
     if (match) {
