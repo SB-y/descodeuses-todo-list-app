@@ -15,6 +15,55 @@ import { Observable } from 'rxjs';
 @Injectable({ // Permet à Angular d’injecter ce service dans d'autres classes
   providedIn: 'root' // Singleton accessible dans toute l'application
 })
+
+
+
+
+
+export class TodoService {
+
+  private apiURL = environment.apiUrl + '/api/action';
+
+  constructor(private http: HttpClient) {}
+
+  // CREATE
+  addTodo(item: Todo) {
+    return this.http.post<Todo>(this.apiURL, item);
+  }
+
+  // READ ALL
+  getTodos() {
+    return this.http.get<Todo[]>(this.apiURL);
+  }
+
+  // READ ONE
+  getTodo(id: number) {
+    return this.http.get<Todo>(`${this.apiURL}/${id}`);
+  }
+
+  // UPDATE
+  updateTodo(item: Todo) {
+    return this.http.put<Todo>(`${this.apiURL}/${item.id}`, item);
+  }
+
+  // DELETE
+  deleteTodo(id: number) {
+    return this.http.delete(`${this.apiURL}/${id}`);
+  }
+
+  // SEARCH (filtrage côté front)
+  searchTodos(term: string) {
+    return this.getTodos();
+  }
+
+  // Tâches assignées à l'utilisateur connecté
+  getAssignedToMe(): Observable<Todo[]> {
+    return this.http.get<Todo[]>(`${this.apiURL}/assigned-to-me`);
+  }
+}
+
+
+/*
 export class TodoService {
 
   // URL de base de l'API backend pour gérer les todos
@@ -81,3 +130,4 @@ export class TodoService {
     });
   }
 }
+*/

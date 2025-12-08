@@ -10,6 +10,53 @@ import { environment } from '../../environments/environment';
 })
 
 
+
+export class UserService {
+
+  private apiURL = environment.apiUrl + '/api/utilisateur';
+
+  constructor(private http: HttpClient) {}
+
+  /** REGISTER - création d'un utilisateur */
+  addUtilisateur(utilisateur: Utilisateur) {
+    return this.http.post(`${environment.apiUrl}/auth/register`, utilisateur);
+  }
+
+  /** READ - liste des utilisateurs */
+  getUtilisateurs() {
+    return this.http.get<Utilisateur[]>(this.apiURL);
+  }
+
+  /** READ - récupère un utilisateur par son id */
+  getUtilisateur(id: number) {
+    return this.http.get<Utilisateur>(`${this.apiURL}/${id}`);
+  }
+
+  /** UPDATE - met à jour un utilisateur */
+  updateUtilisateur(item: Utilisateur) {
+    return this.http.put<Utilisateur>(`${this.apiURL}/${item.id}`, item);
+  }
+
+  /** Récupérer le profil de l'utilisateur connecté */
+  getUtilisateurConnecte() {
+    return this.http.get<Utilisateur>(`${this.apiURL}/monprofil`);
+  }
+
+  /** Récupération locale du user stocké (si utile côté front) */
+  getCurrentUser(): Utilisateur | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  /** DELETE - supprime un utilisateur */
+  deleteUtilisateur(id: number) {
+    return this.http.delete(`${this.apiURL}/${id}`);
+  }
+}
+
+
+
+/*
 export class UserService {
 
   //private apiURL = "http://localhost:8080/api/utilisateur";
@@ -79,3 +126,5 @@ export class UserService {
 
 
 }
+
+*/
