@@ -48,6 +48,7 @@ import { ConfirmationDialogsuppuserComponent } from './components/confirmation-d
 
 // 👉 👉 👉 IMPORT IMPORTANT
 import { AuthenService } from './auth/auth.guard/authen.service';
+import { AbortInterceptor } from './auth/abord.interceptor';
 
 // 👉 Fonction exécutée AVANT le bootstrap
 export function initAuth(authService: AuthenService) {
@@ -73,7 +74,7 @@ export function initAuth(authService: AuthenService) {
     ContactsComponent,
     ConfirmationDialogComponent,
     ContactDetailsComponent,
-    ConfirmationDialogsuppuserComponent
+    ConfirmationDialogsuppuserComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,6 +115,11 @@ export function initAuth(authService: AuthenService) {
       provide: APP_INITIALIZER,
       useFactory: initAuth,
       deps: [AuthenService],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AbortInterceptor,
       multi: true
     },
     {
