@@ -1,3 +1,18 @@
+# Netlify ne connaît pas les routes Angular : il ne sert que des fichiers statiques.
+# Lorsqu’on tape une URL directement dans la barre d'adresse (ex : /dashboard, /todolist, /profil),
+# Netlify essaie de trouver un fichier physique /dashboard ou /todolist → mais ces fichiers n’existent pas.
+# Sans cette règle, l’utilisateur obtient une erreur 404 lorsque l’URL est tapée ou rafraîchie.
+#
+# Cette redirection force Netlify à renvoyer toujours index.html,
+# qui est le seul fichier HTML existant. Ensuite, Angular lit l’URL
+# et affiche le bon composant à l’intérieur de <app-root>.
+#
+# Résumé :
+# - Navigation client-side → gérée par Angular (OK)
+# - Rafraîchissement ou URL collée → résolue grâce à cette règle
+# - Sans cette config → 404 sur Netlify, car /xxx.html n’existe pas
+
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

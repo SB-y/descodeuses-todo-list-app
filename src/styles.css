@@ -104,3 +104,13 @@ html, body {
   line-height: 16px !important;
   background-color: #ffffff !important;
 }
+
+/* Taille intermédiaire entre text-xs (0.75rem) et text-sm (0.875rem) */
+.text-ss {
+  font-size: 0.82rem; /* entre xs et sm */
+  line-height: 1.25rem;
+}
+
+.active-link {
+  background-color: #f1f3f5 !important; /* gray-200 */
+}

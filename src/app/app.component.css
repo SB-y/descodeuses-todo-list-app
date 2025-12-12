@@ -1,13 +1,13 @@
 .bg-user {
-  background-color: #F3F4F7;
+  background-color: #E6EFED;
 }
 
 .bg-admin {
-  background-color: #E7E9EF;
+  background-color: #E6EFED;
 }
 
 .bg-default {
-  background-color:#E7E9EF;
+  background-color:#E6EFED;
 }
 
 .custom-sidenav {
@@ -29,6 +29,11 @@ mat-sidenav a.mat-mdc-list-item.cdk-program-focused {
 
 #menumob a {
 font-size: 0.8rem;
+}
+
+mat-icon {
+  font-size: 16px;         /* légèrement plus grande */
+  color: #333;             /* un peu plus foncé que le texte */
 }
 
 @media (max-width: 1024px) {

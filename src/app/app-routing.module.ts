@@ -67,6 +67,61 @@ const routes: Routes = [
 }
 ];
 
+export const MENU_SECTIONS = [
+  {
+    title: "Mon espace",
+    icon: "person",
+    items: [
+      { path: '/dashboard', label: 'Mon dashboard', icon: '' },
+      { path: '/profil', label: 'Mon profil', icon: '' },
+    ]
+  },
+
+  {
+    title: "Mes tâches",
+    icon: "list_alt_check",
+    items: [
+      { path: '/todolist', label: 'Ma to-do list', icon: '' },
+    ]
+  },
+
+  {
+    title: "Mes contacts",
+    icon: "group",
+    items: [
+      { path: '/contacts', label: 'Mes contacts', icon: '' },
+    ]
+  },
+
+  {
+    title: "Administration",
+    icon: "admin_panel_settings",
+    adminOnly: true,
+    items: [
+      { path: '/utilisateurs', label: 'Gestion utilisateurs', icon: '' },
+    ]
+  },
+
+  {
+    title: "",
+    items: [
+      { path: '/logout', label: 'Déconnexion', icon: 'logout', logoutButton: true }
+    ]
+  }
+];
+
+
+
+
+export const MENU_PUBLIC = [
+  { path: '/login', label: 'Login' },
+  { path: '/signup', label: 'Création de compte' },
+];
+
+
+
+
+
 export const MENU_ROUTES = [
   //{ path: '/login', title: 'Login' },
   //{ path: '/signup', title: 'Inscription' },
@@ -89,4 +144,8 @@ export const MENU_ROUTES2 = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
+
+
+
 export class AppRoutingModule { }

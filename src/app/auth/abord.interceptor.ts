@@ -18,8 +18,8 @@ export class AbortInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
 
         /**
-         * ⭐ IGNORER les erreurs "abort"
-         * Très fréquent lorsqu'une page recharge ou que l'utilisateur navigue vite.
+         * IGNORER les erreurs "abort"
+         * Cas d'une page qui recharge ou que l'utilisateur navigue vite.
          */
         if (err.status === 0 && err.error?.type === 'abort') {
           console.warn("⏳ Requête annulée (abort): ignorée automatiquement");
@@ -27,7 +27,7 @@ export class AbortInterceptor implements HttpInterceptor {
         }
 
         /**
-         * ❌ Pour toute autre erreur → on la laisse remonter normalement
+         * Pour toute autre erreur → on la laisse remonter normalement
          */
         return throwError(() => err);
       })

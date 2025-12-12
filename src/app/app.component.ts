@@ -5,7 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthenService } from './auth/auth.guard/authen.service';
-import { MENU_ROUTES, MENU_ROUTES2 } from './app-routing.module';
+import { MENU_SECTIONS, MENU_PUBLIC } from './app-routing.module';
 import { TodoService } from './services/todo.service';
 import { Todo } from './models/todo.model';
 
@@ -17,8 +17,8 @@ import { Todo } from './models/todo.model';
 })
 export class AppComponent {
   title = 'Task & Talk';
-  listMenu = MENU_ROUTES;
-  listMenuPasLogged = MENU_ROUTES2;
+  sections = MENU_SECTIONS;
+  publicSections = MENU_PUBLIC;
   isMobile = window.innerWidth < 639; // seuil mobile
   topMenuOpen = false;
 
@@ -26,7 +26,7 @@ export class AppComponent {
   constructor(
     public authService: AuthenService,
     private todoService: TodoService,
-    private router: Router) { };
+    public router: Router) { };
 
 
   // recherche
@@ -61,6 +61,10 @@ export class AppComponent {
   // Pour la barre de recherche
   onSearchTodo() {
 
+    if (!this.authService.isLoggedIn()) {
+      return;
+    }
+
     if (!this.rechercheTodo.trim()) return;
 
     this.todoService.getTodos().subscribe((todos: Todo[]) => {
@@ -77,6 +81,10 @@ export class AppComponent {
   }
 
   filtrerTodos() {
+
+    if (!this.authService.isLoggedIn()) {
+      return;
+    }
 
     const query = this.rechercheTodo.toLowerCase();
 

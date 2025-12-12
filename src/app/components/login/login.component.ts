@@ -46,6 +46,9 @@ export class LoginComponent implements OnInit {
           // Marque l'utilisateur comme connecté dans sessionStorage
           sessionStorage.setItem('isLoggedIn', 'true');
           this.router.navigateByUrl('/dashboard').then(() => {
+          // Recharge toute l’application Angular qui redémarre proprement avec le token déjà présent
+          // AppComponent.ngOnInit() se relance et charge correctement les todos
+          // Résout le problème des suggestions de recherche vides
             window.location.reload();
           });
         },
