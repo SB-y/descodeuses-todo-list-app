@@ -54,7 +54,7 @@ export class TododetailsComponent implements OnInit {
     { number: 4 },
   ];
 
-  todo!: Todo;           // Tâche actuelle à afficher/modifier
+  todo?: Todo;           // Tâche actuelle à afficher/modifier
   todoForm!: FormGroup;  // Formulaire de modification
 
   //Partie mini messagerie
@@ -116,7 +116,7 @@ export class TododetailsComponent implements OnInit {
         this.currentUserId = currentUser.id;
 
         // Vérifie si l'utilisateur connecté est l'auteur
-        const isOwner = this.todo.utilisateurId === currentUser.id;
+        const isOwner = this.todo?.utilisateurId === currentUser.id;
 
         if (!isOwner) {
           // Si ce n’est pas lui → désactiver les champs et bloquer les actions
@@ -156,7 +156,7 @@ export class TododetailsComponent implements OnInit {
   onSubmitTodo() {
     // Vérifie si l'utilisateur connecté est autorisé
     this.userService.getUtilisateurConnecte().subscribe(currentUser => {
-      if (this.todo.utilisateurId !== currentUser.id) {
+      if (this.todo?.utilisateurId !== currentUser.id) {
         this.snackBar.open('❌ Vous ne pouvez pas modifier cette tâche.', '', { duration: 2000, panelClass: ['snackbar-small-text'] });
         return;
       }
@@ -249,7 +249,7 @@ export class TododetailsComponent implements OnInit {
 
     this.userService.getUtilisateurConnecte().subscribe(currentUser => {
       // Vérifie le propriétaire
-      if (this.todo.utilisateurId !== currentUser.id) {
+      if (this.todo?.utilisateurId !== currentUser.id) {
         this.snackBar.open('❌ Vous ne pouvez pas supprimer cette tâche.', '', { duration: 2000, panelClass: ['snackbar-small-text'] });
         return; // stop ici si pas autorisé
       }
