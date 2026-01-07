@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
   errorAssigned: string | null = null;
   projets: Projet[] = [];
   projectsWithTodos: { projet: Projet, todos: Todo[] }[] = [];
-  utilisateur!: Utilisateur;
+  utilisateur?: Utilisateur;
 
 
   constructor(private todoService: TodoService, private projetService: ProjetService, private userService: UserService) { }

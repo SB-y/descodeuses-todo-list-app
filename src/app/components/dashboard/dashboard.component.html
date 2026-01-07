@@ -3,8 +3,8 @@
   <div class="flex justify-center text-5xl font-bold mt-8 mb-16">
     Salut&nbsp;
   
-    <span class="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
-      {{ utilisateur.surname }} !
+    <span class="bg-linear-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+      {{ utilisateur?.surname }} !
     </span>
   </div>
 
@@ -18,7 +18,7 @@
       <!-- Badge -->
       <div *ngIf="getBadgeMotivation() as badge" [ngClass]="badge.color"
         class="flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold">
-        <mat-icon class="!text-sm">{{ badge.icon }}</mat-icon>
+        <mat-icon class="text-sm!">{{ badge.icon }}</mat-icon>
         {{ badge.label }}
       </div>
     </div>

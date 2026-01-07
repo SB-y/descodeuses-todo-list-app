@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ContactDetailsComponent implements OnInit {
 
   id!: number; // Propriété accessible partout; le ! pour dire que cette variable sera initialisée avt utilisation
-  contact!: Contact; // objet de type Contact (sera chargé depuis le service)
+  contact?: Contact; // objet de type Contact (sera chargé depuis le service)
   contactForm!: FormGroup; // ! car cela est déclaré dans le ngOnInit, on aurait pu le faire dans le constructeur 
   // et ne pas mettre de point d'exclamation (en fait une propriété doit toujours être initialisée)
 

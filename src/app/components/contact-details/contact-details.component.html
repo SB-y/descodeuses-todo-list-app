@@ -10,7 +10,7 @@
       <!-- Titre -->
       <mat-card-header class="w-full flex justify-center mb-15">
         <h2 class="text-center text-xl font-semibold text-gray-500">
-          {{contact.prenom}} {{contact.nom}}
+          {{contact?.prenom}} {{contact?.nom}}
         </h2>
       </mat-card-header>
 
@@ -48,21 +48,24 @@
       <div class="flex justify-center gap-6 mt-15">
         <!-- Enregistrer -->
         <button mat-raised-button type="submit"
-          class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
+          class="px-6 py-2 rounded-lg bg-emerald-200! text-black hover:bg-emerald-300!">
           Enregistrer
         </button>
 
         <!-- Annuler -->
         <button mat-stroked-button (click)="onCancel()"
-          class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
+          class="px-6 py-2 rounded-lg border border-gray-300! text-gray-700! hover:bg-gray-100!">
           <mat-icon>arrow_back</mat-icon> Annuler
         </button>
 
         <!-- Supprimer -->
-        <button mat-stroked-button (click)="onDelete(contact.id)"
-          class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
-          Supprimer
-        </button>
+        <button
+        *ngIf="contact"
+        mat-stroked-button
+        (click)="onDelete(contact.id)"
+        class="px-6 py-2 rounded-lg border border-red-200! text-red-600! hover:bg-red-200! hover:text-red-800!">
+        Supprimer
+      </button>
       </div>
 
     </form>
