@@ -14,8 +14,10 @@ export class JwtInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    // 2. Ignorer totalement la route de LOGIN
-    if (req.url.includes('/auth/login')) {
+    // 2. Ignorer totalement la route de LOGIN et REGISTER
+    if (req.url.includes('/auth/login')
+      ||
+    req.url.includes('/auth/register')) {
       return next.handle(req);
     }
 
