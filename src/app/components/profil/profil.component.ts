@@ -78,6 +78,15 @@ export class ProfilComponent implements OnInit {
     });
   }
 
+  // Fonction pour avoir les initiales de l'utilisateur connecté
+  getInitiales(): string {
+    if (!this.utilisateur) return '';
+
+    const prenom = this.utilisateur.surname?.charAt(0) ?? '';
+    const nom = this.utilisateur.name?.charAt(0) ?? '';
+
+    return (prenom + nom).toUpperCase();
+  }
 
   // Fonction déclenchée à la soumission du formulaire
   onSubmit() {
@@ -110,8 +119,8 @@ export class ProfilComponent implements OnInit {
     });
   }
 
-  
-  
+
+
   openDialog(id: number) {
     console.log("🪟 Ouverture du dialog pour suppression utilisateur:", id);
 
@@ -136,11 +145,13 @@ export class ProfilComponent implements OnInit {
 
 
   // Supprimer un utilisateur par son id 
-  onDelete(id: number | null) 
-  { if (id == null) return; // si id null, on ne fait rien 
-  this.userService.deleteUtilisateur(id).subscribe(() => 
-    { this.snackBar.open('Supprimé !', '', { duration: 1000, panelClass: ['snackbar-small-text'] }); // afficher un message temporaire 
-  this.router.navigate(["/login"]); }); }
+  onDelete(id: number | null) {
+    if (id == null) return; // si id null, on ne fait rien 
+    this.userService.deleteUtilisateur(id).subscribe(() => {
+      this.snackBar.open('Supprimé !', '', { duration: 1000, panelClass: ['snackbar-small-text'] }); // afficher un message temporaire 
+      this.router.navigate(["/login"]);
+    });
+  }
 
 
   // Retour à la page précédente

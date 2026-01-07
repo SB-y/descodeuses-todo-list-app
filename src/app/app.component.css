@@ -1,45 +1,41 @@
-.bg-user {
-  background-color: #E6EFED;
-}
 
-.bg-admin {
-  background-color: #E6EFED;
-}
-
-.bg-default {
-  background-color:#E6EFED;
-}
-
+/* Fond réel de la sidenav (élément qui peint vraiment le background) */
 .custom-sidenav {
-  background-color: #E6EFED !important; /* ton gris émeraude */
+  background-color: #E6EFED !important;
 }
 
-/* liens de la sidebar : rectangle gris au hover/focus, pas d'arrondi */
+
+/* =========================
+   LIENS DE LA SIDEBAR
+   ========================= */
+
 mat-sidenav a.mat-mdc-list-item {
   border-radius: 0;
 }
+
 mat-sidenav a.mat-mdc-list-item:hover,
 mat-sidenav a.mat-mdc-list-item:focus {
-  background: #f3f4f6; /* gray-100 */
+  background-color: #f3f4f6; /* gray-100 */
 }
+
 mat-sidenav a.mat-mdc-list-item.cdk-program-focused {
-  outline: 2px solid #000; /* focus clavier noir */
+  outline: 2px solid #000;
   outline-offset: -2px;
 }
 
+/* =========================
+   MENU MOBILE
+   ========================= */
+
 #menumob a {
-font-size: 0.8rem;
+  font-size: 0.8rem;
 }
+
+/* =========================
+   ICONES
+   ========================= */
 
 mat-icon {
-  font-size: 16px;         /* légèrement plus grande */
-  color: #333;             /* un peu plus foncé que le texte */
-}
-
-@media (max-width: 1024px) {
-  .custom-sidenav {
-    width: 270px !important;
-    min-width: 200px !important;
-  }
-
+  font-size: 16px;
+  color: #333;
 }

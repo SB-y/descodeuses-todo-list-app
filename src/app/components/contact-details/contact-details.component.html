@@ -1,6 +1,7 @@
-<div id="full-cover-background"
-  class="mx-auto rounded-[40px] border border-gray-200 bg-white 
-         p-6 md:p-8 text-sm flex flex-col mt-20 max-w-2xl">
+<div class="flex justify-center titre-gradient text-3xl font-bold mt-4 mb-12">Je modifie ou supprime ce contact</div>
+
+<div id="full-cover-background" class="mx-auto rounded-[40px] border border-gray-200 bg-white 
+       p-4 md:p-6 text-sm mt-10 w-full max-w-[32rem]">
 
   <div id="centered-block" class="w-full">
 
@@ -9,7 +10,7 @@
       <!-- Titre -->
       <mat-card-header class="w-full flex justify-center mb-15">
         <h2 class="text-center text-xl font-semibold text-gray-500">
-          Gérer un contact
+          {{contact.prenom}} {{contact.nom}}
         </h2>
       </mat-card-header>
 
@@ -47,19 +48,19 @@
       <div class="flex justify-center gap-6 mt-15">
         <!-- Enregistrer -->
         <button mat-raised-button type="submit"
-                class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
+          class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
           Enregistrer
         </button>
 
         <!-- Annuler -->
         <button mat-stroked-button (click)="onCancel()"
-                class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
+          class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
           <mat-icon>arrow_back</mat-icon> Annuler
         </button>
 
         <!-- Supprimer -->
         <button mat-stroked-button (click)="onDelete(contact.id)"
-                class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
+          class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
           Supprimer
         </button>
       </div>

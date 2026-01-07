@@ -1,11 +1,19 @@
 <div id="full-cover-background" class="mx-auto max-w-3xl mt-5 px-4 md:px-8">
 
+  <div class="flex justify-center text-5xl font-bold mt-8 mb-16">
+    Salut&nbsp;
+  
+    <span class="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+      {{ utilisateur.surname }} !
+    </span>
+  </div>
+
   <!-- Progression globale -->
   <div class="w-full max-w-md mx-auto mb-8">
 
     <!-- Titre + Badge alignés -->
     <div class="flex items-center justify-between mb-6">
-      <h3 class="text-md font-medium text-gray-700">Ma progression</h3>
+      <h3 class="text-md font-medium text-gray-700">Ta progression</h3>
 
       <!-- Badge -->
       <div *ngIf="getBadgeMotivation() as badge" [ngClass]="badge.color"

@@ -1,6 +1,9 @@
-<div id="full-cover-background"
-  class="mx-auto rounded-[40px] border border-gray-200 bg-white 
-         p-6 md:p-8 text-sm flex flex-col mt-20 max-w-2xl">
+<div class="flex justify-center titre-gradient text-3xl font-bold mt-4 mb-12">Je gère ici les profils utilisateurs</div>
+
+<div id="full-cover-background" class="mx-auto rounded-[40px] border border-gray-200 bg-white 
+       p-4 md:p-6 text-ss mt-10 w-full max-w-[32rem]">
+
+  <div id="centered-block" class="w-full">
 
   <!-- Contenu principal -->
   <div class="flex-grow flex flex-col items-center w-full max-w-4xl mx-auto">
@@ -17,7 +20,7 @@
       </div>
 
       <!-- Ajout -->
-      <div id="ajoututil" class="flex flex-row items-center gap-2 justify-center md:justify-center">
+      <div id="ajoututil" class="flex flex-row items-center justify-center md:justify-center">
         <div class="text-md mb-6">Ajouter</div>
         <button mat-icon-button [routerLink]="['/signup']" class="rounded-full hover:bg-gray-100 mb-6 ">
           <mat-icon class="!text-emerald-400">add_circle</mat-icon>
@@ -27,11 +30,11 @@
       <!-- Sélecteur de tri -->
       <mat-form-field appearance="outline" class="w-full md:w-1/3 !mb-0">
         <mat-label>Trier par</mat-label>
-        <mat-select [(value)]="triSelection" (selectionChange)="trierUtilisateurs()">
-          <mat-option value="AZ">Nom A → Z</mat-option>
-          <mat-option value="ZA">Nom Z → A</mat-option>
-          <mat-option value="role">Rôle</mat-option>
-          <mat-option value="id">ID</mat-option>
+        <mat-select [(value)]="triSelection" (selectionChange)="trierUtilisateurs()" class="!text-xs">
+          <mat-option value="AZ" class="!text-xs">Nom A → Z</mat-option>
+          <mat-option value="ZA" class="!text-xs">Nom Z → A</mat-option>
+          <mat-option value="role" class="!text-xs">Rôle</mat-option>
+          <mat-option value="id" class="!text-xs">ID</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

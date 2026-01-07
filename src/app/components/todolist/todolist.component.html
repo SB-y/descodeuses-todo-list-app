@@ -1,7 +1,10 @@
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-15 mx-3 md:mx-10 lg:mx-20">
+<div class="flex justify-center titre-gradient text-3xl font-bold mt-4 mb-12">Je gère ici mes tâches et mes projets</div>
 
-  <!-- Formulaires -->
-  <div class="bg-gray-50 p-6 rounded-2xl shadow-sm flex flex-col gap-6 justify-center lg:col-span-5">
+<div class="mx-auto mt-10 w-full sm:max-w-[32rem] md:max-w-[32rem] lg:max-w-[50rem]
+            flex flex-col lg:flex-row lg:items-center gap-6">
+
+  <!-- Colonne gauche -->
+  <div class="border border-gray-200 bg-ajout lg:w-1/3 p-6 rounded-2xl flex flex-col gap-6">
     <h2 class="text-lg font-medium mb-2">Ajouter</h2>
 
     <!-- Ajout Tâche -->
@@ -9,7 +12,8 @@
       <mat-form-field appearance="outline" class="flex-1 !mb-0">
         <input matInput formControlName="title" placeholder="Nouvelle tâche">
       </mat-form-field>
-      <button mat-icon-button type="submit" class="rounded-full hover:bg-gray-100  mb-6">
+
+      <button mat-icon-button type="submit" class="rounded-full hover:bg-gray-100 mb-6">
         <mat-icon class="!text-emerald-400">add_circle</mat-icon>
       </button>
     </form>
@@ -19,53 +23,77 @@
       <mat-form-field appearance="outline" class="flex-1 !mb-0">
         <input matInput formControlName="title" placeholder="Nouveau projet">
       </mat-form-field>
-      <button mat-icon-button type="submit" class="rounded-full hover:bg-gray-100  mb-6">
+
+      <button mat-icon-button type="submit" class="rounded-full hover:bg-gray-100 mb-6">
         <mat-icon class="!text-emerald-400">add_circle</mat-icon>
       </button>
     </form>
   </div>
 
-  <!-- Listes -->
-  <div class="flex flex-col gap-10 bg-white p-6 rounded-2xl shadow-sm lg:col-span-7">
 
-    <!-- Tâches -->
+  <!-- Colonne droite -->
+  <div class="lg:w-2/3 bg-white p-6 rounded-2xl border border-gray-200 flex flex-col gap-10">
+
+    <!-- Mes tâches -->
     <section>
       <h2 class="text-lg font-medium mb-4">Mes tâches</h2>
+
       <mat-list>
         @for (todo of todos; track todo.id; let i = $index) {
+
           <mat-list-item>
             <div class="flex items-center gap-3 w-full">
-              <mat-checkbox [checked]="todo.completed" (change)="onCheckChange($event, todo)"></mat-checkbox>
+
+              <mat-checkbox [checked]="todo.completed"
+                            (change)="onCheckChange($event, todo)">
+              </mat-checkbox>
+
               <span [routerLink]="['/tododetails', todo.id]"
-                class="flex-1 text-sm cursor-pointer whitespace-normal break-words">
+                    class="flex-1 text-ss cursor-pointer whitespace-normal break-words">
                 {{ todo.title }}
               </span>
+
               <button mat-icon-button (click)="onDeleteTodo(todo.id)">
                 <mat-icon class="!text-red-300">delete</mat-icon>
               </button>
+
             </div>
           </mat-list-item>
-          <mat-divider *ngIf="i < todos.length - 1" class="!border-gray-200"></mat-divider>
+
+          <mat-divider *ngIf="i < todos.length - 1"
+                       class="!border-gray-200">
+          </mat-divider>
+
         }
       </mat-list>
     </section>
 
-    <!-- Projets -->
+
+    <!-- Mes projets -->
     <section>
       <h2 class="text-lg font-medium mb-8">Mes projets</h2>
-      <div class="flex flex-wrap gap-2">
+
+      <div class="flex flex-wrap justify-center gap-3">
         @for (projet of allProjets; track projet.id) {
+
           <div [routerLink]="['/projetdetails', projet.id]"
-            class="flex items-center justify-between bg-gray-200 text-gray-800 text-sm px-3 py-1.5 rounded-full cursor-pointer hover:bg-emerald-400 hover:text-white transition w-full sm:w-auto max-w-xs">
-            
+               class="flex items-center justify-between bg-gray-200 text-gray-800 text-ss
+                     px-3 py-1.5 rounded-full cursor-pointer hover:bg-emerald-400 hover:text-white
+                     transition w-auto sm:w-auto max-w-xs">
+
             <span class="truncate">{{ projet.title }}</span>
-            <button mat-icon-button (click)="onDeleteProjet(projet.id)" class="!h-5 !w-5 !min-h-0 !p-0 ml-2">
+
+            <button mat-icon-button (click)="onDeleteProjet(projet.id)"
+                    class="!h-5 !w-5 !min-h-0 !p-0 ml-2">
               <mat-icon class="hover:!text-red-400 !text-sm !text-black">delete</mat-icon>
             </button>
+
           </div>
+
         }
       </div>
     </section>
 
   </div>
+
 </div>

@@ -3,9 +3,9 @@
 qui va etre injecte dans tous les pages
 */
 
+
 @import "tailwindcss/theme.css";
 @import "tailwindcss/utilities.css";
-
 
 /* Font globale par défaut */
 html, body {
@@ -27,6 +27,15 @@ html, body {
     font-family: 'Poppins', sans-serif !important;
   }
 
+  /* Label dans l'input (non-flottant) → 12px */
+.mdc-floating-label:not(.mdc-floating-label--float-above) {
+  font-size: 12px !important;
+}
+
+/* Label flottant au-dessus → 14px */
+.mdc-floating-label.mdc-floating-label--float-above {
+  font-size: 14px !important;
+}
 
 /* Champ datepicker */
 .custom-datepicker .mat-mdc-text-field-wrapper {
@@ -35,7 +44,7 @@ html, body {
  /* border: 1px solid #d1d5db !important;
   border-radius: 8px !important;
   transition: all 0.2s ease-in-out; */
-  padding: 0 8px !important;
+  padding: 0 !important;
 }
 
 /* Survol */
@@ -51,15 +60,14 @@ html, body {
 
 /* Texte */
 .custom-datepicker input {
-  font-size: 0.85rem !important;
-  padding: 4px 0 !important;
+  font-size: 0.1rem !important;
+  margin-right: -1rem !important;
+  width: 5rem !important;
 }
 
 /* Bouton calendrier */
 .custom-datepicker .mat-mdc-icon-button {
-  width: 32px !important;
-  height: 32px !important;
-  font-size: 1.1rem !important;
+  padding: 1 !important;
 }
 
 /* Popup calendrier */
@@ -68,7 +76,7 @@ html, body {
   border: 1px solid #e5e7eb;
   border-radius: 10px !important;
   box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-  transform: scale(0.95);                  /* Léger rétrécissement */
+  transform: scale(0.95);                  
   transform-origin: top left;
 }
 
@@ -114,3 +122,54 @@ html, body {
 .active-link {
   background-color: #f1f3f5 !important; /* gray-200 */
 }
+
+/* Conserver l'apparence "active" des champs même lorsqu'ils sont disabled */
+.mdc-text-field--disabled {
+  opacity: 1 !important;                /* ne pas griser le champ */
+}
+
+.mdc-text-field--disabled .mdc-notched-outline__leading,
+.mdc-text-field--disabled .mdc-notched-outline__notch,
+.mdc-text-field--disabled .mdc-notched-outline__trailing {
+  border-color: rgba(0,0,0,0.12) !important; /* même bordure que les champs actifs */
+}
+
+.mdc-text-field--disabled .mdc-floating-label,
+.mdc-text-field--disabled .mdc-text-field__input,
+.mdc-text-field--disabled .mat-mdc-select-value {
+  color: inherit !important;            /* même couleur de texte */
+  -webkit-text-fill-color: inherit !important;
+}
+
+.feature-card {
+  width: 14rem;
+  height: 12rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card-mob {
+  width: 20rem;
+  height: 18rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.feature-card:hover {
+  transform: scale(1.2);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+}
+
+.feature-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+

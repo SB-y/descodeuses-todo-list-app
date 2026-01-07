@@ -1,139 +1,212 @@
-<div id="full-cover-background"
-  class="mx-2 md:mx-8 lg:mx-16 rounded-[40px] border border-gray-200 bg-white p-4 md:p-6 text-sm mt-20 flex justify-center">
 
-  <div *ngIf="todoForm" id="centered-block" class="w-full max-w-3xl"> <!-- ⬅️ max largeur -->
+<div class="flex justify-center titre-gradient text-3xl font-bold mt-4 mb-12">Je gère ici ma tâche </div>
 
-    <!-- Header -->
-    <mat-card-header class="w-full flex justify-center mb-15">
-      <h2 class="text-center text-xl font-semibold text-gray-500">
-        Tâche "{{ todo.title }}" de {{todo.surname}}
-      </h2>
-    </mat-card-header>
+<!-- CONTENEUR GLOBAL -->
+<div class="flex flex-col mt-10 xl:flex-row justify-center lg:pr-13">
 
-    <!-- Form -->
-    <mat-card-content>
-      <form [formGroup]="todoForm">
+  <!-- FORMULAIRE -->
+  <div class="flex flex-col w-full items-center">
 
-        <!-- 2 colonnes -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+    <div id="full-cover-background"
+         class="rounded-[40px] border border-gray-200 bg-white 
+                p-4 md:p-6 text-sm w-full max-w-[32rem]">
 
-          <!-- COLONNE GAUCHE -->
-          <div class="space-y-3">
 
-            <!-- Titre -->
-            <mat-form-field class="w-full" appearance="outline">
-              <mat-label>Tâche</mat-label>
-              <input matInput formControlName="title" type="text" placeholder="Nom de la tâche" />
-            </mat-form-field>
+      <div id="centered-block" class="w-full">
 
-            <!-- Description -->
-            <mat-form-field class="w-full" appearance="outline">
-              <mat-label>Description</mat-label>
-              <textarea matInput formControlName="textarea" rows=""></textarea>
-            </mat-form-field>
+        <!-- HEADER -->
+        <mat-card-header class="w-full flex justify-center mb-15">
+          <h2 class="text-center text-xl font-semibold text-gray-500">
+            Tâche "{{ todo.title }}" de {{ todo.surname }}
+          </h2>
+        </mat-card-header>
 
-            <!-- Priorité + Échéance -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <mat-form-field appearance="outline">
-                <mat-label>Priorité</mat-label>
-                <mat-select formControlName="priorite">
-                  @for (priorite of listPriorite; track priorite.number) {
-                  <mat-option [value]="priorite.number">{{ priorite.number }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
+        <!-- FORMULAIRE -->
+        <mat-card-content>
+          <form [formGroup]="todoForm">
 
-              <mat-form-field appearance="outline" class="custom-datepicker">
-                <mat-label>Échéance</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="dueDate"/>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
+            <!-- 2 COLONNES -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+
+              <!-- COLONNE GAUCHE -->
+              <div class="space-y-3">
+
+                <mat-form-field class="w-full" appearance="outline">
+                  <mat-label>Tâche</mat-label>
+                  <input matInput formControlName="title" placeholder="Nom de la tâche" />
+                </mat-form-field>
+
+                <mat-form-field class="w-full" appearance="outline">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput formControlName="textarea"></textarea>
+                </mat-form-field>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Priorité</mat-label>
+                    <mat-select formControlName="priorite">
+                      @for (priorite of listPriorite; track priorite.number) {
+                      <mat-option [value]="priorite.number">{{ priorite.number }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="custom-datepicker">
+                    <mat-label>Échéance</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+              <!-- COLONNE DROITE -->
+              <div class="space-y-3">
+
+                <mat-form-field class="w-full" appearance="outline">
+                  <mat-label>Contact associé</mat-label>
+
+                  <mat-chip-grid #chipGrid aria-label="Membres sélectionnés">
+                    @for (contact of selectedContacts; track contact.id) {
+                    <mat-chip-row (removed)="remove(contact)" class="!bg-emerald-200 !text-black !text-xs">
+                      {{ contact.prenom }} {{ contact.nom }}
+                      <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                    </mat-chip-row>
+                    }
+                  </mat-chip-grid>
+
+                  <input [formControl]="currentContact" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
+
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    @for (contact of filteredContacts; track contact.id) {
+                    <mat-option [value]="contact">
+                      {{ contact.prenom }} {{ contact.nom }}
+                    </mat-option>
+                    }
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="w-full" appearance="outline">
+                  <mat-label>Utilisateur associé</mat-label>
+                  <mat-select formControlName="assignedUserIds" multiple>
+                    <mat-option *ngFor="let user of allUtilisateurs" [value]="user.id">
+                      {{ user.surname }} {{ user.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="w-full" appearance="outline">
+                  <mat-label>Projet associé</mat-label>
+                  <mat-select formControlName="projet">
+                    <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
+                      {{ projet.title }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+
             </div>
 
+            <!-- Complété -->
+            <div class="flex items-center justify-center gap-3 mt-4">
+              <mat-checkbox formControlName="completed"></mat-checkbox>
+              <span class="text-gray-600">Marquer comme terminé</span>
+            </div>
+
+            <!-- BOUTONS -->
+            <div class="flex justify-center gap-6 mt-15">
+
+              <button mat-raised-button (click)="onSubmitTodo()"
+                      class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
+                Enregistrer
+              </button>
+
+              <button mat-stroked-button (click)="onCancel()"
+                      class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
+                <mat-icon>arrow_back</mat-icon> Annuler
+              </button>
+
+              <button mat-stroked-button (click)="onDelete(todo.id)"
+                      class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 
+                             hover:!bg-red-200 hover:!text-red-800">
+                Supprimer
+              </button>
+
+            </div>
+
+          </form>
+        </mat-card-content>
+
+      </div>
+    </div>
+  </div>
+
+
+
+ <!-- CHATBOX -->
+ <div class="flex flex-col items-center justify-center">
+
+<div class="chat-box p-3 mt-20 bg-chat border border-gray-200 rounded-2xl w-[18rem]">
+
+      <h3 class="text-sm font-semibold text-gray-600 mb-8">
+        💬 Discussion sur cette tâche
+      </h3>
+
+      @if (todo.utilisateursAssignes?.length! > 0) {
+
+      <div #messagesContainer class="messages max-h-64 overflow-y-auto pr-2 mb-4 space-y-2">
+
+        @for (msg of messages; track msg.id) {
+
+        <div class="p-2 rounded-2xl border text-xs w-fit max-w-[75%]"
+             [ngClass]="{
+                'bg-white text-gray-800 ml-0': msg.authorId !== currentUserId,
+                '!bg-white text-gray-800 ml-auto': msg.authorId === currentUserId
+              }">
+
+          <div class="font-semibold"
+               [ngClass]="{
+                 'text-pink-500': msg.authorId === currentUserId,
+                 'text-cyan-500': msg.authorId !== currentUserId
+               }">
+            {{ msg.authorSurname }} {{ msg.authorName }}
+            <span class="text-[10px] opacity-80 ml-1">
+              {{ msg.createdAt | date:'short' }}
+            </span>
           </div>
 
-            <!-- COLONNE DROITE -->
-            <div class="space-y-3">
-
-              <!-- Membre -->
-              <mat-form-field class="w-full" appearance="outline">
-                <mat-label>Contact associé</mat-label>
-                <mat-chip-grid #chipGrid aria-label="Membre sélection">
-                  @for (contact of selectedContacts; track contact.id) {
-                  <mat-chip-row (removed)="remove(contact)" class="!bg-emerald-200 !text-black !text-xs">
-                    {{ contact.prenom }} {{ contact.nom }}
-                    <button matChipRemove>
-                      <mat-icon>cancel</mat-icon>
-                    </button>
-                  </mat-chip-row>
-                  }
-                </mat-chip-grid>
-                <input [formControl]="currentContact" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                  @for (contact of filteredContacts; track contact.id) {
-                  <mat-option [value]="contact">
-                    {{ contact.prenom }} {{ contact.nom }}
-                  </mat-option>
-                  }
-                </mat-autocomplete>
-              </mat-form-field>
-  
-              <!-- Utilisateurs assignés -->
-              <mat-form-field class="w-full" appearance="outline">
-                <mat-label>Utilisateur associé</mat-label>
-                <mat-select formControlName="assignedUserIds" multiple>
-                  <mat-option *ngFor="let user of allUtilisateurs" [value]="user.id">
-                    {{ user.surname }} {{ user.name }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-  
-              <!-- Projet -->
-              <mat-form-field class="w-full" appearance="outline">
-                <mat-label>Projet associé</mat-label>
-                <mat-select formControlName="projet">
-                  <mat-option *ngFor="let projet of allProjets" [value]="projet.id">
-                    {{ projet.title }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-  
-            </div>
-
+          <div>{{ msg.content }}</div>
         </div>
 
-        <!-- Complété -->
-        <div class="flex items-center justify-center gap-3 mt-4">
-          <mat-checkbox formControlName="completed"></mat-checkbox>
-          <span class="text-gray-600">Marquer comme terminé</span>
-        </div>
+        }
 
+      </div>
 
+      <div class="flex gap-2 items-center mt-6">
+        <input [(ngModel)]="newMessage"
+               class="flex-1 py-2 border rounded-full text-sm shadow-sm focus:outline-none"
+               placeholder="Écrire un message…">
 
-        <!-- Boutons -->
-        <div class="flex justify-center gap-6 mt-15">
-          <!-- Enregistrer : vert clair -->
-          <button mat-raised-button (click)="onSubmitTodo()"
-            class="px-6 py-2 rounded-lg !bg-emerald-200 text-black hover:!bg-emerald-300">
-            Enregistrer
-          </button>
+        <button (click)="sendMessage()" [disabled]="!newMessage.trim()"
+                class="px-4 py-2 border-0 rounded-full text-xs text-black"
+                [ngClass]="newMessage.trim()
+                  ? 'bg-emerald-200 hover:bg-emerald-300'
+                  : 'bg-emerald-200 cursor-not-allowed'">
+          Envoyer
+        </button>
+      </div>
 
-          <!-- Annuler : gris clair -->
-          <button mat-stroked-button (click)="onCancel()"
-            class="px-6 py-2 rounded-lg border !border-gray-300 !text-gray-700 hover:!bg-gray-100">
-            <mat-icon>arrow_back</mat-icon> Annuler
-          </button>
+      } @else {
 
-          <!-- Supprimer : rouge clair -->
-          <button mat-stroked-button (click)="onDelete(todo.id)"
-            class="px-6 py-2 rounded-lg border !border-red-200 !text-red-600 hover:!bg-red-200 hover:!text-red-800">
-            Supprimer
-          </button>
-        </div>
+      <div class="text-xs text-gray-500 italic mt-2">
+        Aucun utilisateur n'est assigné — discussion indisponible.
+      </div>
 
-      </form>
-    </mat-card-content>
+      }
 
+    </div>
   </div>
+
 </div>

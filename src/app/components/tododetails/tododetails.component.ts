@@ -12,6 +12,8 @@ import { Contact } from '../../models/contact.model';           // Modèle Conta
 import { ContactService } from '../../services/contact.service';// Service pour contacts
 import { Utilisateur } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { MessageService } from '../../services/message.service';
+import { Message } from '../../models/message.model';
 
 
 // Déclaration du composant
@@ -55,6 +57,12 @@ export class TododetailsComponent implements OnInit {
   todo!: Todo;           // Tâche actuelle à afficher/modifier
   todoForm!: FormGroup;  // Formulaire de modification
 
+  //Partie mini messagerie
+  todoId!: number;
+  messages: Message[] = [];
+  newMessage: string = '';
+  currentUserId!: number;
+
   // Constructeur avec injection des services
   constructor(
     private route: ActivatedRoute,      // Pour récupérer l'ID de la todo via l'URL
@@ -64,7 +72,8 @@ export class TododetailsComponent implements OnInit {
     private router: Router,             // Pour rediriger l’utilisateur
     private contactService: ContactService, // Pour récupérer les contacts
     private projetService: ProjetService,    // Pour récupérer les projets
-    private userService: UserService // Pour récupérer les utilisateurs de l'app
+    private userService: UserService, // Pour récupérer les utilisateurs de l'app
+    private messageService: MessageService, // Pour récupérer les messages liées à la tâche
   ) { }
 
   // Fonction exécutée à l'initialisation du composant
@@ -104,6 +113,8 @@ export class TododetailsComponent implements OnInit {
       // Une fois la tâche récupérée → récupère l'utilisateur connecté
       this.userService.getUtilisateurConnecte().subscribe(currentUser => {
 
+        this.currentUserId = currentUser.id;
+
         // Vérifie si l'utilisateur connecté est l'auteur
         const isOwner = this.todo.utilisateurId === currentUser.id;
 
@@ -133,6 +144,10 @@ export class TododetailsComponent implements OnInit {
         this.allUtilisateurs = users;
         this.filteredUtilisateurs = users;
       });
+
+      //Récupère les messages de la mini messagerie
+      this.todoId = Number(this.route.snapshot.paramMap.get('id'));
+      this.loadMessages();
     });
   }
 
@@ -235,7 +250,7 @@ export class TododetailsComponent implements OnInit {
     this.userService.getUtilisateurConnecte().subscribe(currentUser => {
       // Vérifie le propriétaire
       if (this.todo.utilisateurId !== currentUser.id) {
-        this.snackBar.open('❌ Vous ne pouvez pas supprimer cette tâche.', '', { duration: 2000, panelClass: ['snackbar-small-text']});
+        this.snackBar.open('❌ Vous ne pouvez pas supprimer cette tâche.', '', { duration: 2000, panelClass: ['snackbar-small-text'] });
         return; // stop ici si pas autorisé
       }
 
@@ -253,8 +268,51 @@ export class TododetailsComponent implements OnInit {
     });
   }
 
+
+
+  //Partie mini messagerie
+// Charger tous les messages d'une tâche
+loadMessages() {
+
+  // Appelle le backend via le service pour récupérer les messages du todo
+  this.messageService.getMessages(this.todoId)
+
+    // subscribe = "Quand la réponse arrive, exécute ce code"
+    .subscribe(msgs => {
+
+      // Remplace la liste de messages affichée par les messages reçus du backend
+      this.messages = msgs;
+    });
 }
 
+
+
+// Envoyer un message
+sendMessage() {
+
+  // trim() supprime les espaces au début/à la fin
+  // → évite les messages vides du type "      "
+  const content = this.newMessage.trim();
+
+  // Si après trim le contenu est vide, on ne fait rien (annule l’envoi)
+  if (!content) return;
+
+  // Appelle le backend pour enregistrer le message
+  this.messageService.sendMessage(this.todoId, content)
+
+    // subscribe = on attend la réponse du backend
+    .subscribe(msg => {
+
+      // Ajoute le message renvoyé par le backend à la liste actuelle
+      // → permet d'afficher immédiatement le message sans recharger toute la liste
+      this.messages.push(msg);
+
+      // Réinitialise le champ de texte du formulaire (efface l’input)
+      this.newMessage = '';
+    });
+}
+
+}
 
 
 

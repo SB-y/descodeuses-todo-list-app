@@ -16,10 +16,10 @@ import { Todo } from './models/todo.model';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'Task & Talk';
+  title = 'WeDone';
   sections = MENU_SECTIONS;
   publicSections = MENU_PUBLIC;
-  isMobile = window.innerWidth < 639; // seuil mobile
+  isMobile = window.innerWidth < 1024; // seuil mobile
   topMenuOpen = false;
 
 
@@ -54,7 +54,7 @@ export class AppComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.isMobile = event.target.innerWidth < 639; //event.target.innerWidth = largeur intérieure de la fenêtre au moment du redimensionnement
+    this.isMobile = event.target.innerWidth < 1024; //event.target.innerWidth = largeur intérieure de la fenêtre au moment du redimensionnement
     if (!this.isMobile) this.topMenuOpen = false; // fermer le top-menu si on revient au desktop
   }
 

@@ -4,6 +4,8 @@ import { Todo } from '../../models/todo.model';
 import { ProjetService } from '../../services/projet.service';
 import { Projet } from '../../models/projet.model';
 import { Contact } from '../../models/contact.model';
+import { UserService } from '../../services/user.service';
+import { Utilisateur } from '../../models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,13 +32,17 @@ export class DashboardComponent implements OnInit {
   errorAssigned: string | null = null;
   projets: Projet[] = [];
   projectsWithTodos: { projet: Projet, todos: Todo[] }[] = [];
+  utilisateur!: Utilisateur;
 
 
-  constructor(private todoService: TodoService, private projetService: ProjetService) { }
+  constructor(private todoService: TodoService, private projetService: ProjetService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.fetchTodo();
-    this.fetchProjets()
+    this.fetchProjets();
+    this.userService.getUtilisateurConnecte().subscribe(user => {
+      this.utilisateur = user
+    });
   }
 
   fetchTodo() {

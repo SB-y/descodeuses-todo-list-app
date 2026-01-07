@@ -69,18 +69,10 @@ const routes: Routes = [
 
 export const MENU_SECTIONS = [
   {
-    title: "Mon espace",
-    icon: "person",
-    items: [
-      { path: '/dashboard', label: 'Mon dashboard', icon: '' },
-      { path: '/profil', label: 'Mon profil', icon: '' },
-    ]
-  },
-
-  {
     title: "Mes tâches",
     icon: "list_alt_check",
     items: [
+      { path: '/dashboard', label: 'Mon dashboard', icon: '' },
       { path: '/todolist', label: 'Ma to-do list', icon: '' },
     ]
   },
@@ -90,6 +82,15 @@ export const MENU_SECTIONS = [
     icon: "group",
     items: [
       { path: '/contacts', label: 'Mes contacts', icon: '' },
+    ]
+  },
+
+  {
+    title: "Mon espace",
+    icon: "person",
+    items: [
+      { path: '/profil', label: 'Mon profil', icon: '' },
+      { path: '', label: 'Mes paramètres', icon: '' },
     ]
   },
 

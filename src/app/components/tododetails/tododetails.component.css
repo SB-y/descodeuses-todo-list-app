@@ -1,17 +1,21 @@
-/* Forcer la taille du label Material */
-mat-label {
-    font-size: 14px !important;
-  }
-  
-  /* Forcer la taille du texte saisi */
-  .mat-mdc-input-element {
-    font-size: 14px !important;
-  }
+.bg-chat {
+  background-color: rgba(230, 239, 237, 0.3); /* même couleur que sidebar mais avec alpha */
+}
 
-  mat-option {
-    font-size: 14px !important;
-  }
 
-  mat-select {
-    font-size: 14px !important;
-  }
+/* Forcer la taille du texte saisi */
+.mat-mdc-input-element {
+  font-size: 12px !important;
+}
+
+mat-option {
+  font-size: 12px !important;
+}
+
+mat-select {
+  font-size: 12px !important;
+}
+
+.titre-gradient {
+  color: #9BBFB8;
+}

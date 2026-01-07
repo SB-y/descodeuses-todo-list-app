@@ -33,11 +33,18 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "public",
+                "output": "/"
               }
             ],
             "styles": [
-              "src/theme.css",
+
+               "src/theme.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -50,14 +57,12 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-             "budgets": [
-  {
-    "type": "initial",
-    "maximumWarning": "1.5mb",
-    "maximumError": "2mb"
-  },
-
-
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.5mb",
+                  "maximumError": "2mb"
+                },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
@@ -100,11 +105,17 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "public",
+                "output": "/"
               }
             ],
             "styles": [
-             "src/theme.css",
+              "src/theme.css",
               "src/styles.css"
             ],
             "scripts": []
