@@ -4,7 +4,7 @@
  <!-- LANDING MOBILE -->
 
 <div *ngIf="!authService.isLoggedIn()"
-  class="lg:hidden min-h-screen w-full bg-linear-to-b from-white via-[#fdfffe] to-[#eaf1ef]">
+  class="xl:hidden min-h-screen w-full bg-linear-to-b from-white via-[#fdfffe] to-[#eaf1ef]">
 
   <div class="flex flex-col items-center px-4 pt-12 text-center">
 
@@ -28,29 +28,29 @@
   <div class="mt-14 px-4 space-y-6 max-w-sm mx-auto">
     <div class="bg-white rounded-xl p-4 shadow-sm">
       <p class="font-semibold text-sm">📋 Organisation claire</p>
-      <p class="text-xs text-gray-500 mt-1">
-        Visualisez vos tâches par priorité.
+      <p class="text-ss text-gray-500 mt-1">
+        Visualisez toutes vos tâches et projets.
       </p>
     </div>
 
     <div class="bg-white rounded-xl p-4 shadow-sm">
       <p class="font-semibold text-sm">👥 Collaboration</p>
-      <p class="text-xs text-gray-500 mt-1">
-        Associez utilisateurs et contacts.
+      <p class="text-ss text-gray-500 mt-1">
+        Centralisez vos contacts.
       </p>
     </div>
 
     <div class="bg-white rounded-xl p-4 shadow-sm">
       <p class="font-semibold text-sm">💬 Discussions</p>
-      <p class="text-xs text-gray-500 mt-1">
-        Échangez autour des tâches.
+      <p class="text-ss text-gray-500 mt-1">
+        Discutez autour des tâches.
       </p>
     </div>
 
     <div class="bg-white rounded-xl p-4 shadow-sm">
-      <p class="font-semibold text-sm">✉️ Notifications</p>
-      <p class="text-xs text-gray-500 mt-1">
-        Informez les personnes concernées.
+      <p class="font-semibold text-sm">✉️ Envois d'emails</p>
+      <p class="text-ss text-gray-500 mt-1">
+        Informez les contacts concernés.
       </p>
     </div>
   </div>
@@ -77,20 +77,26 @@
 
 <!-- ================= AUTH MODALE ================= -->
 <div *ngIf="mobileAuth"
-     class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4">
+     class="fixed inset-0 z-50 bg-black/40
+            flex items-start justify-center
+            overflow-y-auto px-4 py-8">
 
-  <!-- Carte -->
-  <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm relative animate-fadeIn">
+  <div
+    class="bg-white rounded-2xl shadow-xl
+           w-full max-w-sm
+           relative
+           max-h-[90vh] flex flex-col">
 
-    <!-- Bouton fermer -->
+    <!-- Close -->
     <button
       (click)="closeAuth()"
-      class="absolute top-3 right-3 text-gray-400 hover:text-black">
+      class="absolute top-3 right-3 z-10
+             text-gray-400 hover:text-black">
       ✕
     </button>
 
-    <!-- CONTENU -->
-    <div class="p-6">
+    <!-- Content -->
+    <div class="p-6 overflow-y-auto">
       <app-login *ngIf="mobileAuth === 'login'"></app-login>
       <app-signup *ngIf="mobileAuth === 'signup'"></app-signup>
     </div>
@@ -98,8 +104,6 @@
   </div>
 </div>
 
-
-</div>
 
 
 
