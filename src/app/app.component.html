@@ -1,140 +1,192 @@
+
 <!-- 1) LANDING PAGE SI NON CONNECTÉ -->
+
+ <!-- LANDING MOBILE -->
+
 <div *ngIf="!authService.isLoggedIn()"
-  class="landing-container min-h-screen w-full flex flex-col lg:flex-row overflow-x-hidden bg-linear-to-r! from-white via-[#fdfffe] to-[#eaf1ef]">
+  class="lg:hidden min-h-screen w-full bg-linear-to-b from-white via-[#fdfffe] to-[#eaf1ef]">
 
-  <!-- COLONNE GAUCHE bg-gradient-to-b from-[#eaf1ef] via-[#F4F9F8] to-white-->
-  <div class="w-full lg:w-1/2 
-  flex flex-col justify-start items-center lg:p-4 mx-auto max-w-full">
+  <div class="flex flex-col items-center px-4 pt-12 text-center">
 
+    <img src="assets/logo.png" class="w-85 mb-2">
 
-    <!-- Logo -->
-    <div class="w-[180px] h-[90px] overflow-hidden">
-      <img src="assets/logo.png" alt="WeDone"
-           class="w-full h-full object-cover scale-170">
-    </div>
-
-    <!-- Titre -->
-    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-800 text-center leading-snug mt-20 mb-6 sm:mb-8 px-2">
-      Gérez vos tâches, vos projets, et collaborez facilement.
+    <h1 class="text-3xl font-extrabold text-gray-800">
+      Gérez vos tâches.<br>
+      Échangez autour.
     </h1>
 
-    <!-- Sous-titre -->
-    <p class="text-gray-600 text-sm sm:text-base text-center max-w-xs sm:max-w-sm mb-14 px-2">
-      Une plateforme simple, flexible, et collaborative pour organiser votre quotidien.
+    <p class="text-gray-500 text-base mt-4 max-w-xs">
+      Une vision claire de vos tâches et de vos collaborations.
     </p>
 
-    <!-- FONCTIONNALITÉS -->
-    <div class="flex flex-col lg:flex-row items-center justify-center
-                gap-6 sm:gap-10 lg:gap-12 w-full max-w-full">
-
-      <!-- VERSION MOBILE & TABLETTE = affichage en colonne -->
-<div class="flex flex-col items-center gap-10 py-6 px-4 lg:hidden">
-
-  <div class="flex flex-col items-center text-center">
-    <div class="feature-card-mob">
-      <img src="assets/feature1.png" class="feature-img">
+    <div class="mt-12 bg-white rounded-2xl shadow-lg p-3">
+      <img src="assets/feature1.png" class="w-70">
     </div>
-    <p class="text-sm text-gray-700 mt-4 max-w-[14rem]">
-    Visualisez clairement toutes vos tâches et tous vos projets.
-    </p>
   </div>
 
-  <div class="flex flex-col items-center text-center">
-    <div class="feature-card-mob">
-      <img src="assets/feature2.png" class="feature-img">
+  <!-- FEATURES -->
+  <div class="mt-14 px-4 space-y-6 max-w-sm mx-auto">
+    <div class="bg-white rounded-xl p-4 shadow-sm">
+      <p class="font-semibold text-sm">📋 Organisation claire</p>
+      <p class="text-xs text-gray-500 mt-1">
+        Visualisez vos tâches par priorité.
+      </p>
     </div>
-    <p class="text-sm text-gray-700 mt-4 max-w-[14rem]">
-    Créez votre répertoire de contacts.
-    </p>
+
+    <div class="bg-white rounded-xl p-4 shadow-sm">
+      <p class="font-semibold text-sm">👥 Collaboration</p>
+      <p class="text-xs text-gray-500 mt-1">
+        Associez utilisateurs et contacts.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-xl p-4 shadow-sm">
+      <p class="font-semibold text-sm">💬 Discussions</p>
+      <p class="text-xs text-gray-500 mt-1">
+        Échangez autour des tâches.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-xl p-4 shadow-sm">
+      <p class="font-semibold text-sm">✉️ Notifications</p>
+      <p class="text-xs text-gray-500 mt-1">
+        Informez les personnes concernées.
+      </p>
+    </div>
   </div>
 
-  <div class="flex flex-col items-center text-center">
-    <div class="feature-card-mob">
-      <img src="assets/feature3.png" class="feature-img">
+
+  <!-- SWITCH -->
+  <div class="mt-16 flex justify-center">
+    <div class="flex flex-col p-1 gap-1">
+
+      <button (click)="openSignup()" class="px-4 py-2 border-0 rounded-full text-sm transition bg-emerald-300 text-white">
+        Commencer
+      </button>
+
+      <p class="text-xs text-gray-500">
+        Déjà un compte ?
+        <span
+          (click)="openLogin()"
+          class="text-emerald-500 hover:text-black cursor-pointer">
+          Je me connecte
+        </span>
+      </p>
     </div>
-    <p class="text-sm text-gray-700 mt-4 max-w-[14rem]">
-    Discutez avec vos collaborateurs de l'app.
-    </p>
   </div>
 
-  <div class="flex flex-col items-center text-center">
-    <div class="feature-card-mob">
-      <img src="assets/feature4.png" class="feature-img">
+<!-- ================= AUTH MODALE ================= -->
+<div *ngIf="mobileAuth"
+     class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4">
+
+  <!-- Carte -->
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm relative animate-fadeIn">
+
+    <!-- Bouton fermer -->
+    <button
+      (click)="closeAuth()"
+      class="absolute top-3 right-3 text-gray-400 hover:text-black">
+      ✕
+    </button>
+
+    <!-- CONTENU -->
+    <div class="p-6">
+      <app-login *ngIf="mobileAuth === 'login'"></app-login>
+      <app-signup *ngIf="mobileAuth === 'signup'"></app-signup>
     </div>
-    <p class="text-sm text-gray-700 mt-4 max-w-[14rem]">
-    Envoyez un mail à vos contacts assignés à une tâche.
-    </p>
+
   </div>
 </div>
 
 
-      <!-- SCROLL HORIZONTAL DESKTOP -->
-      <div class="hidden lg:block w-full overflow-x-auto">
-        <div class="flex gap-16 py-6 px-4 min-w-max">
+</div>
 
-          <div class="flex flex-col items-center text-center">
-            <div class="feature-card">
-              <img src="assets/feature1.png" class="feature-img">
-            </div>
-            <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
-              <span class="text-3xl">1<br></span>Visualisez clairement toutes vos tâches et tous vos projets.
-            </p>
+
+
+<!-- LANDING DESKTOP -->
+<div *ngIf="!authService.isLoggedIn()" class="hidden lg:flex min-h-screen w-full flex-row overflow-x-hidden
+            bg-linear-to-r from-white via-[#fdfffe] to-[#eaf1ef]">
+
+  <!-- COLONNE GAUCHE -->
+  <div class="w-1/2 flex flex-col justify-start items-center p-4 mx-auto">
+
+    <div class="w-[180px] h-[90px] overflow-hidden">
+      <img src="assets/logo.png" alt="WeDone" class="w-full h-full object-cover scale-170">
+    </div>
+
+    <h1 class="text-3xl font-extrabold text-gray-800 text-center leading-snug mt-20 mb-6 px-2">
+      Gérez vos tâches.<br>
+      Échangez autour.
+    </h1>
+
+    <p class="text-gray-600 text-base text-center max-w-sm mb-14 px-2">
+      Une vision claire de vos tâches et de vos collaborations.
+    </p>
+
+    <!-- FEATURES SCROLL -->
+    <div class="w-full overflow-x-auto">
+      <div class="flex gap-16 py-6 px-4 min-w-max">
+
+        <div class="flex flex-col items-center text-center">
+          <div class="feature-card">
+            <img src="assets/feature1.png" class="feature-img">
           </div>
-
-          <div class="flex flex-col items-center text-center">
-            <div class="feature-card">
-              <img src="assets/feature2.png" class="feature-img">
-            </div>
-            <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
-              <span class="text-3xl">2<br></span>Créez votre répertoire de contacts.
-            </p>
-          </div>
-
-          <div class="flex flex-col items-center text-center">
-            <div class="feature-card">
-              <img src="assets/feature3.png" class="feature-img">
-            </div>
-            <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
-              <span class="text-3xl">3<br></span>Discutez avec les utilisateurs de l'app associés à une tâche.
-            </p>
-          </div>
-
-          <div class="flex flex-col items-center text-center">
-            <div class="feature-card">
-              <img src="assets/feature4.png" class="feature-img">
-            </div>
-            <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
-              <span class="text-3xl">4<br></span> Envoyez un mail à vos contacts associés à une tâche.
-            </p>
-          </div>
-
+          <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
+            <span class="text-3xl">1<br></span>
+            Visualisez toutes vos tâches et projets.
+          </p>
         </div>
+
+        <div class="flex flex-col items-center text-center">
+          <div class="feature-card">
+            <img src="assets/feature2.png" class="feature-img">
+          </div>
+          <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
+            <span class="text-3xl">2<br></span>
+            Centralisez vos contacts.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-center text-center">
+          <div class="feature-card">
+            <img src="assets/feature3.png" class="feature-img">
+          </div>
+          <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
+            <span class="text-3xl">3<br></span>
+            Discutez autour des tâches.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-center text-center">
+          <div class="feature-card">
+            <img src="assets/feature4.png" class="feature-img">
+          </div>
+          <p class="text-ss text-gray-700 mt-4 max-w-[14rem]">
+            <span class="text-3xl">4<br></span>
+            Informez les contacts concernés.
+          </p>
+        </div>
+
       </div>
     </div>
   </div>
 
-  
-
-
-  <!-- COLONNE DROITE -->
-  <div class="w-full lg:w-1/2 flex justify-center items-center max-w-full min-w-0 overflow-hidden ">
-
-    <!-- Empêche router-outlet de dépasser -->
+  <!-- COLONNE DROITE : AUTH -->
+  <div class="w-1/2 flex justify-center items-center overflow-hidden">
     <div class="w-full max-w-sm mx-auto">
       <router-outlet></router-outlet>
     </div>
-
   </div>
-
 </div>
 
 
+
 <!-- 2) LAYOUT STANDARD SI CONNECTÉ -->
+
 <mat-sidenav-container *ngIf="authService.isLoggedIn()" class="h-screen">
 
   <!-- SIDENAV -->
-  <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile"
-    class="custom-sidenav !rounded-none">
+  <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="custom-sidenav !rounded-none">
 
     <!-- Recherche tâche -->
     <div class="flex items-center bg-white rounded-full w-4/5 ml-3 mt-6 mb-6 pr-4">
@@ -211,11 +263,7 @@
 
 
     <!-- MENU MOBILE -->
-    <div *ngIf="isMobile && topMenuOpen" class="absolute w-full z-50 shadow-md p-1.5" [ngClass]="{
-             'bg-admin': authService.isAdmin(),
-             'bg-user': authService.isUser(),
-             'bg-default': !authService.isAdmin() && !authService.isUser()
-           }">
+    <div *ngIf="isMobile && topMenuOpen" class="absolute w-full z-50 shadow-md p-1.5 custum-nav-mob">
 
       <mat-nav-list id="menumob" class="space-y-0.5">
 

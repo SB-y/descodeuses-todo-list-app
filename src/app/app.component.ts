@@ -21,6 +21,7 @@ export class AppComponent {
   publicSections = MENU_PUBLIC;
   isMobile = window.innerWidth < 1024; // seuil mobile
   topMenuOpen = false;
+  mobileAuth: 'login' | 'signup' | null = null;
 
 
   constructor(
@@ -28,6 +29,7 @@ export class AppComponent {
     private todoService: TodoService,
     public router: Router) { };
 
+    
 
   // recherche
   rechercheTodo: string = '';
@@ -104,4 +106,17 @@ export class AppComponent {
     }
   }
 
+//Pour les modales login et signup
+
+openLogin() {
+  this.mobileAuth = 'login';
+}
+
+openSignup() {
+  this.mobileAuth = 'signup';
+}
+
+closeAuth() {
+  this.mobileAuth = null;
+}
 }
